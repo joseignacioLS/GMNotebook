@@ -1,0 +1,43 @@
+.detailContainer {
+  height: 100%;
+  overflow-y: auto;
+  scroll-behavior: smooth;
+  grid-row: 1/3;
+  grid-column: 3 / 4;
+}
+
+.detail {
+  position: relative;
+  color: white;
+  height: auto;
+  margin: .5rem;
+  padding: .5rem;
+  border-radius: .5rem;
+  transition: padding .2s;
+  overflow: hidden;
+
+  font-size: 2rem;
+  line-height: 2.5ch;
+  opacity: .6;
+
+  user-select: none;
+
+}
+
+.linkVisit {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  cursor: pointer;
+}
+
+
+.hidden {
+  height: 0;
+  padding: 0 .5rem;
+  margin: 0 .5rem;
+}
+
+.selected {
+  opacity: 1;
+}
