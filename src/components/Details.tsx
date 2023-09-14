@@ -1,50 +1,48 @@
 import React, { useContext } from "react";
 import styles from "./Detail.module.scss";
-import { referenceI } from "@/api/data";
 import {
   getWordCount,
   includeRerencesInText,
   replaceReferencesByDisplay,
 } from "@/utils/text";
-import { DataContext } from "@/context/data";
-import Link from "next/link";
+import { DataContext, textPieceI } from "@/context/data";
 
 const Details = ({
-  references = [],
   selectedNote,
   setSelectedNote,
 }: {
-  references: referenceI[];
   selectedNote: string | undefined;
   setSelectedNote: (value: string) => void;
 }) => {
-  const { data, updateItem } = useContext(DataContext);
+  const { item, data, updateItem, textPieces } = useContext(DataContext);
   return (
     <div className={styles.detailContainer}>
-      {references
-        ?.reduce((acc: referenceI[], curr: referenceI) => {
-          if (
-            acc.find(
-              (item: referenceI) => item.visible && item.key === curr.key
-            )
-          )
-            return acc;
+      {textPieces
+        .filter((v) => v.key !== undefined && v.visible)
+        .reduce((acc: textPieceI[], curr: textPieceI) => {
+          if (acc.some((item: textPieceI) => item.key === curr.key)) return acc;
           return [...acc, curr];
         }, [])
-        .map((item: referenceI) => {
-          const text = includeRerencesInText(item?.data.text, data);
-          const textWordCount = getWordCount(item?.data.text);
-          const isNavegable = text !== item?.data.text;
+        .map((textPiece, i) => {
+          const text = includeRerencesInText(item.text, data);
+
+          const showTitle = data[textPiece?.key || ""].title;
+          const showText = replaceReferencesByDisplay(
+            includeRerencesInText(data[textPiece?.key || ""].text, data),
+            data
+          );
+          const textWordCount = getWordCount(showText);
+          const isNavegable = text !== showText;
           return (
             <div
-              key={item?.id}
-              id={"detail-" + item.id}
-              className={`${styles.detail} ${!item?.visible && styles.hidden} ${
-                item.key === selectedNote && styles.selected
+              key={i}
+              id={"detail-" + textPiece.key}
+              className={`${styles.detail} ${
+                textPiece.key === selectedNote && styles.selected
               }`}
-              style={{ backgroundColor: item?.color }}
+              style={{ backgroundColor: textPiece?.color }}
               onMouseOver={() => {
-                setSelectedNote(item.data.key);
+                setSelectedNote(textPiece?.key || "");
               }}
               onMouseOut={() => {
                 setSelectedNote("");
@@ -54,17 +52,17 @@ const Details = ({
                 <span
                   className={styles.linkVisit}
                   onClick={() => {
-                    updateItem(item?.data.key);
+                    updateItem(textPiece?.key || "");
                   }}
                 >
                   📕
                 </span>
               )}
-              <h2>{item?.data.title}</h2>
+              <h2>{showTitle}</h2>
               <p>
-                {item?.data.key === selectedNote || textWordCount < 30
-                  ? item?.data.text
-                  : item?.data.text.split(" ").slice(0, 25).join(" ") + "..."}
+                {textPiece?.key === selectedNote || textWordCount < 30
+                  ? showText
+                  : showText.split(" ").slice(0, 25).join(" ") + "..."}
               </p>
             </div>
           );

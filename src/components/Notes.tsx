@@ -1,58 +1,53 @@
-import { ReactElement, useEffect, useState } from "react";
+import { ReactElement, useContext, useEffect, useState } from "react";
 import styles from "./Notes.module.scss";
 
-import { referenceI } from "@/api/data";
+import { DataContext, dataI, textPieceI } from "@/context/data";
 
 const generateDisplayText = (
-  text: string,
-  references: referenceI[],
-  updateSelectedNote: (value: string, id: string) => void
+  text: textPieceI[],
+  data: dataI,
+  updateSelectedNote: (key: string) => void
 ) => {
-  let lastIndex = 0;
-  const chuncks: ReactElement[] = [];
-  references.forEach((ref: referenceI, i: number) => {
-    chuncks.push(<span key={i}>{text.slice(lastIndex, ref.index)}</span>);
-    lastIndex = ref.index + ref.key.length + 2;
-    chuncks.push(
+  const chuncks: ReactElement[] = text.map((ele, i) => {
+    if (ele.content === "\n") return <br key={i} />;
+    if (ele.key === undefined) return <span key={i}>{ele.content}</span>;
+    const content = data[ele.key].display;
+    return (
       <span
-        key={ref.id}
-        id={ref.id}
-        className={styles.reference}
-        style={{ backgroundColor: ref.color }}
-        onClick={() => updateSelectedNote(ref.key, ref.id)}
+        key={i}
+        id={ele.id}
+        className={`${styles.reference}`}
+        style={{ backgroundColor: ele.color }}
+        onClick={() => updateSelectedNote(ele?.key || "")}
       >
-        {ref.data.display}
+        {content}
       </span>
     );
   });
-  chuncks.push(<span key="last">{text.slice(lastIndex)}</span>);
   return chuncks;
 };
 
 const Notes = ({
   title,
   text,
-  references,
   setSelectedNote,
 }: {
   title: string;
-  text: string;
-  references: referenceI[];
+  text: textPieceI[];
   setSelectedNote: (value: string) => void;
 }) => {
+  const { data } = useContext(DataContext);
   const [displayText, setDisplayText] = useState<ReactElement[]>([]);
-  const updateSelectedNote = (key: string, id: string) => {
+  const updateSelectedNote = (key: string) => {
     setSelectedNote(key);
     setTimeout(
-      () => document.querySelector(`#detail-${id}`)?.scrollIntoView(),
+      () => document.querySelector(`#detail-${key}`)?.scrollIntoView(),
       0
     );
   };
   useEffect(() => {
-    setDisplayText(
-      generateDisplayText(text, references, updateSelectedNote)
-    );
-  }, [text, references]);
+    setDisplayText(generateDisplayText(text, data, updateSelectedNote));
+  }, [text]);
   return (
     <div id="notes" className={styles.notesContainer}>
       <h1>{title}</h1>
