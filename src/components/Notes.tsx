@@ -39,7 +39,7 @@ const Notes = ({
 }) => {
   const { data, item, updateData } = useContext(DataContext);
   const [displayText, setDisplayText] = useState<ReactElement[]>([]);
-  const [editHidden, setEditHidden] = useState<boolean>(false);
+  const [editHidden, setEditHidden] = useState<boolean>(true);
   const [inputText, setInputText] = useState<string>(item.text);
   const [inputTitle, setInputTitle] = useState<string>(item.title);
   const [inputDisplay, setInputDisplay] = useState<string>(item.display);
@@ -99,13 +99,14 @@ const Notes = ({
 
   useEffect(() => {
     setDisplayText(generateDisplayText(text, data, updateSelectedNote));
-  }, [text]);
+  }, [text, data]);
 
   useEffect(() => {
     setInputTitle(item.title);
     setInputDisplay(item.display);
     setInputText(item.text);
   }, [item]);
+
   return (
     <div
       className={`${styles.notesContainer} ${editHidden && styles.editHidden}`}

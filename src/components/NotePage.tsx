@@ -22,7 +22,7 @@ const checkItemVisibility = (id: string) => {
 };
 
 const NotePage = () => {
-  const { data, item, textPieces, updateTextPieces, updateData } =
+  const { data, item, textPieces, updateTextPieces, updateData, resetData } =
     useContext(DataContext);
   const [selectedNote, setSelectedNote] = useState<string | undefined>(
     undefined
@@ -45,7 +45,6 @@ const NotePage = () => {
   };
 
   useEffect(() => {
-    setTimeout(updateVisibleReferences, 0);
     document
       .querySelector("#notes")
       ?.addEventListener("scroll", updateVisibleReferences);
@@ -53,7 +52,7 @@ const NotePage = () => {
       document
         .querySelector("#notes")
         ?.removeEventListener("scroll", updateVisibleReferences);
-  }, [item?.text]);
+  }, [textPieces]);
 
   return (
     <div className={styles.notepage}>
@@ -89,6 +88,7 @@ const NotePage = () => {
           }}
         />
         <button onClick={() => saveToFile("data.json", data)}>Download</button>
+        <button onClick={resetData}>Reset</button>
       </div>
     </div>
   );
