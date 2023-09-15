@@ -64,7 +64,7 @@ export const DataProvider = ({ children }: { children: ReactElement }) => {
   const [textPieces, setTextPieces] = useState<textPieceI[]>([]);
   const [item, setItem] = useState<string>("");
 
-  const updateData = (value: dataI, resetEntry: true) => {
+  const updateData = (value: dataI, resetEntry: boolean = true) => {
     setData({});
     setTimeout(() => {
       setData(value);
@@ -84,7 +84,7 @@ export const DataProvider = ({ children }: { children: ReactElement }) => {
     Object.keys(data).forEach((key: string) => {
       text = text.replace(new RegExp(`\\[${key}\\]`, "g"), data[key].display);
     });
-    text =text.replace(/<br>/g, " ")
+    text = text.replace(/<br>/g, " ");
     return text;
   };
 

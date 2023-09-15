@@ -40,55 +40,37 @@ export const splitTextIntoReferences = (
       const matchSp = workText.match(regexSp)
 
       const regMatch = matchReg?.[0] || ""
-      const regIndex = matchReg?.index
+      const regIndex = matchReg?.index !== undefined ? matchReg.index : Infinity
       const spMatch = matchSp?.[0] || ""
-      const spIndex = matchSp?.index
+      const spIndex = matchSp?.index !== undefined ? matchSp.index : Infinity
 
-      if (regIndex === undefined && spIndex === undefined) {
+      if (regIndex !== Infinity || spIndex !== Infinity) {
+        if (regIndex < spIndex) {
+          [addText, workText] = sliceText(workText, regIndex, regIndex + (regMatch?.length || 0))
+          output.push({ content: addText })
+          output.push({
+            content: regMatch,
+            key: regMatch.slice(1, regMatch.length - 1),
+            color: generateColor(regMatch),
+            visible: true,
+            id: regMatch.slice(1, regMatch.length - 1) + "-" + index
+          })
+          index += 1
+        }
+        else {
+          [addText, workText] = sliceText(workText, spIndex, spIndex + (spMatch?.length || 0))
+          output.push({ content: addText })
+          output.push({
+            content: spMatch
+          })
+
+        }
+      }
+      else {
         output.push({
           content: workText,
         })
         break;
-      }
-
-      if (spIndex !== undefined && regIndex === undefined) {
-        [addText, workText] = sliceText(workText, spIndex, spIndex + (spMatch?.length || 0))
-        output.push({ content: addText })
-        output.push({
-          content: spMatch
-        })
-        continue;
-      }
-      if (regIndex !== undefined && spIndex === undefined) {
-        [addText, workText] = sliceText(workText, regIndex, regIndex + (regMatch?.length || 0))
-        output.push({ content: addText })
-        output.push({
-          content: regMatch,
-          key: regMatch.slice(1, regMatch.length - 1),
-          color: generateColor(regMatch),
-          visible: true,
-          id: regMatch.slice(1, regMatch.length - 1) + "-" + index
-        })
-        index += 1
-        continue
-      }
-      if (regIndex < spIndex) {
-        [addText, workText] = sliceText(workText, regIndex, regIndex + (regMatch?.length || 0))
-        output.push({ content: addText })
-        output.push({
-          content: regMatch,
-          key: regMatch.slice(1, regMatch.length - 1),
-          color: generateColor(regMatch),
-          visible: true,
-          id: regMatch.slice(1, regMatch.length - 1) + "-" + index
-        })
-      }
-      else {
-        [addText, workText] = sliceText(workText, spIndex, spIndex + (spMatch?.length || 0))
-        output.push({ content: addText })
-        output.push({
-          content: spMatch
-        })
       }
     }
   }
