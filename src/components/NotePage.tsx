@@ -5,8 +5,8 @@ import Details from "./Details";
 import styles from "./notepage.module.scss";
 import { textPieceI } from "@/context/data";
 import { DataContext } from "@/context/data";
-import Link from "next/link";
 import Conections from "./Conections";
+import { loadFile, saveToFile } from "@/utils/file";
 
 const checkItemVisibility = (id: string) => {
   const boundingRect = document
@@ -14,14 +14,16 @@ const checkItemVisibility = (id: string) => {
     ?.getBoundingClientRect();
   if (!boundingRect) return false;
   const notesContainer = document.querySelector("#notes") as any;
+  const titleSpace = 80;
   return (
-    boundingRect.top >= 0 &&
-    boundingRect.bottom <= (notesContainer?.offsetHeight || 0)
+    boundingRect.top >= titleSpace &&
+    boundingRect.top <= (notesContainer?.offsetHeight || 0) + titleSpace
   );
 };
 
 const NotePage = () => {
-  const { item, textPieces, updateTextPieces } = useContext(DataContext);
+  const { data, item, textPieces, updateTextPieces, updateData } =
+    useContext(DataContext);
   const [selectedNote, setSelectedNote] = useState<string | undefined>(
     undefined
   );
@@ -77,10 +79,17 @@ const NotePage = () => {
           />
           <Conections itemKey={item?.key} />
         </>
-      )}
-      <Link className={styles.editLink} href="/edit">
-        ✏️
-      </Link>
+      )}{" "}
+      <div className={styles.buttons}>
+        <input
+          type="file"
+          id="file"
+          onChange={() => {
+            loadFile("#file", updateData);
+          }}
+        />
+        <button onClick={() => saveToFile("data.json", data)}>Download</button>
+      </div>
     </div>
   );
 };

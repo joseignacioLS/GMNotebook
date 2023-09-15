@@ -15,7 +15,7 @@ export const saveToFile = (filename: string, content: any) => {
   document.body.removeChild(element);
 }
 
-export const loadFile = (inputSelector: string, callback: (data: any) => void) => {
+export const loadFile = (inputSelector: string, callback: any) => {
   const fileInput = document.querySelector(inputSelector) as any;
   if (!fileInput) return
   const file = fileInput.files[0];

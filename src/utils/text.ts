@@ -1,32 +1,16 @@
+
 import { generateColor } from "./color";
-import { dataI, textPieceI } from "@/context/data";
+import { textPieceI } from "@/context/data";
 
 export const getWordCount = (text: string) => {
   return text?.split(" ").length
 }
 
-export const getTextReferences = (text: string): string[] | null => {
+export const getTextReferences = (text: string): string[] => {
   const matches = text.match(/\[[^\]]+\]/g)
   return Array.from(new Set(matches || []));
 };
 
-
-export const includeRerencesInText = (text: string, data: dataI, excludeRefs: string[] = []) => {
-  Object.keys(data).forEach((key: string) => {
-    if (excludeRefs.includes(key)) return;
-    const regex = new RegExp(`(^|[ ])(${key})([ \.,\-])`, "g");
-    text = text.replace(regex, `$1[$2]$3`);
-  });
-  return text;
-};
-
-export const replaceReferencesByDisplay = (text: string, data: dataI) => {
-  text = includeRerencesInText(text, data, [])
-  Object.keys(data).forEach((key: string) => {
-    text = text.replace(new RegExp(`\\[${key}\\]`, "g"), data[key].display)
-  })
-  return text
-}
 
 export const splitTextIntoReferences = (
   references: string[],
@@ -36,63 +20,81 @@ export const splitTextIntoReferences = (
 
   let workText = text.slice()
 
+  const sliceText = (text: string, index0: number, index1: number): string[] => {
+    return [text.slice(0, index0), text.slice(index1)]
+  }
 
-
-  const regex = new RegExp(references.map(v => `\\${v.slice(0, v.length - 1)}\\]`)
-    .join("|"))
-  const regexSp = new RegExp(["\\n"].join("|"))
-  let index = 0;
   const output = []
-  while (workText.length > 0) {
-    const matchReg = workText.match(regex)
-    const matchSp = workText.match(regexSp)
-    if (matchReg?.index === undefined && matchSp?.index === undefined) {
-      output.push({
-        content: workText,
-      })
-      break;
-    }
+  try {
+    const regex = new RegExp(references.map(v => `\\${v.slice(0, v.length - 1)}\\]`)
+      .join("|"))
+    const regexSp = new RegExp(["<br>"].map(v => `${v}`).join("|"))
+    let index = 0;
+    let safe = 100
+    while (workText.length > 0 && safe > 0) {
+      safe -= 1
 
-    if (matchSp?.index !== undefined && matchReg?.index === undefined) {
-      output.push({ content: workText.slice(0, matchSp.index) })
-      output.push({
-        content: matchSp["0"]
-      })
-      workText = workText.slice(matchSp.index + matchSp["0"].length);
-    }
-    else if (matchReg?.index !== undefined && matchSp?.index === undefined) {
-      output.push({ content: workText.slice(0, matchReg.index) })
-      output.push({
-        content: matchReg["0"],
-        key: matchReg[0].slice(1, matchReg[0].length - 1),
-        color: generateColor(matchReg[0]),
-        visible: true,
-        id: matchReg[0].slice(1, matchReg[0].length - 1) + "-" + index
-      })
-      workText = workText.slice(matchReg.index + matchReg["0"].length);
-      index += 1
-    }
-    else {
-      if (matchReg?.index < matchSp?.index) {
-        output.push({ content: workText.slice(0, matchReg.index) })
+      let addText = "";
+
+      const matchReg = references.length > 0 ? workText.match(regex) : undefined
+      const matchSp = workText.match(regexSp)
+
+      const regMatch = matchReg?.[0] || ""
+      const regIndex = matchReg?.index
+      const spMatch = matchSp?.[0] || ""
+      const spIndex = matchSp?.index
+
+      if (regIndex === undefined && spIndex === undefined) {
         output.push({
-          content: matchReg["0"],
-          key: matchReg[0].slice(1, matchReg[0].length - 1),
-          color: generateColor(matchReg[0]),
-          visible: true,
-          id: matchReg[0].slice(1, matchReg[0].length - 1) + "-" + index
+          content: workText,
         })
-        workText = workText.slice(matchReg.index + matchReg["0"].length);
+        break;
+      }
+
+      if (spIndex !== undefined && regIndex === undefined) {
+        [addText, workText] = sliceText(workText, spIndex, spIndex + (spMatch?.length || 0))
+        output.push({ content: addText })
+        output.push({
+          content: spMatch
+        })
+        continue;
+      }
+      if (regIndex !== undefined && spIndex === undefined) {
+        [addText, workText] = sliceText(workText, regIndex, regIndex + (regMatch?.length || 0))
+        output.push({ content: addText })
+        output.push({
+          content: regMatch,
+          key: regMatch.slice(1, regMatch.length - 1),
+          color: generateColor(regMatch),
+          visible: true,
+          id: regMatch.slice(1, regMatch.length - 1) + "-" + index
+        })
         index += 1
+        continue
+      }
+      if (regIndex < spIndex) {
+        [addText, workText] = sliceText(workText, regIndex, regIndex + (regMatch?.length || 0))
+        output.push({ content: addText })
+        output.push({
+          content: regMatch,
+          key: regMatch.slice(1, regMatch.length - 1),
+          color: generateColor(regMatch),
+          visible: true,
+          id: regMatch.slice(1, regMatch.length - 1) + "-" + index
+        })
       }
       else {
-        output.push({ content: workText.slice(0, matchSp.index) })
+        [addText, workText] = sliceText(workText, spIndex, spIndex + (spMatch?.length || 0))
+        output.push({ content: addText })
         output.push({
-          content: matchSp["0"]
+          content: spMatch
         })
-        workText = workText.slice(matchSp.index + matchSp["0"].length);
       }
     }
   }
+  catch (err) {
+
+  }
+
   return output;
 };

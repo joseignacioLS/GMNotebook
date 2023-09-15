@@ -1,8 +1,4 @@
-import {
-  getTextReferences,
-  includeRerencesInText,
-  splitTextIntoReferences,
-} from "@/utils/text";
+import { getTextReferences, splitTextIntoReferences } from "@/utils/text";
 import { ReactElement, createContext, useEffect, useState } from "react";
 
 export interface itemI {
@@ -11,15 +7,6 @@ export interface itemI {
   key: string;
   display: string;
   baseEntry?: string;
-}
-
-export interface referenceI {
-  key: string;
-  index?: number;
-  id?: string;
-  data?: itemI;
-  visible: boolean;
-  color: string;
 }
 
 export interface textPieceI {
@@ -35,8 +22,11 @@ interface contextOutputI {
   item: itemI;
   textPieces: textPieceI[];
   updateTextPieces: (cb: (value: textPieceI[]) => textPieceI[]) => void;
-  updateData: (value: dataI) => void;
+  updateData: (value: dataI, reset: boolean) => void;
+  addNewEntry: (item: itemI) => void;
   updateItem: (key: string) => void;
+  replaceReferencesByDisplay: any;
+  includeRerencesInText: any;
 }
 export interface dataI {
   [key: string]: itemI;
@@ -54,8 +44,11 @@ export const DataContext = createContext<contextOutputI>({
   item: emptyItem,
   textPieces: [],
   updateTextPieces: (cb: (value: textPieceI[]) => {}) => {},
-  updateData: (value: dataI) => {},
+  updateData: (value: dataI, reset: boolean) => {},
+  addNewEntry: (item: itemI) => {},
   updateItem: (key: string) => {},
+  replaceReferencesByDisplay: () => {},
+  includeRerencesInText: () => {},
 });
 
 const saveToLocalStorage = (value: dataI) => {
@@ -71,28 +64,61 @@ export const DataProvider = ({ children }: { children: ReactElement }) => {
   const [textPieces, setTextPieces] = useState<textPieceI[]>([]);
   const [item, setItem] = useState<string>("");
 
-  const updateData = (value: dataI) => {
+  const updateData = (value: dataI, resetEntry: true) => {
     setData({});
-    setTimeout(() => setData(value), 0);
+    setTimeout(() => {
+      setData(value);
+      if (resetEntry) getBaseEntry(value);
+    }, 0);
     saveToLocalStorage(value);
+  };
+
+  const addNewEntry = (item: itemI) => {
+    setData((oldValue) => {
+      return { ...oldValue, item };
+    });
+  };
+
+  const replaceReferencesByDisplay = (text: string) => {
+    text = includeRerencesInText(text);
+    Object.keys(data).forEach((key: string) => {
+      text = text.replace(new RegExp(`\\[${key}\\]`, "g"), data[key].display);
+    });
+    text =text.replace(/<br>/g, " ")
+    return text;
+  };
+
+  const includeRerencesInText = (text: string, excludeRefs: string[] = []) => {
+    Object.keys(data).forEach((key: string) => {
+      if (excludeRefs.includes(key)) return;
+      const regex = new RegExp(`(^|[ ])(${key})([ \.,\-])`, "g");
+      text = text?.replace(regex, `$1[$2]$3`) || "";
+    });
+    return text;
+  };
+
+  const getBaseEntry = (data: dataI) => {
+    setItem(
+      Object.keys(data).find((key: string) => {
+        return data[key].baseEntry === "1";
+      }) || ""
+    );
   };
 
   useEffect(() => {
     const retrieved = retrieveLocalStorage();
-    const parsed = JSON.parse(retrieved);
-    setData(parsed);
-    setItem(
-      Object.keys(parsed).find((key: string) => {
-        return parsed[key].baseEntry === "1";
-      }) || ""
-    );
+    try {
+      const parsed = JSON.parse(retrieved);
+      setData(parsed);
+      getBaseEntry(parsed);
+    } catch (err) {
+      console.log(err);
+    }
   }, []);
 
   useEffect(() => {
-    if (!data[item]?.text || !data) return;
-    const referenceText = includeRerencesInText(data[item].text, data, [
-      data[item].key,
-    ]);
+    if (!data?.[item]) return;
+    const referenceText = data[item].text;
     const references = getTextReferences(referenceText);
     if (!references) return setTextPieces([]);
     const refes = splitTextIntoReferences(references, referenceText);
@@ -107,7 +133,10 @@ export const DataProvider = ({ children }: { children: ReactElement }) => {
         textPieces,
         updateTextPieces: setTextPieces,
         updateData,
+        addNewEntry,
         updateItem: setItem,
+        replaceReferencesByDisplay,
+        includeRerencesInText,
       }}
     >
       {children}

@@ -2,7 +2,9 @@
   grid-column: 1 / 2;
   grid-row: 2 / 3;
   height: fit-content;
-  overflow: auto;
+  max-height: 20rem;
+  overflow-y: auto;
+  overflow-x: hidden;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -16,7 +18,9 @@
 
 .refsContainer {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: center;
   gap: .5rem;
 
   span {
@@ -27,6 +31,6 @@
     padding: .25rem .5rem;
     border-radius: 1rem;
     color: white;
-    font-size: 1.5rem;
+    font-size: 1rem;
   }
 }

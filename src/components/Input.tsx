@@ -1,8 +1,7 @@
 import React, { useContext, useEffect, useState } from "react";
 import styles from "./Input.module.scss";
-import { DataContext, dataI } from "@/context/data";
+import { DataContext, dataI, itemI } from "@/context/data";
 import { loadFile, saveToFile } from "@/utils/file";
-import { itemI } from "@/api/data";
 
 const checkJSONFormat = (str: string) => {
   try {
@@ -22,7 +21,7 @@ const removeComillas = (str: string) => {
 const addComillasToJSON = (str: string) => {
   return str
     .replace(/([\w]+)(\:)/g, '"$1"$2')
-    .replace(/(\:[ ]*)([\wñáéíóúüï\\ \-0-9\,\.]+)(,\n|\n *\})/gi, '$1"$2"$3');
+    .replace(/(\:[ ]*)([\wñáéíóúüï\\\[\] \-0-9\,\.]+)(,\n|\n *\})/gi, '$1"$2"$3');
 };
 
 const Input = () => {
@@ -46,11 +45,11 @@ const Input = () => {
   const saveToContext = () => {
     if (userFilter === "") {
       const processedInput = processInput(input) as dataI;
-      updateData(processedInput);
+      updateData(processedInput, true);
       return;
     }
     const processedInput = processInput(input) as itemI;
-    updateData({ ...data, [processedInput.key]: processedInput });
+    updateData({ ...data, [processedInput.key]: processedInput }, true);
   };
 
   const handleInputChange = (e: any) => {

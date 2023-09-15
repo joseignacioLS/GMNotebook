@@ -1,10 +1,6 @@
 import React, { useContext } from "react";
 import styles from "./Detail.module.scss";
-import {
-  getWordCount,
-  includeRerencesInText,
-  replaceReferencesByDisplay,
-} from "@/utils/text";
+import { getWordCount } from "@/utils/text";
 import { DataContext, textPieceI } from "@/context/data";
 
 const Details = ({
@@ -14,7 +10,14 @@ const Details = ({
   selectedNote: string | undefined;
   setSelectedNote: (value: string) => void;
 }) => {
-  const { item, data, updateItem, textPieces } = useContext(DataContext);
+  const {
+    item,
+    data,
+    updateItem,
+    textPieces,
+    replaceReferencesByDisplay,
+    includeRerencesInText,
+  } = useContext(DataContext);
   return (
     <div className={styles.detailContainer}>
       {textPieces
@@ -24,12 +27,11 @@ const Details = ({
           return [...acc, curr];
         }, [])
         .map((textPiece, i) => {
-          const text = includeRerencesInText(item.text, data);
+          const text = includeRerencesInText(item.text);
 
-          const showTitle = data[textPiece?.key || ""].title;
+          const showTitle = data[textPiece?.key || ""]?.title;
           const showText = replaceReferencesByDisplay(
-            includeRerencesInText(data[textPiece?.key || ""].text, data),
-            data
+            includeRerencesInText(data[textPiece?.key || ""]?.text || "")
           );
           const textWordCount = getWordCount(showText);
           const isNavegable = text !== showText;

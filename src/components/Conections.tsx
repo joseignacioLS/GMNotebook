@@ -1,19 +1,15 @@
 import React, { useContext } from "react";
 import styles from "./Conections.module.scss";
 import { DataContext } from "@/context/data";
-import { getTextReferences, includeRerencesInText } from "@/utils/text";
-import { useRouter } from "next/router";
+import { getTextReferences } from "@/utils/text";
 
 const Conections = ({ itemKey }: { itemKey: string }) => {
-  const { data, updateItem } = useContext(DataContext);
-  const router = useRouter();
+  const { data, updateItem, includeRerencesInText } = useContext(DataContext);
 
   const references = Array.from(
     new Set(
       Object.keys(data).reduce((acc: string[], key: string) => {
-        const text = getTextReferences(
-          includeRerencesInText(data[key].text, data)
-        );
+        const text = getTextReferences(includeRerencesInText(data[key].text));
         if (text?.join("").includes(`[${itemKey}]`)) {
           return [...acc, key];
         }
