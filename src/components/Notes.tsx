@@ -2,7 +2,7 @@ import { ReactElement, useContext, useEffect, useState } from "react";
 import styles from "./Notes.module.scss";
 
 import { DataContext, dataI, textPieceI } from "@/context/data";
-import { getTextReferences } from "@/utils/text";
+import { getTextReferences, removeBrackets } from "@/utils/text";
 
 const generateDisplayText = (
   text: textPieceI[],
@@ -79,7 +79,7 @@ const Notes = ({
     };
     // catch new entries
     const newEntries = getTextReferences(inputText)
-      .map((v) => v.replace(/[\[|\]]/g, ""))
+      .map((v) => removeBrackets(v))
       .filter((v) => {
         return !data[v];
       })

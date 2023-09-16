@@ -33,16 +33,44 @@ export interface dataI {
   [key: string]: itemI;
 }
 
-const emptyItem: itemI = {
-  title: "Titulo de prueba",
-  key: "Key de prueba",
-  display: "Display de prueba",
-  text: "Texto de prueba Adrian.",
+const firstItem: itemI = {
+  title: "Title",
+  key: "RootPage",
+  display: "",
+  text: "",
+};
+
+const tutorial: dataI = {
+  RootPage: {
+    title: "Main page",
+    key: "RootPage",
+    display: "",
+    text: "Welcome to the Game Master Notebook companion!<br><br>\nThis is the starting page of your notebook, use it as base for the rest of your notes.<br><br>This is a [note], notes appear in the right column and show you some information about themselfs.<br><br>\nYou can [modPage] of any page by enabling edit-mode. Just lick on the top-right pencil icon!.<br><br>\nIn order to create a note, just wrap a word between brackets [], and the note will appear the the right.<br><br>Pages have three [pageAttr]: a title (the title of the page), display (the text that will be displayed when used as reference in another note) and body!<br><br>Use the right-bottom buttons to upload (top), download (middle) or reset (bottom) your current notebook.\n",
+  },
+  nota: { title: "nota", text: "", display: "nota", key: "nota" },
+  note: {
+    title: "I am a note!",
+    text: "This is some useful information about me, if you click on my book icon you will visit my page, and will be able to modify my content.",
+    display: "note",
+    key: "note",
+  },
+  modPage: {
+    title: "Modify Page Information",
+    text: "Enable the edit-mode by clicking on the top-right pencil icon!",
+    display: "modify page information",
+    key: "modPage",
+  },
+  pageAttr: {
+    title: "Page attributes",
+    text: "Title: The title of the page.<br>\nDisplay: The text that is shown when included in the content of another note.<br>\nBody: The content of the note.",
+    display: "page attributes",
+    key: "pageAttr",
+  },
 };
 
 export const DataContext = createContext<contextOutputI>({
   data: {},
-  item: emptyItem,
+  item: firstItem,
   textPieces: [],
   updateTextPieces: (cb: (value: textPieceI[]) => {}) => {},
   updateData: (value: dataI, reset: boolean) => {},
@@ -62,9 +90,9 @@ const retrieveLocalStorage = () => {
 };
 
 export const DataProvider = ({ children }: { children: ReactElement }) => {
-  const [data, setData] = useState<dataI>({});
+  const [data, setData] = useState<dataI>(tutorial);
   const [textPieces, setTextPieces] = useState<textPieceI[]>([]);
-  const [item, setItem] = useState<string>("");
+  const [item, setItem] = useState<string>("RootPage");
 
   const updateData = (value: dataI, resetEntry: boolean = true) => {
     setData({});
@@ -76,31 +104,22 @@ export const DataProvider = ({ children }: { children: ReactElement }) => {
   };
 
   const resetData = () => {
-    // setData({
-    //   RootPage: {
-    //     title: "RootPage",
-    //     text: "",
-    //     display: "root",
-    //     key: "RootPage",
-    //     baseEntry: "1",
-    //   },
-    // });
-    setData({
-      RootPage: {
-        title: "Title",
-        key: "RootPage",
-        display: "displayKey",
-        text: "Text",
-        baseEntry: "1",
-      },
-    });
+    setData({});
+    setTimeout(() => {
+      setData({
+        RootPage: firstItem,
+      });
+    }, 0);
     setItem("RootPage");
   };
 
   const addNewEntry = (item: itemI) => {
-    setData((oldValue) => {
-      return { ...oldValue, item };
-    });
+    setData({});
+    setTimeout(() => {
+      setData((oldValue) => {
+        return { ...oldValue, item };
+      });
+    }, 0);
   };
 
   const replaceReferencesByDisplay = (text: string) => {
@@ -133,16 +152,26 @@ export const DataProvider = ({ children }: { children: ReactElement }) => {
     const retrieved = retrieveLocalStorage();
     try {
       const parsed = JSON.parse(retrieved) as dataI;
-      console.log(parsed);
-      setData(parsed);
-      getBaseEntry(parsed);
+      setData({});
+      setTimeout(() => {
+        setData(parsed);
+        getBaseEntry(parsed);
+      }, 0);
     } catch (err) {
       console.log(err);
     }
   }, []);
 
   useEffect(() => {
-    if (!data?.[item]) return;
+    if (!data?.RootPage) {
+      setData(tutorial);
+      setItem("RootPage");
+      return;
+    }
+    if (!data?.[item]) {
+      setItem("RootPage");
+      return;
+    }
     const referenceText = data[item].text;
     const references = getTextReferences(referenceText);
     if (!references) return setTextPieces([]);
@@ -154,7 +183,7 @@ export const DataProvider = ({ children }: { children: ReactElement }) => {
     <DataContext.Provider
       value={{
         data,
-        item: data[item] || emptyItem,
+        item: data[item] || firstItem,
         textPieces,
         updateTextPieces: setTextPieces,
         updateData,

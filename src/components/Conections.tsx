@@ -1,7 +1,7 @@
 import React, { useContext } from "react";
 import styles from "./Conections.module.scss";
 import { DataContext } from "@/context/data";
-import { getTextReferences } from "@/utils/text";
+import { getTextReferences, removeBrackets } from "@/utils/text";
 
 const Conections = ({ itemKey }: { itemKey: string }) => {
   const { data, updateItem, includeRerencesInText } = useContext(DataContext);
@@ -26,7 +26,7 @@ const Conections = ({ itemKey }: { itemKey: string }) => {
           {
             <div className={styles.refsContainer}>
               {references?.map((ref: string) => {
-                const key = ref.replace(/[\[\]]/g, "");
+                const key = removeBrackets(ref);
                 if (key === itemKey) return;
                 return (
                   <span

@@ -2,6 +2,10 @@
 import { generateColor } from "./color";
 import { textPieceI } from "@/context/data";
 
+export const removeBrackets = (str: string) => {
+  return str.replace(/[\[\]]/g, "")
+}
+
 export const getWordCount = (text: string) => {
   return text?.split(" ").length
 }
