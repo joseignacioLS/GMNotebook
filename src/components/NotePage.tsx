@@ -52,7 +52,7 @@ const NotePage = () => {
       document
         .querySelector("#notes")
         ?.removeEventListener("scroll", updateVisibleReferences);
-  }, [textPieces]);
+  }, [textPieces, updateVisibleReferences]);
 
   return (
     <div className={styles.notepage}>
@@ -68,8 +68,7 @@ const NotePage = () => {
               height: "100%",
               width: "1px",
               backgroundColor: "black",
-              gridColumn: "2/3",
-              gridRow: "1/3",
+              gridArea: "sep",
             }}
           ></div>
           <Details
@@ -87,8 +86,8 @@ const NotePage = () => {
             loadFile("#file", updateData);
           }}
         />
-        <button onClick={() => saveToFile("data.json", data)}>Download</button>
-        <button onClick={resetData}>Reset</button>
+        <button onClick={() => saveToFile("data.json", data)}>🔽</button>
+        <button onClick={resetData}>🔃</button>
       </div>
     </div>
   );

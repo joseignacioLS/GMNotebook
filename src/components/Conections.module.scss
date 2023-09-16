@@ -1,6 +1,5 @@
 .conectionsContainer {
-  grid-column: 1 / 2;
-  grid-row: 2 / 3;
+  grid-area: con;
   height: fit-content;
   max-height: 20rem;
   overflow-y: auto;
@@ -9,7 +8,7 @@
   flex-direction: column;
   align-items: center;
 
-  padding: 3rem 0;
+  padding: 1rem 2rem;
 }
 
 .title {
@@ -17,6 +16,7 @@
 }
 
 .refsContainer {
+  width: 100%;
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
@@ -32,5 +32,17 @@
     border-radius: 1rem;
     color: white;
     font-size: 1rem;
+  }
+}
+
+@media (max-width: 800px) {
+  .refsContainer {
+    flex-wrap: nowrap;
+    justify-content: start;
+    align-items: center;
+    overflow-y: auto;
+    span {
+      flex-shrink: 0;
+    }
   }
 }
