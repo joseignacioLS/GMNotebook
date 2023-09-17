@@ -2,7 +2,7 @@ import { ReactElement, useContext, useEffect, useState } from "react";
 import styles from "./Notes.module.scss";
 
 import { DataContext } from "@/context/data";
-import { getTextReferences, removeBrackets } from "@/utils/text";
+import { getTextReferences } from "@/utils/text";
 import { dataI, textPieceI } from "@/context/constants";
 import { NavigationContext } from "@/context/navigation";
 
@@ -75,7 +75,6 @@ const Notes = ({}) => {
 
   const generateNewEntries = () => {
     return getTextReferences(inputText)
-      .map((v) => removeBrackets(v))
       .filter((v) => {
         return !data[v];
       })
@@ -84,7 +83,7 @@ const Notes = ({}) => {
           ...acc,
           [key]: {
             title: key,
-            text: "",
+            text: "Description",
             display: key,
             key,
           },

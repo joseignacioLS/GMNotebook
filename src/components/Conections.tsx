@@ -1,7 +1,7 @@
 import React, { useContext } from "react";
 import styles from "./Conections.module.scss";
 import { DataContext } from "@/context/data";
-import { getTextReferences, removeBrackets } from "@/utils/text";
+import { getTextReferences } from "@/utils/text";
 import { NavigationContext } from "@/context/navigation";
 
 const Conections = ({ itemKey }: { itemKey: string }) => {
@@ -28,16 +28,15 @@ const Conections = ({ itemKey }: { itemKey: string }) => {
           {
             <div className={styles.refsContainer}>
               {references?.map((ref: string) => {
-                const key = removeBrackets(ref);
-                if (key === itemKey) return;
+                if (ref === itemKey) return;
                 return (
                   <span
-                    key={key}
+                    key={ref}
                     onClick={() => {
-                      navigateTo(key);
+                      navigateTo(ref);
                     }}
                   >
-                    {data[key]?.title}
+                    {data[ref]?.title}
                   </span>
                 );
               })}

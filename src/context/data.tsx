@@ -7,7 +7,7 @@ import {
   useEffect,
   useState,
 } from "react";
-import { dataI, firstItem, itemI, textPieceI, tutorial } from "./constants";
+import { dataI, itemI, textPieceI, tutorial } from "./constants";
 import { NavigationContext } from "./navigation";
 
 interface contextOutputI {
@@ -62,8 +62,9 @@ export const DataProvider = ({ children }: { children: ReactElement }) => {
 
     Object.keys(value).forEach((key: string) => {
       deletedKeys.forEach((deletedKey: string) => {
+        console.log(deletedKey);
         value[key].text = value[key].text.replace(
-          new RegExp(`\\[${deletedKey}\\]`, "g"),
+          new RegExp(`note\:${deletedKey}`, "g"),
           deletedKey
         );
       });
@@ -72,6 +73,7 @@ export const DataProvider = ({ children }: { children: ReactElement }) => {
   };
 
   const updateData = (value: dataI, resetEntry: boolean = true) => {
+    console.log(value);
     value = removeEmptyPages(value);
     setTimeout(() => {
       setData(value);
@@ -85,6 +87,7 @@ export const DataProvider = ({ children }: { children: ReactElement }) => {
   };
 
   const addNewEntry = (item: itemI) => {
+    console.log("new entry");
     setData({});
     setTimeout(() => {
       setData((oldValue) => {
@@ -96,7 +99,7 @@ export const DataProvider = ({ children }: { children: ReactElement }) => {
   const replaceReferencesByDisplay = (text: string) => {
     text = includeRerencesInText(text);
     Object.keys(data).forEach((key: string) => {
-      text = text.replace(new RegExp(`\\[${key}\\]`, "g"), data[key].display);
+      text = text.replace(new RegExp(`note:${key}`, "g"), data[key].display);
     });
     return text.split("<br>").map((item: string, i: number) => (
       <span key={i}>

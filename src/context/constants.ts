@@ -32,7 +32,7 @@ export const tutorial: dataI = {
     title: "Main page",
     key: "RootPage",
     display: "",
-    text: "Welcome to the Game Master Notebook companion!<br><br>\nThis is the starting page of your notebook, use it as base for the rest of your notes.<br><br>This is a [note], notes appear in the right column and show you some information about themselfs.<br><br>\nYou can [modPage] of any page by enabling edit-mode. Just lick on the top-right pencil icon!.<br><br>\nIn order to create a note, just wrap a word between brackets [], and the note will appear the the right.<br><br>Pages have three [pageAttr]: a title (the title of the page), display (the text that will be displayed when used as reference in another note) and body!<br><br>Use the right-bottom buttons to upload (top), download (middle) or reset (bottom) your current notebook.\n",
+    text: "Welcome to the Game Master Notebook companion!<br><br>\nThis is the starting page of your notebook, use it as base for the rest of your notes.<br><br>This is a note:note, notes appear in the right column and show you some information about themselfs.<br><br>\nYou can note:modPage of any page by enabling edit-mode. Just lick on the top-right pencil icon!.<br><br>\nIn order to create a note, just wrap a word between brackets [], and the note will appear to the right.<br><br>Pages have three note:pageAttr: a title (the title of the page), display (the text that will be displayed when used as reference in another note) and body!<br><br>Use the right-bottom buttons to upload (top), download (middle) or reset (bottom) your current notebook.\n",
   },
   nota: { title: "nota", text: "", display: "nota", key: "nota" },
   note: {
