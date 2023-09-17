@@ -31,16 +31,14 @@ const generateDisplayText = (
 };
 
 const Notes = ({}) => {
-  const { data, item, textPieces, updateData, setSelectedNote } =
-    useContext(DataContext);
-  const { navBack } = useContext(NavigationContext);
+  const { data, item, textPieces, updateData } = useContext(DataContext);
+  const { path, navBack } = useContext(NavigationContext);
   const [displayText, setDisplayText] = useState<ReactElement[]>([]);
   const [editHidden, setEditHidden] = useState<boolean>(true);
   const [inputText, setInputText] = useState<string>(item.text);
   const [inputTitle, setInputTitle] = useState<string>(item.title);
   const [inputDisplay, setInputDisplay] = useState<string>(item.display);
   const updateSelectedNote = (key: string) => {
-    setSelectedNote(key);
     setTimeout(
       () => document.querySelector(`#detail-${key}`)?.scrollIntoView(),
       0
@@ -119,7 +117,12 @@ const Notes = ({}) => {
       </button>
       <div className={styles.textContainer}>
         <div className={styles.titleContainer}>
-          <span onClick={navBack}>🔙</span>
+          <span
+            style={{ opacity: path.length < 2 ? ".25" : "1" }}
+            onClick={navBack}
+          >
+            🔙
+          </span>
           <h1>{item.title}</h1>
         </div>
         <div className={styles.notes} id="notes">

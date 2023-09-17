@@ -40,11 +40,8 @@ const Details = ({}) => {
             itemKey={textPiece.key || ""}
             color={textPiece.color || "#000"}
             title={showTitle}
-            text={
-              textPiece?.key === selectedNote || textWordCount < 30
-                ? showText
-                : shortShowText
-            }
+            text={showText}
+            shortText={shortShowText}
           />
         );
       })}

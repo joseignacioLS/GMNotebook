@@ -26,7 +26,7 @@ interface contextOutputI {
 
 export const DataContext = createContext<contextOutputI>({
   data: {},
-  item: firstItem,
+  item: tutorial["RootPage"],
   textPieces: [],
   updateTextPieces: (cb: (value: textPieceI[]) => {}) => {},
   updateData: (value: dataI, reset: boolean) => {},
@@ -47,14 +47,41 @@ export const DataProvider = ({ children }: { children: ReactElement }) => {
 
   const { path, resetPath, getCurrentPage } = useContext(NavigationContext);
 
+  const removeEmptyPages = (value: dataI) => {
+    const deletedKeys: string[] = [];
+    Object.keys(value).forEach((key: string) => {
+      if (value[key].text === "" && key !== "RootPage") {
+        delete value[key];
+        deletedKeys.push(key);
+      }
+    });
+
+    if (deletedKeys.length > 0) {
+      resetPath();
+    }
+
+    Object.keys(value).forEach((key: string) => {
+      deletedKeys.forEach((deletedKey: string) => {
+        value[key].text = value[key].text.replace(
+          new RegExp(`\\[${deletedKey}\\]`, "g"),
+          deletedKey
+        );
+      });
+    });
+    return value;
+  };
+
   const updateData = (value: dataI, resetEntry: boolean = true) => {
-    setData(value);
-    if (resetEntry) resetPath();
-    saveToLocalStorage(value);
+    value = removeEmptyPages(value);
+    setTimeout(() => {
+      setData(value);
+      if (resetEntry) resetPath();
+      saveToLocalStorage(value);
+    }, 0);
   };
 
   const resetData = () => {
-    updateData({ RootPage: firstItem }, true);
+    updateData({ ...tutorial }, true);
   };
 
   const addNewEntry = (item: itemI) => {
@@ -119,7 +146,7 @@ export const DataProvider = ({ children }: { children: ReactElement }) => {
     <DataContext.Provider
       value={{
         data,
-        item: data[getCurrentPage()] || firstItem,
+        item: data[getCurrentPage()] || { ...tutorial },
         textPieces,
         updateTextPieces: setTextPieces,
         updateData,

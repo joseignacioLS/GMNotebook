@@ -1,5 +1,5 @@
 import { DataContext } from "@/context/data";
-import React, { ReactElement, useContext } from "react";
+import React, { ReactElement, useContext, useState } from "react";
 
 import styles from "./DetailCard.module.scss";
 import { NavigationContext } from "@/context/navigation";
@@ -10,15 +10,23 @@ const DetailCard = ({
   color,
   title,
   text,
+  shortText,
 }: {
   index: number;
   itemKey: string;
   color: string;
   title: string;
   text: string | string[] | ReactElement | ReactElement[];
+  shortText: string | string[] | ReactElement | ReactElement[];
 }) => {
   const { selectedNote, setSelectedNote } = useContext(DataContext);
   const { navigateTo } = useContext(NavigationContext);
+
+  const [isExpanded, setIsExpanded] = useState<boolean>(false);
+
+  const toggleExpand = () => {
+    setIsExpanded((v) => !v);
+  };
   return (
     <div
       key={index}
@@ -27,23 +35,31 @@ const DetailCard = ({
         itemKey === selectedNote && styles.selected
       }`}
       style={{ backgroundColor: color }}
-      onMouseOver={() => {
-        setSelectedNote(itemKey || "");
-      }}
-      onMouseOut={() => {
+      onClick={() => {
         setSelectedNote("");
       }}
     >
       <span
         className={styles.linkVisit}
         onClick={() => {
+          setSelectedNote("");
           navigateTo(itemKey || "");
         }}
       >
         📕
       </span>
+      <span
+        className={styles.expand}
+        onClick={(e) => {
+          e.stopPropagation();
+          setSelectedNote(itemKey || "");
+          toggleExpand();
+        }}
+      >
+        {isExpanded ? "➖" : "➕"}
+      </span>
       <h2>{title}</h2>
-      <p>{text}</p>
+      <p>{isExpanded ? text : shortText}</p>
     </div>
   );
 };

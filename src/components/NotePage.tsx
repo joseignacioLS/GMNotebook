@@ -76,8 +76,12 @@ const NotePage = () => {
             loadFile("#file", updateData);
           }}
         />
-        <button onClick={() => saveToFile("data.json", data)}>🔽</button>
-        <button onClick={resetData}>🔃</button>
+        <button id="btn-download" onClick={() => saveToFile("data.json", data)}>
+          🔽
+        </button>
+        <button id="btn-upload" onClick={resetData}>
+          🔃
+        </button>
       </div>
     </div>
   );
