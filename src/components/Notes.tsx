@@ -1,8 +1,10 @@
 import { ReactElement, useContext, useEffect, useState } from "react";
 import styles from "./Notes.module.scss";
 
-import { DataContext, dataI, textPieceI } from "@/context/data";
+import { DataContext } from "@/context/data";
 import { getTextReferences, removeBrackets } from "@/utils/text";
+import { dataI, textPieceI } from "@/context/constants";
+import { NavigationContext } from "@/context/navigation";
 
 const generateDisplayText = (
   text: textPieceI[],
@@ -28,16 +30,10 @@ const generateDisplayText = (
   return chuncks;
 };
 
-const Notes = ({
-  title,
-  text,
-  setSelectedNote,
-}: {
-  title: string;
-  text: textPieceI[];
-  setSelectedNote: (value: string) => void;
-}) => {
-  const { data, item, updateData } = useContext(DataContext);
+const Notes = ({}) => {
+  const { data, item, textPieces, updateData, setSelectedNote } =
+    useContext(DataContext);
+  const { navBack } = useContext(NavigationContext);
   const [displayText, setDisplayText] = useState<ReactElement[]>([]);
   const [editHidden, setEditHidden] = useState<boolean>(true);
   const [inputText, setInputText] = useState<string>(item.text);
@@ -70,15 +66,17 @@ const Notes = ({
     setEditHidden((v) => !v);
   };
 
-  const saveData = () => {
-    const newItem = {
+  const generateItemFromInputs = () => {
+    return {
       ...item,
       text: inputText,
       title: inputTitle,
       display: inputDisplay,
     };
-    // catch new entries
-    const newEntries = getTextReferences(inputText)
+  };
+
+  const generateNewEntries = () => {
+    return getTextReferences(inputText)
       .map((v) => removeBrackets(v))
       .filter((v) => {
         return !data[v];
@@ -94,12 +92,17 @@ const Notes = ({
           },
         };
       }, {});
+  };
+
+  const saveData = () => {
+    const newItem = generateItemFromInputs();
+    const newEntries = generateNewEntries();
     updateData({ ...data, [item.key]: newItem, ...newEntries }, false);
   };
 
   useEffect(() => {
-    setDisplayText(generateDisplayText(text, data, updateSelectedNote));
-  }, [text, data]);
+    setDisplayText(generateDisplayText(textPieces, data, updateSelectedNote));
+  }, [textPieces, data]);
 
   useEffect(() => {
     setInputTitle(item.title);
@@ -115,8 +118,13 @@ const Notes = ({
         ✏️
       </button>
       <div className={styles.textContainer}>
-        <h1>{title}</h1>
-        <div id="notes">{displayText}</div>
+        <div className={styles.titleContainer}>
+          <span onClick={navBack}>🔙</span>
+          <h1>{item.title}</h1>
+        </div>
+        <div className={styles.notes} id="notes">
+          {displayText}
+        </div>
       </div>
       <div className={`${styles.textEdit}`}>
         <label>

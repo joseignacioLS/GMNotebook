@@ -5,6 +5,24 @@
   height: 100%;
   overflow: hidden;
 
+  .titleContainer {
+    display: flex;
+    align-items: center;
+    flex-shrink: 0;
+    span {
+      cursor: pointer;
+    }
+
+    h1 {
+      overflow-y: hidden;
+      overflow-x: auto;
+      white-space: nowrap;
+      height: 4rem;
+      display: flex;
+      align-items: center;
+    }
+  }
+
   .btnHide {
     position: absolute;
     top: 0;
@@ -43,17 +61,8 @@
   display: flex;
   flex-direction: column;
 
-  h1 {
-    flex-shrink: 0;
-    overflow-y: hidden;
-    overflow-x: auto;
-    white-space: nowrap;
-    height: 4rem;
-    display: flex;
-    align-items: center;
-  }
 
-  div {
+  .notes {
     height: 100%;
     overflow-y: auto;
     overflow-x: hidden;

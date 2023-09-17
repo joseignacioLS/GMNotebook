@@ -1,12 +1,12 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect } from "react";
 import Notes from "./Notes";
 import Details from "./Details";
 
-import styles from "./notepage.module.scss";
-import { textPieceI } from "@/context/data";
+import styles from "./Notepage.module.scss";
 import { DataContext } from "@/context/data";
 import Conections from "./Conections";
 import { loadFile, saveToFile } from "@/utils/file";
+import { textPieceI } from "@/context/constants";
 
 const checkItemVisibility = (id: string) => {
   const boundingRect = document
@@ -24,9 +24,6 @@ const checkItemVisibility = (id: string) => {
 const NotePage = () => {
   const { data, item, textPieces, updateTextPieces, updateData, resetData } =
     useContext(DataContext);
-  const [selectedNote, setSelectedNote] = useState<string | undefined>(
-    undefined
-  );
 
   const updateVisibleReferences = () => {
     let visibleIndex = 0;
@@ -58,11 +55,7 @@ const NotePage = () => {
     <div className={styles.notepage}>
       {item && (
         <>
-          <Notes
-            title={item.title}
-            text={textPieces}
-            setSelectedNote={setSelectedNote}
-          />
+          <Notes />
           <div
             style={{
               height: "100%",
@@ -71,10 +64,7 @@ const NotePage = () => {
               gridArea: "sep",
             }}
           ></div>
-          <Details
-            selectedNote={selectedNote}
-            setSelectedNote={setSelectedNote}
-          />
+          <Details />
           <Conections itemKey={item?.key} />
         </>
       )}{" "}

@@ -1,11 +1,14 @@
 import { DataProvider } from "@/context/data";
-import "@/styles/globals.css";
+import { NavigationProvider } from "@/context/navigation";
+import "@/styles/globals.scss";
 import type { AppProps } from "next/app";
 
 export default function App({ Component, pageProps }: AppProps) {
   return (
-    <DataProvider>
-      <Component {...pageProps} />
-    </DataProvider>
+    <NavigationProvider>
+      <DataProvider>
+        <Component {...pageProps} />
+      </DataProvider>
+    </NavigationProvider>
   );
 }

@@ -1,6 +1,6 @@
 
+import { textPieceI } from "@/context/constants";
 import { generateColor } from "./color";
-import { textPieceI } from "@/context/data";
 
 export const removeBrackets = (str: string) => {
   return str.replace(/[\[\]]/g, "")

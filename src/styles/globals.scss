@@ -29,7 +29,23 @@ a {
   text-decoration: none;
 }
 
-div::-webkit-scrollbar {
-  display: none;
+// div::-webkit-scrollbar {
+//   display: none;
+// }
+
+::-webkit-scrollbar {
+  width: 4px;
+}
+
+div::-webkit-scrollbar-track {
+  background-color: transparent;
+}
+
+div::-webkit-scrollbar-thumb {
+  background: #DDD;
+  border-radius: 2px;
+}
+div::-webkit-scrollbar-thumb:hover {
+  background: #555;
 }
 

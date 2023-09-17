@@ -1,4 +1,4 @@
-import { dataI } from "@/context/data";
+import { dataI } from "@/context/constants";
 
 export const saveToFile = (filename: string, content: any) => {
 

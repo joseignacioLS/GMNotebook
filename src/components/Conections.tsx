@@ -2,9 +2,11 @@ import React, { useContext } from "react";
 import styles from "./Conections.module.scss";
 import { DataContext } from "@/context/data";
 import { getTextReferences, removeBrackets } from "@/utils/text";
+import { NavigationContext } from "@/context/navigation";
 
 const Conections = ({ itemKey }: { itemKey: string }) => {
-  const { data, updateItem, includeRerencesInText } = useContext(DataContext);
+  const { data, includeRerencesInText } = useContext(DataContext);
+  const { navigateTo } = useContext(NavigationContext);
 
   const references = Array.from(
     new Set(
@@ -32,7 +34,7 @@ const Conections = ({ itemKey }: { itemKey: string }) => {
                   <span
                     key={key}
                     onClick={() => {
-                      updateItem(key);
+                      navigateTo(key);
                     }}
                   >
                     {data[key]?.title}
