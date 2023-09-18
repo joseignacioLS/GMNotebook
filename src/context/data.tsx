@@ -13,6 +13,8 @@ import { NavigationContext } from "./navigation";
 interface contextOutputI {
   data: dataI;
   item: itemI;
+  editMode: boolean;
+  setEditMode: any;
   textPieces: textPieceI[];
   updateTextPieces: (cb: (value: textPieceI[]) => textPieceI[]) => void;
   updateData: (value: dataI, reset: boolean) => void;
@@ -26,6 +28,8 @@ interface contextOutputI {
 export const DataContext = createContext<contextOutputI>({
   data: {},
   item: tutorial["RootPage"],
+  editMode: false,
+  setEditMode: () => {},
   textPieces: [],
   updateTextPieces: (cb: (value: textPieceI[]) => {}) => {},
   updateData: (value: dataI, reset: boolean) => {},
@@ -37,8 +41,22 @@ export const DataContext = createContext<contextOutputI>({
   setSelectedNote: () => {},
 });
 
+const checkItemVisibility = (id: string) => {
+  const boundingRect = document
+    .querySelector(`#${id}`)
+    ?.getBoundingClientRect();
+  if (!boundingRect) return false;
+  const notesContainer = document.querySelector("#notes") as any;
+  const titleSpace = 80;
+  return (
+    boundingRect.top >= titleSpace &&
+    boundingRect.top <= (notesContainer?.offsetHeight || 0) + titleSpace
+  );
+};
+
 export const DataProvider = ({ children }: { children: ReactElement }) => {
   const [data, setData] = useState<dataI>(tutorial);
+  const [editMode, setEditMode] = useState<boolean>(false);
   const [textPieces, setTextPieces] = useState<textPieceI[]>([]);
   const [selectedNote, setSelectedNote] = useState<string | undefined>(
     undefined
@@ -132,12 +150,44 @@ export const DataProvider = ({ children }: { children: ReactElement }) => {
     }
   }, []);
 
+  const updateVisibleReferences = () => {
+    let visibleIndex = 0;
+    setTextPieces((oldValue: textPieceI[]) => {
+      return oldValue.map((ref: textPieceI) => {
+        if (ref.key === undefined) return ref;
+        visibleIndex += 1;
+        const visible = checkItemVisibility(ref?.id || "");
+        const newRef = {
+          ...ref,
+          visible,
+        } as textPieceI;
+        return newRef;
+      }) as textPieceI[];
+    });
+  };
+
+  useEffect(() => {
+    document
+      .querySelector("#notes")
+      ?.addEventListener("scroll", updateVisibleReferences);
+    return () =>
+      document
+        .querySelector("#notes")
+        ?.removeEventListener("scroll", updateVisibleReferences);
+  }, [textPieces, updateVisibleReferences, editMode]);
+
+  useEffect(() => {
+    updateVisibleReferences();
+  }, [editMode]);
+
   return (
     <DataContext.Provider
       value={{
         data,
         item: data[getCurrentPage()] || { ...tutorial },
         textPieces,
+        editMode,
+        setEditMode,
         updateTextPieces: setTextPieces,
         updateData,
         addNewEntry,

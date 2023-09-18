@@ -31,10 +31,10 @@ const generateDisplayText = (
 };
 
 const Notes = ({}) => {
-  const { data, item, textPieces, updateData } = useContext(DataContext);
+  const { data, item, textPieces, updateData, editMode, setEditMode } =
+    useContext(DataContext);
   const { path, navBack } = useContext(NavigationContext);
   const [displayText, setDisplayText] = useState<ReactElement[]>([]);
-  const [editHidden, setEditHidden] = useState<boolean>(true);
   const [inputText, setInputText] = useState<string>(item.text);
   const [inputTitle, setInputTitle] = useState<string>(item.title);
   const [inputDisplay, setInputDisplay] = useState<string>(item.display);
@@ -67,7 +67,7 @@ const Notes = ({}) => {
   };
 
   const toggleHide = () => {
-    setEditHidden((v) => !v);
+    setEditMode((v: boolean) => !v);
   };
 
   const generateItemFromInputs = () => {
@@ -110,12 +110,17 @@ const Notes = ({}) => {
   useEffect(() => {
     setInputTitle(item.title);
     setInputDisplay(item.display);
-    setInputText(item.text);
+    setInputText(
+      item.text
+        .replace(/\n/g, "")
+        .replace(/> *</g, "><")
+        .replace(/((?:<br>)+)/g, "\n$1\n")
+    );
   }, [item]);
 
   return (
     <div
-      className={`${styles.notesContainer} ${editHidden && styles.editHidden}`}
+      className={`${styles.notesContainer} ${!editMode && styles.editHidden}`}
     >
       <button className={`button ${styles.btnHide}`} onClick={toggleHide}>
         <img className="containedImage" src="/images/edit.svg" />

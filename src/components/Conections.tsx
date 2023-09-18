@@ -4,15 +4,15 @@ import { DataContext } from "@/context/data";
 import { getTextReferences } from "@/utils/text";
 import { NavigationContext } from "@/context/navigation";
 
-const Conections = ({ itemKey }: { itemKey: string }) => {
-  const { data } = useContext(DataContext);
+const Conections = ({}) => {
+  const { item, data } = useContext(DataContext);
   const { navigateTo } = useContext(NavigationContext);
 
   const references = Array.from(
     new Set(
       Object.keys(data).reduce((acc: string[], key: string) => {
         const refes = getTextReferences(data[key].text);
-        if (refes.includes(`${itemKey}`)) {
+        if (refes.includes(`${item.key}`)) {
           return [...acc, key];
         }
         return acc;
@@ -28,7 +28,7 @@ const Conections = ({ itemKey }: { itemKey: string }) => {
           {
             <div className={styles.refsContainer}>
               {references?.map((ref: string) => {
-                if (ref === itemKey) return;
+                if (ref === item.key) return;
                 return (
                   <span
                     key={ref}
