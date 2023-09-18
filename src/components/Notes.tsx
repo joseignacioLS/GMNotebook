@@ -111,16 +111,17 @@ const Notes = ({}) => {
     <div
       className={`${styles.notesContainer} ${editHidden && styles.editHidden}`}
     >
-      <button className={styles.btnHide} onClick={toggleHide}>
-        ✏️
+      <button className={`button ${styles.btnHide}`} onClick={toggleHide}>
+        <img className="containedImage" src="/images/edit.svg" />
       </button>
       <div className={styles.textContainer}>
         <div className={styles.titleContainer}>
           <span
+            className="button"
             style={{ opacity: path.length < 2 ? ".25" : "1" }}
             onClick={navBack}
           >
-            🔙
+            <img src="/images/back.svg" />
           </span>
           <h1>{item.title}</h1>
         </div>
@@ -148,6 +149,7 @@ const Notes = ({}) => {
           onChange={(e) => handleUpdateData("text", e)}
         ></textarea>
         <button
+          className="button"
           onClick={saveData}
           disabled={
             inputText === item.text &&
@@ -155,7 +157,7 @@ const Notes = ({}) => {
             inputDisplay === item.display
           }
         >
-          Save
+          <img src="/images/save.svg" />
         </button>
       </div>
     </div>

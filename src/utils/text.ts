@@ -45,7 +45,6 @@ export const splitTextIntoReferences = (
       const spIndex = matchSp?.index !== undefined ? matchSp.index : Infinity
 
       if (regIndex !== Infinity || spIndex !== Infinity) {
-        console.log(regMatch)
         if (regIndex < spIndex) {
           const match = regMatch.split(":")[1].match(/[a-z0-9]+/i)
           if (!match) continue

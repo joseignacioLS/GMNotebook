@@ -62,7 +62,6 @@ export const DataProvider = ({ children }: { children: ReactElement }) => {
 
     Object.keys(value).forEach((key: string) => {
       deletedKeys.forEach((deletedKey: string) => {
-        console.log(deletedKey);
         value[key].text = value[key].text.replace(
           new RegExp(`note\:${deletedKey}`, "g"),
           deletedKey
@@ -73,7 +72,6 @@ export const DataProvider = ({ children }: { children: ReactElement }) => {
   };
 
   const updateData = (value: dataI, resetEntry: boolean = true) => {
-    console.log(value);
     value = removeEmptyPages(value);
     setTimeout(() => {
       setData(value);
@@ -87,7 +85,6 @@ export const DataProvider = ({ children }: { children: ReactElement }) => {
   };
 
   const addNewEntry = (item: itemI) => {
-    console.log("new entry");
     setData({});
     setTimeout(() => {
       setData((oldValue) => {
@@ -112,8 +109,8 @@ export const DataProvider = ({ children }: { children: ReactElement }) => {
   const includeRerencesInText = (text: string, excludeRefs: string[] = []) => {
     Object.keys(data).forEach((key: string) => {
       if (excludeRefs.includes(key)) return;
-      const regex = new RegExp(`(^|[ ])(${key})([ \.,\-])`, "g");
-      text = text?.replace(regex, `$1[$2]$3`) || "";
+      const regex = new RegExp(key, "g");
+      text = text?.replace(regex, data[key].display) || "";
     });
     return text;
   };

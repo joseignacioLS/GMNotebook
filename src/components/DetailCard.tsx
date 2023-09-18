@@ -40,23 +40,23 @@ const DetailCard = ({
       }}
     >
       <span
-        className={styles.linkVisit}
+        className={`button ${styles.linkVisit}`}
         onClick={() => {
           setSelectedNote("");
           navigateTo(itemKey || "");
         }}
       >
-        📕
+        <img src="/images/book.svg" />
       </span>
       <span
-        className={styles.expand}
+        className={`button ${styles.expand}`}
         onClick={(e) => {
           e.stopPropagation();
           setSelectedNote(itemKey || "");
           toggleExpand();
         }}
       >
-        {isExpanded ? "➖" : "➕"}
+        <img src={`/images/${isExpanded ? "minus" : "plus"}.svg`} />
       </span>
       <h2>{title}</h2>
       <p>{isExpanded ? text : shortText}</p>
