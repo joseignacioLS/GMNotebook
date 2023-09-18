@@ -1,6 +1,5 @@
 import React, { useContext } from "react";
 import styles from "./Details.module.scss";
-import { getWordCount } from "@/utils/text";
 import { DataContext } from "@/context/data";
 import DetailCard from "./DetailCard";
 import { textPieceI } from "@/context/constants";
@@ -10,8 +9,6 @@ const Details = ({}) => {
     data,
     textPieces,
     replaceReferencesByDisplay,
-    includeRerencesInText,
-    selectedNote,
   } = useContext(DataContext);
 
   const processedTextPieces = textPieces
@@ -25,14 +22,11 @@ const Details = ({}) => {
     <div className={styles.detailContainer}>
       {processedTextPieces.map((textPiece, i) => {
         const showTitle = data[textPiece?.key || ""]?.title;
-        const referenceText = includeRerencesInText(
-          data[textPiece?.key || ""]?.text || ""
-        );
+        const referenceText = data[textPiece?.key || ""]?.text || "";
         const showText = replaceReferencesByDisplay(referenceText);
         const shortShowText = replaceReferencesByDisplay(
           referenceText.split(" ").slice(0, 25).join(" ") + "..."
         );
-        const textWordCount = getWordCount(referenceText);
         return (
           <DetailCard
             index={i}

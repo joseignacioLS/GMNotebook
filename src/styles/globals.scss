@@ -1,10 +1,15 @@
+@import url('https://fonts.googleapis.com/css2?family=Inclusive+Sans:ital@0;1&display=swap');
+
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+  font-family: 'Inclusive Sans', sans-serif;
 }
 
-html, body, #__next {
+html,
+body,
+#__next {
   background-color: rgb(236, 236, 236);
   color: rgb(61, 61, 61);
   height: 100vh;
@@ -20,6 +25,7 @@ main {
 h1 {
   margin-bottom: 1rem;
 }
+
 p {
   line-height: 2.5ch;
   margin-bottom: .5rem;
@@ -45,16 +51,32 @@ div::-webkit-scrollbar-thumb {
   background: #DDD;
   border-radius: 2px;
 }
+
 div::-webkit-scrollbar-thumb:hover {
   background: #555;
 }
 
 .button {
+  cursor: pointer;
   height: 2rem;
   border: 0;
+  flex-shrink: 0;
+
   img {
     width: 100%;
     height: 100%;
     object-fit: contain;
+  }
+}
+
+
+.flash {
+  animation: flash-item forwards ease .5s;
+  animation-delay: .1s;
+}
+
+@keyframes flash-item {
+  50% {
+    background-color: red;
   }
 }

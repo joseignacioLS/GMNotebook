@@ -5,14 +5,14 @@ import { getTextReferences } from "@/utils/text";
 import { NavigationContext } from "@/context/navigation";
 
 const Conections = ({ itemKey }: { itemKey: string }) => {
-  const { data, includeRerencesInText } = useContext(DataContext);
+  const { data } = useContext(DataContext);
   const { navigateTo } = useContext(NavigationContext);
 
   const references = Array.from(
     new Set(
       Object.keys(data).reduce((acc: string[], key: string) => {
-        const text = getTextReferences(includeRerencesInText(data[key].text));
-        if (text?.join("").includes(`[${itemKey}]`)) {
+        const refes = getTextReferences(data[key].text);
+        if (refes.includes(`${itemKey}`)) {
           return [...acc, key];
         }
         return acc;

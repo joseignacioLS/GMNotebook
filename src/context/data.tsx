@@ -18,7 +18,6 @@ interface contextOutputI {
   updateData: (value: dataI, reset: boolean) => void;
   addNewEntry: (item: itemI) => void;
   replaceReferencesByDisplay: any;
-  includeRerencesInText: any;
   resetData: () => void;
   selectedNote: string | undefined;
   setSelectedNote: any;
@@ -32,7 +31,7 @@ export const DataContext = createContext<contextOutputI>({
   updateData: (value: dataI, reset: boolean) => {},
   addNewEntry: (item: itemI) => {},
   replaceReferencesByDisplay: () => {},
-  includeRerencesInText: () => {},
+
   resetData: () => {},
   selectedNote: "",
   setSelectedNote: () => {},
@@ -94,9 +93,9 @@ export const DataProvider = ({ children }: { children: ReactElement }) => {
   };
 
   const replaceReferencesByDisplay = (text: string) => {
-    text = includeRerencesInText(text);
     Object.keys(data).forEach((key: string) => {
-      text = text.replace(new RegExp(`note:${key}`, "g"), data[key].display);
+      const regex = new RegExp(`note\:${key}`, "g");
+      text = text.replace(regex, data[key].display);
     });
     return text.split("<br>").map((item: string, i: number) => (
       <span key={i}>
@@ -104,15 +103,6 @@ export const DataProvider = ({ children }: { children: ReactElement }) => {
         <br />
       </span>
     ));
-  };
-
-  const includeRerencesInText = (text: string, excludeRefs: string[] = []) => {
-    Object.keys(data).forEach((key: string) => {
-      if (excludeRefs.includes(key)) return;
-      const regex = new RegExp(key, "g");
-      text = text?.replace(regex, data[key].display) || "";
-    });
-    return text;
   };
 
   useEffect(() => {
@@ -152,7 +142,6 @@ export const DataProvider = ({ children }: { children: ReactElement }) => {
         updateData,
         addNewEntry,
         replaceReferencesByDisplay,
-        includeRerencesInText,
         resetData,
         selectedNote,
         setSelectedNote,

@@ -38,12 +38,18 @@ const Notes = ({}) => {
   const [inputText, setInputText] = useState<string>(item.text);
   const [inputTitle, setInputTitle] = useState<string>(item.title);
   const [inputDisplay, setInputDisplay] = useState<string>(item.display);
+
   const updateSelectedNote = (key: string) => {
-    setTimeout(
-      () => document.querySelector(`#detail-${key}`)?.scrollIntoView(),
-      0
-    );
+    setTimeout(() => {
+      document.querySelector(`#detail-${key}`)?.scrollIntoView();
+      // add animation to card
+      document.querySelector(`#detail-${key}`)?.classList.add("flash");
+      setTimeout(() => {
+        document.querySelector(`#detail-${key}`)?.classList.remove("flash");
+      }, 600);
+    }, 0);
   };
+
   const handleUpdateData = (key: string, e: any) => {
     switch (key) {
       case "text":
