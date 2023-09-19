@@ -6,8 +6,7 @@ import { textPieceI } from "@/context/constants";
 import { splitTextIntoReferences } from "@/utils/text";
 
 const Details = ({}) => {
-  const { data, textPieces, replaceReferencesByDisplay, generateDisplayText } =
-    useContext(DataContext);
+  const { data, textPieces, generateDisplayText } = useContext(DataContext);
 
   const processedTextPieces = textPieces
     .filter((v) => v.type === "reference" && v.visible)
@@ -27,7 +26,7 @@ const Details = ({}) => {
         );
         const shortShowText = generateDisplayText(
           splitTextIntoReferences(
-            referenceText.split(" ").slice(0, 25).join(" ")+" ..."
+            referenceText.split(" ").slice(0, 25).join(" ") + " ..."
           ),
           ""
         );

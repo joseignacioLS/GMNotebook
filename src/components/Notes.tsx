@@ -97,7 +97,7 @@ const Notes = ({}) => {
         <div className={styles.titleContainer}>
           <button
             className="button"
-            style={{ opacity: path.length >1 ? "1" : ".25" }}
+            style={{ opacity: path.length > 1 ? "1" : ".25" }}
             onClick={navBack}
           >
             <img src="/images/back.svg" />
