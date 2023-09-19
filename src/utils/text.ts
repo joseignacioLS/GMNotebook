@@ -1,6 +1,7 @@
 
 import { textPieceI } from "@/context/constants";
 import { generateColor } from "./color";
+import { imageRegex } from "./constans";
 
 export const getWordCount = (text: string) => {
   return text?.split(" ").length
@@ -15,71 +16,96 @@ export const getTextReferences = (text: string): string[] => {
 
 
 export const splitTextIntoReferences = (
-  references: string[],
   text: string
 ): textPieceI[] => {
 
-  let workText = text.slice()
+  let workText = text.replace(/\n/g, "").slice()
 
   const sliceText = (text: string, index0: number, index1: number): string[] => {
     return [text.slice(0, index0), text.slice(index1)]
   }
 
   const output = []
+  const regex = new RegExp(`note:[A-Za-z0-9]+(?:[^A-Za-z0-9]|$)`)
+  const regexBreak = new RegExp("<br>")
   try {
-    const regex = new RegExp(references.map(v => `note:${v}(?:[^A-Za-z0-9]|$)`).join("|"))
-    const regexSp = new RegExp(["<br>"].map(v => `${v}`).join("|"))
     let index = 0;
-    let safe = 100;
+    let safe = 1000;
     while (workText.length > 0 && safe > 0) {
       safe -= 1
 
       let addText = "";
 
-      const matchReg = references.length > 0 ? workText.match(regex) : undefined
-      const matchSp = workText.match(regexSp)
+      const matchReg = workText.match(regex)
+      const matchBreak = workText.match(regexBreak)
+      const matchImg = workText.match(imageRegex)
 
       const regMatch = matchReg?.[0] || ""
       const regIndex = matchReg?.index !== undefined ? matchReg.index : Infinity
-      const spMatch = matchSp?.[0] || ""
-      const spIndex = matchSp?.index !== undefined ? matchSp.index : Infinity
+      const breakMatch = matchBreak?.[0] || ""
+      const breakIndex = matchBreak?.index !== undefined ? matchBreak.index : Infinity
+      const imgMatch = matchImg?.[0] || ""
+      const imgIndex = matchImg?.index !== undefined ? matchImg.index : Infinity
 
-      if (regIndex !== Infinity || spIndex !== Infinity) {
-        if (regIndex < spIndex) {
-          const match = regMatch.split(":")[1].match(/[a-z0-9]+/i)
-          if (!match) continue
-          const key = match["0"] as string
-          [addText, workText] = sliceText(workText, regIndex, regIndex + key.length + 5)
-          output.push({ content: addText })
-          output.push({
-            content: regMatch,
-            key: key,
-            color: generateColor(key),
-            visible: true,
-            id: key + "-" + index
-          })
-          index += 1
-        }
-        else {
-          [addText, workText] = sliceText(workText, spIndex, spIndex + (spMatch?.length || 0))
-          output.push({ content: addText })
-          output.push({
-            content: spMatch
-          })
-
-        }
-      }
-      else {
+      const first = [{
+        match: regMatch,
+        index: regIndex,
+        type: "reference"
+      }, {
+        match: breakMatch,
+        index: breakIndex,
+        type: "break"
+      }, {
+        match: imgMatch,
+        index: imgIndex,
+        type: "image"
+      }].sort((a: any, b: any) => {
+        return a.index > b.index ? 1 : -1
+      })[0]
+      if (first.index === Infinity) {
         output.push({
+          type: "text",
           content: workText,
         })
         break;
+      }
+      if (first.type === "reference") {
+        const match = first.match.split(":")[1].match(/[a-z0-9]+/i)
+        if (!match) continue
+        const key = match[0] as string
+        [addText, workText] = sliceText(workText, first.index, first.index + key.length + 5)
+        output.push({ type: "text", content: addText })
+        output.push({
+          type: "reference",
+          content: first.match,
+          key: key,
+          color: generateColor(key),
+          visible: true,
+          id: key + "-" + index
+        })
+        index += 1
+      }
+      else if (first.type === "break") {
+        [addText, workText] = sliceText(workText, first.index, first.index + (first.match.length || 0))
+        output.push({ type: "text", content: addText })
+        output.push({
+          type: "break",
+          content: first.match
+        })
+      }
+      else if (first.type === "image") {
+
+        [addText, workText] = sliceText(workText, first.index, first.index + (first.match.length || 0))
+        output.push({ type: "text", content: addText })
+        output.push({
+          type: "image",
+          content: first.match
+        })
       }
     }
   }
   catch (err) {
 
   }
-
   return output;
 };

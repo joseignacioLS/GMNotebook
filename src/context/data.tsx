@@ -23,6 +23,7 @@ interface contextOutputI {
   resetData: () => void;
   selectedNote: string | undefined;
   setSelectedNote: any;
+  generateDisplayText: any;
 }
 
 export const DataContext = createContext<contextOutputI>({
@@ -39,7 +40,19 @@ export const DataContext = createContext<contextOutputI>({
   resetData: () => {},
   selectedNote: "",
   setSelectedNote: () => {},
+  generateDisplayText: () => {},
 });
+
+const updateSelectedNote = (key: string) => {
+  setTimeout(() => {
+    document.querySelector(`#detail-${key}`)?.scrollIntoView();
+    // add animation to card
+    document.querySelector(`#detail-${key}`)?.classList.add("flash");
+    setTimeout(() => {
+      document.querySelector(`#detail-${key}`)?.classList.remove("flash");
+    }, 600);
+  }, 0);
+};
 
 const checkItemVisibility = (id: string) => {
   const boundingRect = document
@@ -110,6 +123,34 @@ export const DataProvider = ({ children }: { children: ReactElement }) => {
     }, 0);
   };
 
+  const generateDisplayText = (text: textPieceI[], referenceStyle: string) => {
+    const chuncks: ReactElement[] = text.map((ele, i) => {
+      if (ele.type === "reference") {
+        if (!ele.key) return <></>;
+        const content = data[ele.key]?.display || "";
+        return (
+          <span
+            key={i}
+            id={ele.id}
+            className={`${referenceStyle}`}
+            style={{ backgroundColor: ele.color }}
+            onClick={() => updateSelectedNote(ele?.key || "")}
+          >
+            {content}
+          </span>
+        );
+      } else if (ele.type === "text") {
+        return <span key={i}>{ele.content}</span>;
+      } else if (ele.type === "break") {
+        return <br key={i} />;
+      } else if (ele.type === "image") {
+        return <img key={i} src={ele.content.split("img:")[1]} />;
+      }
+      return <></>;
+    });
+    return chuncks;
+  };
+
   const replaceReferencesByDisplay = (text: string) => {
     Object.keys(data).forEach((key: string) => {
       const regex = new RegExp(`note\:${key}`, "g");
@@ -136,7 +177,7 @@ export const DataProvider = ({ children }: { children: ReactElement }) => {
     const referenceText = data[currentPage].text;
     const references = getTextReferences(referenceText);
     if (!references) return setTextPieces([]);
-    const refes = splitTextIntoReferences(references, referenceText);
+    const refes = splitTextIntoReferences(referenceText);
     setTextPieces(refes);
   }, [path, data]);
 
@@ -154,7 +195,7 @@ export const DataProvider = ({ children }: { children: ReactElement }) => {
     let visibleIndex = 0;
     setTextPieces((oldValue: textPieceI[]) => {
       return oldValue.map((ref: textPieceI) => {
-        if (ref.key === undefined) return ref;
+        if (ref.type !== "reference") return ref;
         visibleIndex += 1;
         const visible = checkItemVisibility(ref?.id || "");
         const newRef = {
@@ -195,6 +236,7 @@ export const DataProvider = ({ children }: { children: ReactElement }) => {
         resetData,
         selectedNote,
         setSelectedNote,
+        generateDisplayText,
       }}
     >
       {children}

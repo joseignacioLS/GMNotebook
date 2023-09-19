@@ -25,6 +25,9 @@ const DetailCard = ({
   const [isExpanded, setIsExpanded] = useState<boolean>(false);
 
   const toggleExpand = () => {
+    if (isExpanded) {
+      setSelectedNote("");
+    }
     setIsExpanded((v) => !v);
   };
   return (
@@ -36,7 +39,9 @@ const DetailCard = ({
       }`}
       style={{ backgroundColor: color }}
       onClick={() => {
-        setSelectedNote("");
+        if (selectedNote !== itemKey) {
+          setSelectedNote("");
+        }
       }}
     >
       <span

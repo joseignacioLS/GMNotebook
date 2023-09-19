@@ -3,16 +3,14 @@ import styles from "./Details.module.scss";
 import { DataContext } from "@/context/data";
 import DetailCard from "./DetailCard";
 import { textPieceI } from "@/context/constants";
+import { splitTextIntoReferences } from "@/utils/text";
 
 const Details = ({}) => {
-  const {
-    data,
-    textPieces,
-    replaceReferencesByDisplay,
-  } = useContext(DataContext);
+  const { data, textPieces, replaceReferencesByDisplay, generateDisplayText } =
+    useContext(DataContext);
 
   const processedTextPieces = textPieces
-    .filter((v) => v.key !== undefined && v.visible)
+    .filter((v) => v.type === "reference" && v.visible)
     .reduce((acc: textPieceI[], curr: textPieceI) => {
       if (acc.some((item: textPieceI) => item.key === curr.key)) return acc;
       return [...acc, curr];
@@ -23,10 +21,20 @@ const Details = ({}) => {
       {processedTextPieces.map((textPiece, i) => {
         const showTitle = data[textPiece?.key || ""]?.title;
         const referenceText = data[textPiece?.key || ""]?.text || "";
-        const showText = replaceReferencesByDisplay(referenceText);
-        const shortShowText = replaceReferencesByDisplay(
-          referenceText.split(" ").slice(0, 25).join(" ") + "..."
+        const showText = generateDisplayText(
+          splitTextIntoReferences(referenceText),
+          ""
         );
+        const shortShowText = generateDisplayText(
+          splitTextIntoReferences(
+            referenceText.split(" ").slice(0, 25).join(" ")+" ..."
+          ),
+          ""
+        );
+        //const showText = replaceReferencesByDisplay(referenceText);
+        // const shortShowText = replaceReferencesByDisplay(
+        //   referenceText.split(" ").slice(0, 25).join(" ") + "..."
+        // );
         return (
           <DetailCard
             index={i}
