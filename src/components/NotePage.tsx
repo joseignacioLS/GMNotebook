@@ -2,7 +2,7 @@ import React, { useContext } from "react";
 import Notes from "./Notes";
 import Details from "./Details";
 
-import styles from "./Notepage.module.scss";
+import styles from "./notepage.module.scss";
 import { DataContext } from "@/context/data";
 import Conections from "./Conections";
 import { loadFile, saveToFile } from "@/utils/file";

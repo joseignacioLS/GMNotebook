@@ -1,5 +1,5 @@
 import React, { useContext } from "react";
-import styles from "./Details.module.scss";
+import styles from "./details.module.scss";
 import { DataContext } from "@/context/data";
 import DetailCard from "./DetailCard";
 import { textPieceI } from "@/context/constants";

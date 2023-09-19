@@ -1,7 +1,7 @@
 import { DataContext } from "@/context/data";
 import React, { ReactElement, useContext, useState } from "react";
 
-import styles from "./DetailCard.module.scss";
+import styles from "./detailCard.module.scss";
 import { NavigationContext } from "@/context/navigation";
 
 const DetailCard = ({

@@ -1,5 +1,5 @@
 import { ReactElement, useContext, useEffect, useState } from "react";
-import styles from "./Notes.module.scss";
+import styles from "./notes.module.scss";
 
 import { DataContext } from "@/context/data";
 import { getTextReferences } from "@/utils/text";

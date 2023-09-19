@@ -1,5 +1,5 @@
 import React, { useContext } from "react";
-import styles from "./Conections.module.scss";
+import styles from "./conections.module.scss";
 import { DataContext } from "@/context/data";
 import { getTextReferences } from "@/utils/text";
 import { NavigationContext } from "@/context/navigation";
