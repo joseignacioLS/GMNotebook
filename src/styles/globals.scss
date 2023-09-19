@@ -24,6 +24,10 @@ main {
 
 h1 {
   margin-bottom: 1rem;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
 }
 
 p {
@@ -57,6 +61,7 @@ div::-webkit-scrollbar-thumb:hover {
 }
 
 .button {
+  background-color: transparent;
   cursor: pointer;
   height: 2rem;
   border: 0;

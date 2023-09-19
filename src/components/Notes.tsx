@@ -93,19 +93,20 @@ const Notes = ({}) => {
     <div
       className={`${styles.notesContainer} ${!editMode && styles.editHidden}`}
     >
-      <button className={`button ${styles.btnHide}`} onClick={toggleHide}>
-        <img className="containedImage" src="/images/edit.svg" />
-      </button>
       <div className={styles.textContainer}>
         <div className={styles.titleContainer}>
-          <span
+          <button
             className="button"
-            style={{ opacity: path.length < 2 ? ".25" : "1" }}
+            style={{ opacity: path.length >1 ? "1" : ".25" }}
             onClick={navBack}
           >
             <img src="/images/back.svg" />
-          </span>
+          </button>
           <h1>{item.title}</h1>
+
+          <button className={`button ${styles.btnEdit}`} onClick={toggleHide}>
+            <img className="containedImage" src="/images/edit.svg" />
+          </button>
         </div>
         <div className={styles.notes} id="notes">
           {displayText}
