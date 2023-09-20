@@ -233,6 +233,7 @@ export const DataProvider = ({ children }: { children: ReactElement }) => {
   };
 
   useEffect(() => {
+    updateVisibleReferences();
     document
       .querySelector("#text")
       ?.addEventListener("scroll", updateVisibleReferences);
