@@ -81,12 +81,7 @@ const Page = ({}) => {
   useEffect(() => {
     setInputTitle(item.title);
     setInputDisplay(item.display);
-    setInputText(
-      item.text
-        .replace(/\n/g, "")
-        .replace(/> *</g, "><")
-        .replace(/((?:<br>)+)/g, "\n$1\n")
-    );
+    setInputText(item.text);
   }, [item]);
 
   return (
