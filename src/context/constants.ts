@@ -31,7 +31,7 @@ export const tutorial: dataI = {
     title: "Main page",
     key: "RootPage",
     display: "",
-    text: "Welcome to the Game Master Notebook companion!\n\n\n\nThis is the starting page of your notebook, use it as base for the rest of your notes.\n\n\n\nThis is a note:note. Notes appear in the right column and show you some information about themselfs.\n\n\n\nYou can note:modPage of any page by enabling edit-mode. Just click on the top-right pencil icon!\n\n\n\nIn order to note:createNote, just write note:<keyword>, and the note will appear to the right. Visit the note to modify the display name.\n\n\n\nUse the note:rightBottomButtons to upload (top), download (middle) or reset (bottom) your current notebook.\n\n\n\nWhat note:moreFunctionalities can I do?\n\n- Add images",
+    text: "Welcome to the Game Master Notebook companion!\n\nThis is the starting page of your notebook, use it as base for the rest of your notes.\n\nThis is a note:note. Notes appear in the right column and show you some information about themselfs.\n\nYou can note:modPage of any page by enabling edit-mode. Just click on the top-right pencil icon!\n\nIn order to note:createNote, just write note:<keyword>, and the note will appear to the right. Visit the note to modify the display name.\n\nUse the note:rightBottomButtons to upload (top), download (middle) or reset (bottom) your current notebook.\n\nWhat note:moreFunctionalities can I do?\n- Add images",
   },
   note: {
     title: "I am a note!",
@@ -53,7 +53,7 @@ export const tutorial: dataI = {
   },
   rightBottomButtons: {
     title: "Action buttons",
-    text: "On the bottom-right corner you can find and upload, download and reset button (from top to bottom).\n\n\nDownload your current notebook to save progress and upload it later.\n\n\nIf you feel lost, just click the reset button to come back here to this tutorial, but keep in mind that you will erase the current notebook!",
+    text: "On the bottom-right corner you can find and upload, download and reset button (from top to bottom).\nDownload your current notebook to save progress and upload it later.\nIf you feel lost, just click the reset button to come back here to this tutorial, but keep in mind that you will erase the current notebook!",
     display: "actions",
     key: "rightBottomButtons",
   },
@@ -65,7 +65,7 @@ export const tutorial: dataI = {
   },
   moreFunctionalities: {
     title: "More Functionalities",
-    text: "Add images\n\n\nUse the img: keyword and an url to add and image, just like this:\n\n\nimg:https://media.istockphoto.com/id/1481658464/es/foto/imagen-en-primer-plano-de-un-d-20-rojo-sobre-una-superficie-reflectante.jpg?s=2048x2048&w=is&k=20&c=vgROQZvl27LGh9K0mIYJ9sPGbq33SnXYEzbXRDSxEv8=",
+    text: "Add images\nUse the img: keyword and an url to add and image, just like this:\nimg:https://media.istockphoto.com/id/1481658464/es/foto/imagen-en-primer-plano-de-un-d-20-rojo-sobre-una-superficie-reflectante.jpg?s=2048x2048&w=is&k=20&c=vgROQZvl27LGh9K0mIYJ9sPGbq33SnXYEzbXRDSxEv8=",
     display: "else",
     key: "moreFunctionalities",
   },
