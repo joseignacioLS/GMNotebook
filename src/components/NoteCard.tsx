@@ -64,7 +64,7 @@ const NoteCard = ({
         <img src={`/images/${isExpanded ? "minus" : "plus"}.svg`} />
       </span>
       <h2>{title}</h2>
-      <p>{isExpanded ? text : shortText}</p>
+      {isExpanded ? text : shortText}
     </div>
   );
 };

@@ -19,7 +19,6 @@ interface contextOutputI {
   updateTextPieces: (cb: (value: textPieceI[]) => textPieceI[]) => void;
   updateData: (value: dataI, reset: boolean) => void;
   addNewEntry: (item: itemI) => void;
-  replaceReferencesByDisplay: any;
   resetData: () => void;
   selectedNote: string | undefined;
   setSelectedNote: any;
@@ -35,7 +34,6 @@ export const DataContext = createContext<contextOutputI>({
   updateTextPieces: (cb: (value: textPieceI[]) => {}) => {},
   updateData: (value: dataI, reset: boolean) => {},
   addNewEntry: (item: itemI) => {},
-  replaceReferencesByDisplay: () => {},
   resetData: () => {},
   selectedNote: "",
   setSelectedNote: () => {},
@@ -76,10 +74,23 @@ export const DataProvider = ({ children }: { children: ReactElement }) => {
 
   const { path, resetPath, getCurrentPage } = useContext(NavigationContext);
 
-  const removeEmptyPages = (value: dataI) => {
+  const cleanUpData = (value: dataI) => {
     const deletedKeys: string[] = [];
+    const references: string[] = ["RootPage"];
     Object.keys(value).forEach((key: string) => {
+      getTextReferences(value[key].text).forEach((v) => {
+        if (!references.includes(v)) references.push(v);
+      });
+
       if (value[key].text === "" && key !== "RootPage") {
+        delete value[key];
+        deletedKeys.push(key);
+      }
+    });
+
+    Object.keys(value).forEach((key: string) => {
+      if (!references.includes(key)) {
+        console.log(key);
         delete value[key];
         deletedKeys.push(key);
       }
@@ -101,7 +112,7 @@ export const DataProvider = ({ children }: { children: ReactElement }) => {
   };
 
   const updateData = (value: dataI, resetEntry: boolean = true) => {
-    value = removeEmptyPages(value);
+    value = cleanUpData(value);
     setTimeout(() => {
       setData(value);
       if (resetEntry) resetPath();
@@ -122,7 +133,7 @@ export const DataProvider = ({ children }: { children: ReactElement }) => {
     }, 0);
   };
 
-  const generateDisplayText = (text: textPieceI[], referenceStyle: string) => {
+  const proccessTextPieces = (text: textPieceI[], referenceStyle: string) => {
     const chuncks: ReactElement[] = text.map((ele, i) => {
       if (ele.type === "reference") {
         if (!ele.key) return <></>;
@@ -132,7 +143,10 @@ export const DataProvider = ({ children }: { children: ReactElement }) => {
             key={i}
             id={ele.id}
             className={`${referenceStyle}`}
-            style={{ backgroundColor: ele.color }}
+            style={{
+              backgroundColor:
+                referenceStyle !== "" ? ele.color : "transparent",
+            }}
             onClick={() => updateSelectedNote(ele?.key || "")}
           >
             {content}
@@ -150,17 +164,29 @@ export const DataProvider = ({ children }: { children: ReactElement }) => {
     return chuncks;
   };
 
-  const replaceReferencesByDisplay = (text: string) => {
-    Object.keys(data).forEach((key: string) => {
-      const regex = new RegExp(`note\:${key}`, "g");
-      text = text.replace(regex, data[key].display);
-    });
-    return text.split("<br>").map((item: string, i: number) => (
-      <span key={i}>
-        {item}
-        <br />
-      </span>
-    ));
+  const generateDisplayText = (text: textPieceI[], referenceStyle: string) => {
+    const ps = [
+      -1,
+      ...text
+        .map((v, i) => (v.type === "break" ? i : undefined))
+        .filter((v) => v !== undefined),
+      text.length,
+    ];
+    const output = [];
+    let pIndex = 0;
+    for (let i = 0; i < ps.length - 1; i++) {
+      const start = (ps[i] || -1) + 1;
+      const end = ps[i + 1];
+      const content = proccessTextPieces(
+        text.slice(start, end),
+        referenceStyle
+      );
+      output.push(
+        <p key={`p-${pIndex}`}>{content.length > 0 ? content : " "}</p>
+      );
+      pIndex += 1;
+    }
+    return output;
   };
 
   useEffect(() => {
@@ -231,7 +257,6 @@ export const DataProvider = ({ children }: { children: ReactElement }) => {
         updateTextPieces: setTextPieces,
         updateData,
         addNewEntry,
-        replaceReferencesByDisplay,
         resetData,
         selectedNote,
         setSelectedNote,
