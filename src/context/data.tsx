@@ -27,7 +27,7 @@ interface contextOutputI {
 }
 
 export const DataContext = createContext<contextOutputI>({
-  data: {},
+  data: tutorial,
   item: tutorial["RootPage"],
   editMode: false,
   setEditMode: () => {},
@@ -45,11 +45,11 @@ export const DataContext = createContext<contextOutputI>({
 
 const updateSelectedNote = (key: string) => {
   setTimeout(() => {
-    document.querySelector(`#detail-${key}`)?.scrollIntoView();
+    document.querySelector(`#note-${key}`)?.scrollIntoView();
     // add animation to card
-    document.querySelector(`#detail-${key}`)?.classList.add("flash");
+    document.querySelector(`#note-${key}`)?.classList.add("flash");
     setTimeout(() => {
-      document.querySelector(`#detail-${key}`)?.classList.remove("flash");
+      document.querySelector(`#note-${key}`)?.classList.remove("flash");
     }, 600);
   }, 0);
 };
@@ -59,7 +59,7 @@ const checkItemVisibility = (id: string) => {
     .querySelector(`#${id}`)
     ?.getBoundingClientRect();
   if (!boundingRect) return false;
-  const notesContainer = document.querySelector("#notes") as any;
+  const notesContainer = document.querySelector("#text") as any;
   const titleSpace = 80;
   return (
     boundingRect.top >= titleSpace &&
@@ -209,11 +209,11 @@ export const DataProvider = ({ children }: { children: ReactElement }) => {
 
   useEffect(() => {
     document
-      .querySelector("#notes")
+      .querySelector("#text")
       ?.addEventListener("scroll", updateVisibleReferences);
     return () =>
       document
-        .querySelector("#notes")
+        .querySelector("#text")
         ?.removeEventListener("scroll", updateVisibleReferences);
   }, [textPieces, updateVisibleReferences, editMode]);
 

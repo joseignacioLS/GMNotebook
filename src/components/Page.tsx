@@ -1,11 +1,11 @@
 import { ReactElement, useContext, useEffect, useState } from "react";
-import styles from "./notes.module.scss";
+import styles from "./page.module.scss";
 
 import { DataContext } from "@/context/data";
 import { getTextReferences } from "@/utils/text";
 import { NavigationContext } from "@/context/navigation";
 
-const Notes = ({}) => {
+const Page = ({}) => {
   const {
     data,
     item,
@@ -79,6 +79,7 @@ const Notes = ({}) => {
   }, [textPieces, data]);
 
   useEffect(() => {
+    console.log(item);
     setInputTitle(item.title);
     setInputDisplay(item.display);
     setInputText(
@@ -91,7 +92,7 @@ const Notes = ({}) => {
 
   return (
     <div
-      className={`${styles.notesContainer} ${!editMode && styles.editHidden}`}
+      className={`${styles.pageContainer} ${!editMode && styles.editHidden}`}
     >
       <div className={styles.textContainer}>
         <div className={styles.titleContainer}>
@@ -108,7 +109,7 @@ const Notes = ({}) => {
             <img className="containedImage" src="/images/edit.svg" />
           </button>
         </div>
-        <div className={styles.notes} id="notes">
+        <div className={styles.text} id="text">
           {displayText}
         </div>
       </div>
@@ -147,4 +148,4 @@ const Notes = ({}) => {
   );
 };
 
-export default Notes;
+export default Page;

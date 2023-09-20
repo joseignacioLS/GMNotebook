@@ -1,10 +1,10 @@
 import { DataContext } from "@/context/data";
 import React, { ReactElement, useContext, useState } from "react";
 
-import styles from "./detailcard.module.scss";
+import styles from "./notecard.module.scss";
 import { NavigationContext } from "@/context/navigation";
 
-const DetailCard = ({
+const NoteCard = ({
   index,
   itemKey,
   color,
@@ -33,8 +33,8 @@ const DetailCard = ({
   return (
     <div
       key={index}
-      id={"detail-" + itemKey}
-      className={`${styles.detail} ${
+      id={"note-" + itemKey}
+      className={`${styles.note} ${
         itemKey === selectedNote && styles.selected
       }`}
       style={{ backgroundColor: color }}
@@ -69,4 +69,4 @@ const DetailCard = ({
   );
 };
 
-export default DetailCard;
+export default NoteCard;

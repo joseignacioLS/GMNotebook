@@ -1,11 +1,11 @@
 import React, { useContext } from "react";
-import styles from "./details.module.scss";
+import styles from "./notelist.module.scss";
 import { DataContext } from "@/context/data";
-import DetailCard from "./DetailCard";
+import NoteCard from "./NoteCard";
 import { textPieceI } from "@/context/constants";
 import { splitTextIntoReferences } from "@/utils/text";
 
-const Details = ({}) => {
+const NoteList = ({}) => {
   const { data, textPieces, generateDisplayText } = useContext(DataContext);
 
   const processedTextPieces = textPieces
@@ -16,7 +16,7 @@ const Details = ({}) => {
     }, []);
 
   return (
-    <div className={styles.detailContainer}>
+    <div className={styles.noteListContainer}>
       {processedTextPieces.map((textPiece, i) => {
         const showTitle = data[textPiece?.key || ""]?.title;
         const referenceText = data[textPiece?.key || ""]?.text || "";
@@ -35,7 +35,7 @@ const Details = ({}) => {
         //   referenceText.split(" ").slice(0, 25).join(" ") + "..."
         // );
         return (
-          <DetailCard
+          <NoteCard
             index={i}
             key={textPiece.key}
             itemKey={textPiece.key || ""}
@@ -50,4 +50,4 @@ const Details = ({}) => {
   );
 };
 
-export default Details;
+export default NoteList;
