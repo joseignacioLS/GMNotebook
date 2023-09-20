@@ -30,10 +30,6 @@ const NoteList = ({}) => {
           ),
           ""
         );
-        //const showText = replaceReferencesByDisplay(referenceText);
-        // const shortShowText = replaceReferencesByDisplay(
-        //   referenceText.split(" ").slice(0, 25).join(" ") + "..."
-        // );
         return (
           <NoteCard
             index={i}
