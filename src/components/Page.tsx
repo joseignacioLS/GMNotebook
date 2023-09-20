@@ -79,7 +79,6 @@ const Page = ({}) => {
   }, [textPieces, data]);
 
   useEffect(() => {
-    console.log(item);
     setInputTitle(item.title);
     setInputDisplay(item.display);
     setInputText(

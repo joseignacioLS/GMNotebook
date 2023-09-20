@@ -36,7 +36,6 @@ export const DataContext = createContext<contextOutputI>({
   updateData: (value: dataI, reset: boolean) => {},
   addNewEntry: (item: itemI) => {},
   replaceReferencesByDisplay: () => {},
-
   resetData: () => {},
   selectedNote: "",
   setSelectedNote: () => {},
@@ -225,7 +224,7 @@ export const DataProvider = ({ children }: { children: ReactElement }) => {
     <DataContext.Provider
       value={{
         data,
-        item: data[getCurrentPage()] || { ...tutorial },
+        item: data[getCurrentPage()] || tutorial["RootPage"],
         textPieces,
         editMode,
         setEditMode,
