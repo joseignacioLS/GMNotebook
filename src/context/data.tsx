@@ -74,10 +74,23 @@ export const DataProvider = ({ children }: { children: ReactElement }) => {
 
   const { path, resetPath, getCurrentPage } = useContext(NavigationContext);
 
-  const removeEmptyPages = (value: dataI) => {
+  const cleanUpData = (value: dataI) => {
     const deletedKeys: string[] = [];
+    const references: string[] = ["RootPage"];
     Object.keys(value).forEach((key: string) => {
+      getTextReferences(value[key].text).forEach((v) => {
+        if (!references.includes(v)) references.push(v);
+      });
+
       if (value[key].text === "" && key !== "RootPage") {
+        delete value[key];
+        deletedKeys.push(key);
+      }
+    });
+
+    Object.keys(value).forEach((key: string) => {
+      if (!references.includes(key)) {
+        console.log(key);
         delete value[key];
         deletedKeys.push(key);
       }
@@ -99,7 +112,7 @@ export const DataProvider = ({ children }: { children: ReactElement }) => {
   };
 
   const updateData = (value: dataI, resetEntry: boolean = true) => {
-    value = removeEmptyPages(value);
+    value = cleanUpData(value);
     setTimeout(() => {
       setData(value);
       if (resetEntry) resetPath();
@@ -130,7 +143,10 @@ export const DataProvider = ({ children }: { children: ReactElement }) => {
             key={i}
             id={ele.id}
             className={`${referenceStyle}`}
-            style={{ backgroundColor: ele.color }}
+            style={{
+              backgroundColor:
+                referenceStyle !== "" ? ele.color : "transparent",
+            }}
             onClick={() => updateSelectedNote(ele?.key || "")}
           >
             {content}
