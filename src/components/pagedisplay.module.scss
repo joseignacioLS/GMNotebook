@@ -1,0 +1,58 @@
+.pageDisplay {
+  position: relative;
+  line-height: 2.5ch;
+  height: 50%;
+  display: flex;
+  flex-direction: column;
+
+  &.height100 {
+    height: 100%;
+  }
+
+  .titleContainer {
+    height: 4rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-shrink: 0;
+    padding: 0 0.5rem;
+    gap: 0.5rem;
+
+    background-color: rgb(139, 207, 228);
+    border-radius: 1000px;
+
+    span {
+      cursor: pointer;
+    }
+
+    h1 {
+      height: 100%;
+      overflow-y: hidden;
+      overflow-x: auto;
+      white-space: nowrap;
+      display: flex;
+      align-items: center;
+      margin: 0;
+    }
+  }
+
+  .text {
+    height: 100%;
+    overflow-y: auto;
+    overflow-x: hidden;
+  }
+}
+
+.reference {
+  color: white;
+  padding: 0 0.5rem;
+  border-radius: 0.5rem;
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+@media (max-width: 800px) {
+  .pageContainer {
+    height: 4rem;
+  }
+}
