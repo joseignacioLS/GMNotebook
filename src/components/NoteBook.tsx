@@ -1,20 +1,20 @@
 import React, { useContext } from "react";
-import Notes from "./Notes";
-import Details from "./Details";
+import Page from "./Page";
+import NoteList from "./NoteList";
 
-import styles from "./notepage.module.scss";
+import styles from "./notebook.module.scss";
 import { DataContext } from "@/context/data";
 import Conections from "./Conections";
 import { loadFile, saveToFile } from "@/utils/file";
 
-const NotePage = () => {
+const NoteBook = () => {
   const { data, item, updateData, resetData } = useContext(DataContext);
 
   return (
-    <div className={styles.notepage}>
+    <div className={styles.notebook}>
       {item && (
         <>
-          <Notes />
+          <Page />
           <div
             style={{
               height: "100%",
@@ -23,7 +23,7 @@ const NotePage = () => {
               gridArea: "sep",
             }}
           ></div>
-          <Details />
+          <NoteList />
           <Conections />
         </>
       )}{" "}
@@ -50,4 +50,4 @@ const NotePage = () => {
   );
 };
 
-export default NotePage;
+export default NoteBook;

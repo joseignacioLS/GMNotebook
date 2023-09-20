@@ -1,9 +1,9 @@
-import NotePage from "../components/NotePage";
+import NoteBook from "../components/NoteBook";
 
 export default function Home() {
   return (
     <main>
-      <NotePage />
+      <NoteBook />
     </main>
   );
 }
