@@ -66,14 +66,20 @@ const PageEdit = () => {
   return (
     <div className={`${styles.pageEdit} ${!editMode && styles.height0}`}>
       <label>
-        <span>Title</span>
+        <span data-help={"This is the title of the page"}>Title</span>
         <input
           value={inputTitle}
           onChange={(e) => handleUpdateData("title", e)}
         ></input>
       </label>
       <label>
-        <span>Display</span>
+        <span
+          data-help={
+            "This will substitute the note:keyword wherever this page is referenced as a note."
+          }
+        >
+          Display
+        </span>
         <input
           value={inputDisplay}
           onChange={(e) => handleUpdateData("display", e)}
