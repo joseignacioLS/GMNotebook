@@ -21,30 +21,32 @@ const Conections = ({}) => {
   );
 
   return (
-    <div className={styles.conectionsContainer}>
+    <>
       {references.length > 0 && (
-        <>
-          <h2 className={styles.title}>Appears in:</h2>
-          {
-            <div className={styles.refsContainer}>
-              {references?.map((ref: string) => {
-                if (ref === item.key) return;
-                return (
-                  <span
-                    key={ref}
-                    onClick={() => {
-                      navigateTo(ref);
-                    }}
-                  >
-                    {data[ref]?.title}
-                  </span>
-                );
-              })}
-            </div>
-          }
-        </>
+        <div className={styles.conectionsContainer}>
+          <>
+            <h2 className={styles.title}>Appears in:</h2>
+            {
+              <div className={styles.refsContainer}>
+                {references?.map((ref: string) => {
+                  if (ref === item.key) return;
+                  return (
+                    <span
+                      key={ref}
+                      onClick={() => {
+                        navigateTo(ref);
+                      }}
+                    >
+                      {data[ref]?.title}
+                    </span>
+                  );
+                })}
+              </div>
+            }
+          </>
+        </div>
       )}
-    </div>
+    </>
   );
 };
 

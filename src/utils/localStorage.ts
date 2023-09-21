@@ -1,7 +1,7 @@
-export const saveToLocalStorage = (value: any) => {
-  window.localStorage.setItem("data", JSON.stringify(value));
+export const saveToLocalStorage = (value: any, key: string = "data") => {
+  window.localStorage.setItem(key, JSON.stringify(value));
 };
 
-export const retrieveLocalStorage = () => {
-  return window.localStorage.getItem("data") || "{}";
+export const retrieveLocalStorage = (key: string = "data") => {
+  return window.localStorage.getItem(key) || "{}";
 };

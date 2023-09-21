@@ -3,7 +3,7 @@
   padding: 1rem 0;
   display: flex;
   flex-direction: column;
-  gap: .5rem;
+  gap: 0.5rem;
   width: 100%;
   height: 50%;
 
@@ -24,6 +24,22 @@
     align-items: center;
     text-align: right;
     gap: 1rem;
+
+    span {
+      position: relative;
+      &:hover::after {
+        content: attr(data-help);
+        position: absolute;
+        display: inline-block;
+        left: calc(100% + 0.5rem);
+        top: calc(100% + 0.5rem);
+        background-color: aquamarine;
+        padding: 0.5rem 1rem;
+        border-radius: 0.5rem;
+        text-align: left;
+        width: 150px;
+      }
+    }
 
     input {
       font-size: 1rem;
