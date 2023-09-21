@@ -11,6 +11,7 @@ const NoteCard = ({
   title,
   text,
   shortText,
+  visible,
 }: {
   index: number;
   itemKey: string;
@@ -18,6 +19,7 @@ const NoteCard = ({
   title: string;
   text: string | string[] | ReactElement | ReactElement[];
   shortText: string | string[] | ReactElement | ReactElement[];
+  visible: boolean;
 }) => {
   const { selectedNote, setSelectedNote } = useContext(DataContext);
   const { navigateTo } = useContext(NavigationContext);
@@ -36,7 +38,7 @@ const NoteCard = ({
       id={"note-" + itemKey}
       className={`${styles.note} ${
         itemKey === selectedNote && styles.selected
-      }`}
+      } ${visible && styles.visibleNote}`}
       style={{ backgroundColor: color }}
       onClick={() => {
         if (selectedNote !== itemKey) {

@@ -90,7 +90,6 @@ export const DataProvider = ({ children }: { children: ReactElement }) => {
 
     Object.keys(value).forEach((key: string) => {
       if (!references.includes(key)) {
-        console.log(key);
         delete value[key];
         deletedKeys.push(key);
       }
