@@ -2,11 +2,8 @@ import React, { useContext, useEffect, useState } from "react";
 import styles from "./tutorial.module.scss";
 import { DataContext } from "@/context/data";
 import { retrieveLocalStorage, saveToLocalStorage } from "@/utils/localStorage";
+import { tipI } from "@/context/constants";
 
-interface tipI {
-  tip: string;
-  className: string;
-}
 const tips: tipI[] = [
   {
     tip: "This is the current page, here you can write about a theme and add anotations which will appear as highlighted words.",
@@ -56,7 +53,7 @@ const Tutorial = () => {
 
   useEffect(() => {
     const tutorialCheck = JSON.parse(retrieveLocalStorage("tutorial"));
-    if (tutorialCheck?.check) {
+    if (tutorialCheck?.check || window.innerWidth <= 800) {
       setCurrentTip(tips.length);
     }
   }, []);
