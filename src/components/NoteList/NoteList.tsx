@@ -2,24 +2,25 @@ import React, { useContext } from "react";
 import styles from "./notelist.module.scss";
 import { DataContext } from "@/context/data";
 import NoteCard from "./NoteCard";
-import { textPieceI } from "@/context/constants";
+import { referenceI, textPieceI } from "@/context/constants";
 import { splitTextIntoReferences } from "@/utils/text";
 
 const NoteList = ({}) => {
   const { data, textPieces, generateDisplayText } = useContext(DataContext);
 
-  const processedTextPieces = textPieces
+  const processedTextPieces: referenceI[] = textPieces
     .filter((v) => v.type === "reference")
-    .reduce((acc: textPieceI[], curr: textPieceI) => {
-      if (acc.some((item: textPieceI) => item.key === curr.key)) return acc;
+    .map((v: textPieceI) => v as referenceI)
+    .reduce((acc: referenceI[], curr: referenceI) => {
+      if (acc.some((item: referenceI) => item.key === curr.key)) return acc;
       return [...acc, curr];
     }, []);
 
   return (
     <div className={styles.noteListContainer}>
-      {processedTextPieces.map((textPiece, i) => {
-        const showTitle = data[textPiece?.key || ""]?.title;
-        const referenceText = data[textPiece?.key || ""]?.text || "";
+      {processedTextPieces.map((textPiece: referenceI, i: number) => {
+        const showTitle = data[textPiece.key]?.title || "";
+        const referenceText = data[textPiece.key]?.text || "" ;
         const showText = generateDisplayText(
           splitTextIntoReferences(referenceText),
           ""
@@ -34,12 +35,12 @@ const NoteList = ({}) => {
           <NoteCard
             index={i}
             key={textPiece.key}
-            itemKey={textPiece.key || ""}
-            color={textPiece.color || "#000"}
+            itemKey={textPiece.key}
+            color={textPiece.color}
             title={showTitle}
             text={showText}
             shortText={shortShowText}
-            visible={textPiece?.visible || false}
+            visible={textPiece.visible}
           />
         );
       })}

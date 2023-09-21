@@ -7,7 +7,7 @@ import {
   useEffect,
   useState,
 } from "react";
-import { dataI, itemI, textPieceI, tutorial } from "./constants";
+import { dataI, itemI, referenceI, textPieceI, tutorial } from "./constants";
 import { NavigationContext } from "./navigation";
 
 interface contextOutputI {
@@ -18,7 +18,6 @@ interface contextOutputI {
   textPieces: textPieceI[];
   updateTextPieces: (cb: (value: textPieceI[]) => textPieceI[]) => void;
   updateData: (value: dataI, reset: boolean) => void;
-  addNewEntry: (item: itemI) => void;
   resetData: () => void;
   selectedNote: string | undefined;
   setSelectedNote: any;
@@ -33,7 +32,6 @@ export const DataContext = createContext<contextOutputI>({
   textPieces: [],
   updateTextPieces: (cb: (value: textPieceI[]) => {}) => {},
   updateData: (value: dataI, reset: boolean) => {},
-  addNewEntry: (item: itemI) => {},
   resetData: () => {},
   selectedNote: "",
   setSelectedNote: () => {},
@@ -123,30 +121,21 @@ export const DataProvider = ({ children }: { children: ReactElement }) => {
     updateData({ ...tutorial }, true);
   };
 
-  const addNewEntry = (item: itemI) => {
-    setData({});
-    setTimeout(() => {
-      setData((oldValue) => {
-        return { ...oldValue, item };
-      });
-    }, 0);
-  };
-
   const proccessTextPieces = (text: textPieceI[], referenceStyle: string) => {
     const chuncks: ReactElement[] = text.map((ele, i) => {
       if (ele.type === "reference") {
-        if (!ele.key) return <></>;
-        const content = data[ele.key]?.display || "";
+        const reference: referenceI = ele as referenceI;
+        const content: string = data[reference.key]?.display || "";
         return (
           <span
             key={i}
-            id={ele.id}
+            id={reference.id}
             className={`${referenceStyle}`}
             style={{
               backgroundColor:
-                referenceStyle !== "" ? ele.color : "transparent",
+                referenceStyle !== "" ? reference.color : "transparent",
             }}
-            onClick={() => updateSelectedNote(ele?.key || "")}
+            onClick={() => updateSelectedNote(reference.key || "")}
           >
             {content}
           </span>
@@ -156,7 +145,8 @@ export const DataProvider = ({ children }: { children: ReactElement }) => {
       } else if (ele.type === "break") {
         return <br key={i} />;
       } else if (ele.type === "image") {
-        return <img key={i} src={ele.content.split("img:")[1]} />;
+        const url: string = ele.content.split("img:")[1];
+        return <img key={i} src={url} />;
       }
       return <></>;
     });
@@ -216,12 +206,11 @@ export const DataProvider = ({ children }: { children: ReactElement }) => {
   }, []);
 
   const updateVisibleReferences = () => {
-    let visibleIndex = 0;
     setTextPieces((oldValue: textPieceI[]) => {
       return oldValue.map((ref: textPieceI) => {
         if (ref.type !== "reference") return ref;
-        visibleIndex += 1;
-        const visible = checkItemVisibility(ref?.id || "");
+        const refItem = ref as referenceI;
+        const visible = checkItemVisibility(refItem.id || "");
         const newRef = {
           ...ref,
           visible,
@@ -255,7 +244,6 @@ export const DataProvider = ({ children }: { children: ReactElement }) => {
         setEditMode,
         updateTextPieces: setTextPieces,
         updateData,
-        addNewEntry,
         resetData,
         selectedNote,
         setSelectedNote,
