@@ -3,27 +3,27 @@ export interface itemI {
   text: string;
   key: string;
   display: string;
-  baseEntry?: string;
 }
 
 export interface textPieceI {
   content: string;
   type: string;
-  key?: string;
-  visible?: boolean;
-  color?: string;
-  id?: string;
 }
 
-export const firstItem: itemI = {
-  title: "Title",
-  key: "RootPage",
-  display: "",
-  text: "",
-};
+export interface referenceI extends textPieceI {
+  key: string;
+  visible: boolean;
+  color: string;
+  id: string;
+}
 
 export interface dataI {
   [key: string]: itemI;
+}
+
+export interface tipI {
+  tip: string;
+  className: string;
 }
 
 export const tutorial: dataI = {

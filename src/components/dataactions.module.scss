@@ -4,12 +4,29 @@
   bottom: 0;
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
-  width: 2rem;
+  justify-content: end;
+  gap: 1rem;
+  width: 3rem;
+
+  background-color: white;
+  padding: 0.5rem;
+  border-radius: 1000px;
+  overflow: hidden;
+
+  max-height: 3rem;
+  transition: max-height 0.3s;
+
+  box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.2);
+
+  &:hover {
+    max-height: 10rem;
+  }
 
   input,
   button {
-    width: 100%;
+    position: relative;
+    flex-shrink: 0;
+    width: 2rem;
     height: 2rem;
     font-size: 1rem;
     border: 0;
@@ -30,5 +47,12 @@
     background-image: url("/images/upload.svg");
     background-position: center;
     background-size: 100%;
+  }
+}
+
+@media (max-width: 800px) {
+  .dataActions {
+    flex-direction: row;
+    width: 9rem;
   }
 }
