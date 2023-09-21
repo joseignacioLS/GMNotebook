@@ -9,7 +9,7 @@ const NoteList = ({}) => {
   const { data, textPieces, generateDisplayText } = useContext(DataContext);
 
   const processedTextPieces = textPieces
-    .filter((v) => v.type === "reference" && v.visible)
+    .filter((v) => v.type === "reference")
     .reduce((acc: textPieceI[], curr: textPieceI) => {
       if (acc.some((item: textPieceI) => item.key === curr.key)) return acc;
       return [...acc, curr];
@@ -39,6 +39,7 @@ const NoteList = ({}) => {
             title={showTitle}
             text={showText}
             shortText={shortShowText}
+            visible={textPiece?.visible || false}
           />
         );
       })}

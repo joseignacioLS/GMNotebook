@@ -1,18 +1,25 @@
 .note {
   position: relative;
   color: white;
-  height: auto;
-  margin-bottom: 1rem;
-  padding: 0.5rem;
+  padding: 0;
   border-radius: 0.5rem;
-  transition: padding 0.2s;
   overflow: hidden;
+  height: 0;
+  padding: 0 1rem;
 
   font-size: 2rem;
   line-height: 2.5ch;
   opacity: 0.6;
 
   user-select: none;
+
+  transition: margin 0.2s, padding 0.2s;
+
+  &.visibleNote {
+    padding: 1rem;
+    margin-bottom: 1rem;
+    height: auto;
+  }
 }
 
 @media (max-width: 800px) {

@@ -1,6 +1,6 @@
 import React from "react";
-import Page from "./Page";
-import NoteList from "./NoteList";
+import Page from "./Page/Page";
+import NoteList from "./NoteList/NoteList";
 
 import styles from "./notebook.module.scss";
 import Conections from "./Conections";
