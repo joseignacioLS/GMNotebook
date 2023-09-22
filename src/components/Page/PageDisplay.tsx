@@ -2,6 +2,7 @@ import React, { ReactElement, useContext, useEffect, useState } from "react";
 import styles from "./pagedisplay.module.scss";
 import { NavigationContext } from "@/context/navigation";
 import { DataContext } from "@/context/data";
+import Button from "../Button/Button";
 
 const PageDisplay = () => {
   const { data, item, textPieces, editMode, setEditMode, generateDisplayText } =
@@ -20,18 +21,14 @@ const PageDisplay = () => {
   return (
     <div className={`${styles.pageDisplay} ${!editMode && styles.height100}`}>
       <div className={styles.titleContainer}>
-        <button
-          className="button"
-          style={{ opacity: path.length > 1 ? "1" : ".25" }}
-          onClick={navBack}
-        >
+        <Button naked={true} onClick={navBack} disabled={path.length < 2}>
           <img src="/images/back.svg" />
-        </button>
+        </Button>
         <h1>{item.title}</h1>
 
-        <button className={`button ${styles.btnEdit}`} onClick={toggleHide}>
+        <Button naked={true} onClick={toggleHide}>
           <img className="containedImage" src="/images/edit.svg" />
-        </button>
+        </Button>
       </div>
       <div className={styles.text} id="text">
         {displayText}

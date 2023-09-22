@@ -3,6 +3,8 @@ import styles from "./dataactions.module.scss";
 import { loadFile, saveToFile } from "@/utils/file";
 import { DataContext } from "@/context/data";
 import { modalContext } from "@/context/modal";
+import Tree from "./Tree";
+import Button, { behaviourEnum } from "./Button/Button";
 
 const DataActions = () => {
   const { updateData, data, resetData } = useContext(DataContext);
@@ -21,17 +23,12 @@ const DataActions = () => {
         <p>Resetting the notebook will erase all your content.</p>
         <p>
           If you want to keep it, please{" "}
-          <button
-            className="button"
-            style={{
-              backgroundColor: "aquamarine",
-              padding: ".5rem 1rem",
-              borderRadius: ".5rem",
-            }}
+          <Button
+            behaviour={behaviourEnum.POSITIVE}
             onClick={() => saveToFile(data["RootPage"].title, data)}
           >
             Download
-          </button>{" "}
+          </Button>{" "}
           it before resetting.
         </p>
 
@@ -42,46 +39,30 @@ const DataActions = () => {
             width: "100%",
           }}
         >
-          {" "}
-          <button
-            className="button"
-            style={{
-              backgroundColor: "lightgrey",
-              padding: ".5rem 1rem",
-              borderRadius: ".5rem",
-            }}
-            onClick={closeModal}
-          >
+          <Button behaviour={behaviourEnum.NEUTRAL} onClick={closeModal}>
             Close
-          </button>
-          <button
-            className="button"
-            style={{
-              backgroundColor: "lightcoral",
-              padding: ".5rem 1rem",
-              borderRadius: ".5rem",
-            }}
+          </Button>
+          <Button
+            behaviour={behaviourEnum.NEGATIVE}
             onClick={() => {
               resetData();
               closeModal();
             }}
           >
             Reset
-          </button>
+          </Button>
         </div>
       </div>
     );
   };
   return (
     <div className={styles.dataActions}>
-      <button
-        className="button"
-        id="btn-reset"
-        data-tip={"Reset"}
-        onClick={openModalReset}
-      >
+      <Button naked={true} onClick={openModalReset}>
         <img src="/images/reset.svg" />
-      </button>
+      </Button>
+      <Button naked={true} onClick={() => setContent(<Tree />)} disabled={true}>
+        <img src="/images/tree.svg" />
+      </Button>
       <input
         data-tip={"Upload"}
         type="file"
@@ -90,14 +71,12 @@ const DataActions = () => {
           loadFile("#file", updateData);
         }}
       />
-      <button
-        data-tip={"Download"}
-        id="btn-download"
-        className="button"
+      <Button
+        naked={true}
         onClick={() => saveToFile(data["RootPage"].title, data)}
       >
         <img src="/images/download.svg" />
-      </button>
+      </Button>
     </div>
   );
 };
