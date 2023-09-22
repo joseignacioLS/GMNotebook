@@ -1,13 +1,9 @@
 .pageDisplay {
   position: relative;
   line-height: 2.5ch;
-  height: 50%;
+  height: 100%;
   display: flex;
   flex-direction: column;
-
-  &.height100 {
-    height: 100%;
-  }
 
   .titleContainer {
     height: 4rem;
@@ -49,10 +45,4 @@
   border-radius: 0.5rem;
   white-space: nowrap;
   cursor: pointer;
-}
-
-@media (max-width: 800px) {
-  .pageContainer {
-    height: 4rem;
-  }
 }
