@@ -3,6 +3,7 @@ import React, { ReactElement, useContext, useState } from "react";
 
 import styles from "./notecard.module.scss";
 import { NavigationContext } from "@/context/navigation";
+import Button from "../Button/Button";
 
 const NoteCard = ({
   index,
@@ -46,17 +47,19 @@ const NoteCard = ({
         }
       }}
     >
-      <span
-        className={`button ${styles.linkVisit}`}
+      <Button
+        addClass={styles.linkVisit}
+        naked={true}
         onClick={() => {
           setSelectedNote("");
           navigateTo(itemKey || "");
         }}
       >
         <img src="/images/book.svg" />
-      </span>
-      <span
-        className={`button ${styles.expand}`}
+      </Button>
+      <Button
+        addClass={styles.expand}
+        naked={true}
         onClick={(e) => {
           e.stopPropagation();
           setSelectedNote(itemKey || "");
@@ -64,7 +67,7 @@ const NoteCard = ({
         }}
       >
         <img src={`/images/${isExpanded ? "minus" : "plus"}.svg`} />
-      </span>
+      </Button>
       <h2>{title}</h2>
       {isExpanded ? text : shortText}
     </div>

@@ -3,6 +3,7 @@ import styles from "./tutorial.module.scss";
 import { DataContext } from "@/context/data";
 import { retrieveLocalStorage, saveToLocalStorage } from "@/utils/localStorage";
 import { tipI } from "@/context/constants";
+import Button, { behaviourEnum } from "./Button/Button";
 
 const tips: tipI[] = [
   {
@@ -63,9 +64,9 @@ const Tutorial = () => {
         <div className={styles.tutorialContainer}>
           <span className={tips[currentTip].className}>
             {tips[currentTip].tip}
-            <button className={styles.button} onClick={handleNext}>
+            <Button behaviour={behaviourEnum.POSITIVE} onClick={handleNext}>
               Next
-            </button>
+            </Button>
           </span>
         </div>
       )}
