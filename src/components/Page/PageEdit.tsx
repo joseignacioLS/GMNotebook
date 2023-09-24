@@ -2,6 +2,7 @@ import React, { useContext, useEffect, useState } from "react";
 import styles from "./pageedit.module.scss";
 import { DataContext } from "@/context/data";
 import { getTextReferences } from "@/utils/text";
+import Button from "../Button/Button";
 
 const PageEdit = () => {
   const { data, item, updateData, editMode } = useContext(DataContext);
@@ -89,8 +90,7 @@ const PageEdit = () => {
         value={inputText}
         onChange={(e) => handleUpdateData("text", e)}
       ></textarea>
-      <button
-        className="button"
+      <Button
         onClick={saveData}
         disabled={
           inputText === item.text &&
@@ -99,7 +99,7 @@ const PageEdit = () => {
         }
       >
         <img src="/images/save.svg" />
-      </button>
+      </Button>
     </div>
   );
 };
