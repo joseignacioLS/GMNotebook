@@ -1,12 +1,11 @@
 .notebook {
   position: relative;
   display: grid;
-  grid-template-columns: 1fr auto 1fr;
+  grid-template-columns: 1fr 1fr;
   grid-template-rows: 1fr auto;
   grid-template-areas:
-    "text sep notes"
-    "text sep notes"
-    "con sep notes";
+    "text notes"
+    "con notes";
   height: 100%;
   column-gap: 0.5rem;
 
@@ -18,12 +17,23 @@
     font-size: 2rem;
     text-shadow: 0px 0px 15px black;
   }
+
+  .rightColumn {
+    grid-area: notes;
+    height: 100%;
+    width: 100%;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+  }
 }
 
 @media (max-width: 800px) {
   .notebook {
     grid-template-columns: 1fr;
-    grid-template-rows: 3fr 2fr auto;
+    grid-template-rows: 4fr 4fr 1fr;
     grid-template-areas:
       "text"
       "notes"

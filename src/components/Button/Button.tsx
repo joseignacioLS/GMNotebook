@@ -28,7 +28,6 @@ const Button = ({
   addClass?: string;
   disabled?: boolean;
 }) => {
-  console.log(addClass);
   return (
     <button
       style={{
