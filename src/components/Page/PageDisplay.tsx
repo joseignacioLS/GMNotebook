@@ -25,10 +25,6 @@ const PageDisplay = () => {
           <img src="/images/back.svg" />
         </Button>
         <h1>{item.title}</h1>
-
-        <Button naked={true} onClick={toggleHide}>
-          <img className="containedImage" src="/images/edit.svg" />
-        </Button>
       </div>
       <div className={styles.text} id="text">
         {displayText}
