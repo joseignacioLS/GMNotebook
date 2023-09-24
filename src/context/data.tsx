@@ -19,7 +19,7 @@ interface contextOutputI {
   updateTextPieces: (cb: (value: textPieceI[]) => textPieceI[]) => void;
   updateData: (value: dataI, reset: boolean) => void;
   resetData: () => void;
-  selectedNote: string | undefined;
+  selectedNote: string;
   setSelectedNote: any;
   generateDisplayText: any;
 }
@@ -38,17 +38,6 @@ export const DataContext = createContext<contextOutputI>({
   generateDisplayText: () => {},
 });
 
-const updateSelectedNote = (key: string) => {
-  setTimeout(() => {
-    document.querySelector(`#note-${key}`)?.scrollIntoView();
-    // add animation to card
-    document.querySelector(`#note-${key}`)?.classList.add("flash");
-    setTimeout(() => {
-      document.querySelector(`#note-${key}`)?.classList.remove("flash");
-    }, 600);
-  }, 0);
-};
-
 const checkItemVisibility = (id: string) => {
   const boundingRect = document
     .querySelector(`#${id}`)
@@ -66,11 +55,21 @@ export const DataProvider = ({ children }: { children: ReactElement }) => {
   const [data, setData] = useState<dataI>(tutorial);
   const [editMode, setEditMode] = useState<boolean>(false);
   const [textPieces, setTextPieces] = useState<textPieceI[]>([]);
-  const [selectedNote, setSelectedNote] = useState<string | undefined>(
-    undefined
-  );
+  const [selectedNote, setSelectedNote] = useState<string>("RootPage");
 
   const { path, resetPath, getCurrentPage } = useContext(NavigationContext);
+
+  const updateSelectedNote = (key: string) => {
+    setSelectedNote(key);
+    setTimeout(() => {
+      document.querySelector(`#note-${key}`)?.scrollIntoView();
+      // add animation to card
+      document.querySelector(`#note-${key}`)?.classList.add("flash");
+      setTimeout(() => {
+        document.querySelector(`#note-${key}`)?.classList.remove("flash");
+      }, 600);
+    }, 0);
+  };
 
   const cleanUpData = (value: dataI) => {
     const deletedKeys: string[] = [];

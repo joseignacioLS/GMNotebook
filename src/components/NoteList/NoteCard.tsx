@@ -28,9 +28,6 @@ const NoteCard = ({
   const [isExpanded, setIsExpanded] = useState<boolean>(false);
 
   const toggleExpand = () => {
-    if (isExpanded) {
-      setSelectedNote("");
-    }
     setIsExpanded((v) => !v);
   };
   return (
@@ -41,17 +38,12 @@ const NoteCard = ({
         itemKey === selectedNote && styles.selected
       } ${visible && styles.visibleNote}`}
       style={{ backgroundColor: color }}
-      onClick={() => {
-        if (selectedNote !== itemKey) {
-          setSelectedNote("");
-        }
-      }}
     >
       <Button
         addClass={styles.linkVisit}
         naked={true}
         onClick={() => {
-          setSelectedNote("");
+          setSelectedNote(itemKey);
           navigateTo(itemKey || "");
         }}
       >
@@ -62,7 +54,6 @@ const NoteCard = ({
         naked={true}
         onClick={(e) => {
           e.stopPropagation();
-          setSelectedNote(itemKey || "");
           toggleExpand();
         }}
       >

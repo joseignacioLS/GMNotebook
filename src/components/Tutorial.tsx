@@ -11,7 +11,7 @@ const tips: tipI[] = [
     className: styles.page,
   },
   {
-    tip: "This is the title of the page. Use the left arrow to navigate back and the right pencil to toggle the edit mode.",
+    tip: "This is the title of the page. The left arrow helps you navigate back when you leave a page.",
     className: styles.pageTitle,
   },
   {
@@ -19,11 +19,15 @@ const tips: tipI[] = [
     className: styles.notes,
   },
   {
-    tip: "These are action buttons. Use them to upload (top), download (middle) or reset (bottom) the current data. Do not forget to download your notebook every once in a while to not lose progress!",
+    tip: "These are action buttons. The show on hover, use them to reset (top) , upload (middle) or download (bottom) the current data. Do not forget to download your notebook every once in a while to not lose progress!",
     className: styles.actions,
   },
   {
-    tip: "This is the edit menu. You can open/close it using the pencil icon to the right of the page title. Here you can modify the title, display words and content of the pages. Click the save icon to update your changes.",
+    tip: "This is the edit menu. You can open/close it using the toggle button on top of the right column. Here you can modify the title, display words and content of the pages. Click the save icon to update your changes.",
+    className: styles.edit,
+  },
+  {
+    tip: "Click on any note to change the note you are modifying. Click on the note title to modify the page.",
     className: styles.edit,
   },
   {
@@ -38,7 +42,7 @@ const tips: tipI[] = [
 
 const Tutorial = () => {
   const [currentTip, setCurrentTip] = useState<number>(0);
-  const { setEditMode } = useContext(DataContext);
+  const { data, setEditMode } = useContext(DataContext);
   const handleNext = () => {
     setCurrentTip((v) => v + 1);
   };
@@ -54,7 +58,7 @@ const Tutorial = () => {
 
   useEffect(() => {
     const tutorialCheck = JSON.parse(retrieveLocalStorage("tutorial"));
-    if (tutorialCheck?.check || window.innerWidth <= 800) {
+    if (tutorialCheck?.check || window.innerWidth <= 800 || !data["note"]) {
       setCurrentTip(tips.length);
     }
   }, []);
