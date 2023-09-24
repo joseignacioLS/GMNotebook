@@ -5,7 +5,7 @@ import { getTextReferences } from "@/utils/text";
 import { NavigationContext } from "@/context/navigation";
 
 const Conections = ({}) => {
-  const { item, data } = useContext(DataContext);
+  const { item, data, setSelectedNote } = useContext(DataContext);
   const { navigateTo } = useContext(NavigationContext);
 
   const references = Array.from(
@@ -32,6 +32,7 @@ const Conections = ({}) => {
                 <span
                   key={ref}
                   onClick={() => {
+                    setSelectedNote(ref);
                     navigateTo(ref);
                   }}
                 >

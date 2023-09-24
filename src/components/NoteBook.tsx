@@ -9,6 +9,7 @@ import Tutorial from "./Tutorial";
 import Button from "./Button/Button";
 import PageEdit from "./Page/PageEdit";
 import { NavigationContext } from "@/context/navigation";
+import { DataContext } from "@/context/data";
 
 const generateToggle = (
   isOn: boolean,
@@ -52,12 +53,12 @@ const generateToggle = (
 };
 
 const NoteBook = () => {
-  const [showNotes, setShowNotes] = useState<boolean>(true);
-  const {path} = useContext(NavigationContext);
+  const { setEditMode, editMode, setSelectedNote } = useContext(DataContext);
+  const { path } = useContext(NavigationContext);
 
   useEffect(() => {
-    setShowNotes(true)
-  },[path])
+    setEditMode(false);
+  }, [path]);
   return (
     <div className={styles.notebook}>
       <Tutorial />
@@ -66,11 +67,16 @@ const NoteBook = () => {
         <Button
           naked={true}
           addClass={styles.toggleColumn}
-          onClick={() => setShowNotes((v) => !v)}
+          onClick={() => {
+            if (editMode) {
+              setSelectedNote(path.at(-1));
+            }
+            setEditMode((v: boolean) => !v);
+          }}
         >
-          {generateToggle(showNotes, "Display", "Edit")}
+          {generateToggle(!editMode, "Display", "Edit")}
         </Button>
-        {showNotes ? <NoteList /> : <PageEdit />}
+        {editMode ? <PageEdit /> : <NoteList />}
       </div>
       <Conections />
       <DataActions />

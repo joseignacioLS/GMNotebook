@@ -5,10 +5,16 @@ import { getTextReferences } from "@/utils/text";
 import Button from "../Button/Button";
 
 const PageEdit = () => {
-  const { data, item, updateData, editMode } = useContext(DataContext);
-  const [inputText, setInputText] = useState<string>(item.text);
-  const [inputTitle, setInputTitle] = useState<string>(item.title);
-  const [inputDisplay, setInputDisplay] = useState<string>(item.display);
+  const { data, updateData, editMode, selectedNote } = useContext(DataContext);
+  const [inputText, setInputText] = useState<string>(
+    data[selectedNote]?.text || ""
+  );
+  const [inputTitle, setInputTitle] = useState<string>(
+    data[selectedNote]?.title || ""
+  );
+  const [inputDisplay, setInputDisplay] = useState<string>(
+    data[selectedNote]?.display || ""
+  );
 
   const handleUpdateData = (key: string, e: any) => {
     switch (key) {
@@ -28,7 +34,7 @@ const PageEdit = () => {
 
   const generateItemFromInputs = () => {
     return {
-      ...item,
+      ...data[selectedNote],
       text: inputText,
       title: inputTitle,
       display: inputDisplay,
@@ -56,14 +62,17 @@ const PageEdit = () => {
   const saveData = () => {
     const newItem = generateItemFromInputs();
     const newEntries = generateNewEntries();
-    updateData({ ...data, [item.key]: newItem, ...newEntries }, false);
+    updateData(
+      { ...data, [data[selectedNote].key]: newItem, ...newEntries },
+      false
+    );
   };
 
   useEffect(() => {
-    setInputTitle(item.title);
-    setInputDisplay(item.display);
-    setInputText(item.text);
-  }, [item]);
+    setInputTitle(data[selectedNote]?.title || "");
+    setInputDisplay(data[selectedNote]?.display || "");
+    setInputText(data[selectedNote]?.text || "");
+  }, [data, selectedNote]);
   return (
     <div className={`${styles.pageEdit} ${!editMode && styles.height0}`}>
       <label>
@@ -93,9 +102,9 @@ const PageEdit = () => {
       <Button
         onClick={saveData}
         disabled={
-          inputText === item.text &&
-          inputTitle === item.title &&
-          inputDisplay === item.display
+          inputText === data[selectedNote]?.text &&
+          inputTitle === data[selectedNote]?.title &&
+          inputDisplay === data[selectedNote]?.display
         }
       >
         <img src="/images/save.svg" />
