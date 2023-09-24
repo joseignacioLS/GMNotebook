@@ -62,12 +62,12 @@ const Tutorial = () => {
     <>
       {currentTip < tips.length && (
         <div className={styles.tutorialContainer}>
-          <span className={tips[currentTip].className}>
-            {tips[currentTip].tip}
+          <div className={tips[currentTip].className}>
+            <p>{tips[currentTip].tip}</p>
             <Button behaviour={behaviourEnum.POSITIVE} onClick={handleNext}>
               Next
             </Button>
-          </span>
+          </div>
         </div>
       )}
     </>

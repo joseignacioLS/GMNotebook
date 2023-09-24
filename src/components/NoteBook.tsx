@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import Page from "./Page/Page";
 import NoteList from "./NoteList/NoteList";
 
@@ -8,6 +8,7 @@ import DataActions from "./DataActions";
 import Tutorial from "./Tutorial";
 import Button from "./Button/Button";
 import PageEdit from "./Page/PageEdit";
+import { NavigationContext } from "@/context/navigation";
 
 const generateToggle = (
   isOn: boolean,
@@ -52,6 +53,11 @@ const generateToggle = (
 
 const NoteBook = () => {
   const [showNotes, setShowNotes] = useState<boolean>(true);
+  const {path} = useContext(NavigationContext);
+
+  useEffect(() => {
+    setShowNotes(true)
+  },[path])
   return (
     <div className={styles.notebook}>
       <Tutorial />
