@@ -124,7 +124,7 @@ const Tree = () => {
               navigateTo(leaf.key);
             }}
           >
-            {data[leaf.key].title}
+            {data[leaf.key]?.title || "error"}
           </span>
         );
       })}
