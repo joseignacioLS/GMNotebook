@@ -26,6 +26,13 @@ export interface tipI {
   className: string;
 }
 
+export interface leafI {
+  index: number;
+  key: string;
+  children: number[];
+  position: number[];
+}
+
 export const tutorial: dataI = {
   RootPage: {
     title: "Main page",
