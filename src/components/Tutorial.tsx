@@ -43,10 +43,12 @@ const tips: tipI[] = [
 const Tutorial = () => {
   const [currentTip, setCurrentTip] = useState<number>(0);
   const { data, setEditMode } = useContext(DataContext);
+
   const handleNext = () => {
     setCurrentTip((v) => v + 1);
   };
-  useEffect(() => {
+
+  const handleTipIndexChange = () => {
     if (currentTip === 4) {
       setEditMode(true);
     }
@@ -54,14 +56,23 @@ const Tutorial = () => {
       setEditMode(false);
       saveToLocalStorage({ check: true }, "tutorial");
     }
-  }, [currentTip]);
+  };
 
-  useEffect(() => {
+  const checkIfTutorialIsDone = () => {
     const tutorialCheck = JSON.parse(retrieveLocalStorage("tutorial"));
     if (tutorialCheck?.check || window.innerWidth <= 800 || !data["note"]) {
       setCurrentTip(tips.length);
     }
+  };
+
+  useEffect(() => {
+    checkIfTutorialIsDone();
   }, []);
+
+  useEffect(() => {
+    handleTipIndexChange();
+  }, [currentTip]);
+
   return (
     <>
       {currentTip < tips.length && (

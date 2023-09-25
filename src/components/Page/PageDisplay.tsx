@@ -5,13 +5,8 @@ import { DataContext } from "@/context/data";
 import Button from "../Button/Button";
 
 const PageDisplay = () => {
-  const {
-    data,
-    item,
-    textPieces,
-    generateDisplayText,
-    setSelectedNote,
-  } = useContext(DataContext);
+  const { data, item, textPieces, generateDisplayText, setSelectedNote } =
+    useContext(DataContext);
   const { path, navBack } = useContext(NavigationContext);
 
   const [displayText, setDisplayText] = useState<ReactElement[]>([]);
@@ -19,6 +14,7 @@ const PageDisplay = () => {
   useEffect(() => {
     setDisplayText(generateDisplayText(textPieces, styles.reference));
   }, [textPieces, data]);
+
   return (
     <div className={`${styles.pageDisplay}`}>
       <div className={styles.titleContainer}>

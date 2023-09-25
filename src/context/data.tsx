@@ -64,14 +64,16 @@ const checkItemVisibility = (id: string) => {
 
 const generateDataTree = (value: dataI) => {
   const tree: leafI[] = Object.keys(value).map((key, index) => {
+    const n = key.split("").reduce((acc: number, curr: string) => {
+      return acc + curr.charCodeAt(0);
+    }, 0);
+    const x = (n * 321) % 80;
+    const y = (n * 581) % 80;
     return {
       index,
       key,
       children: [],
-      position: [
-        Math.floor(10 + Math.random() * 80),
-        Math.floor(10 + Math.random() * 80),
-      ],
+      position: [10 + x, 10 + y],
     };
   });
 

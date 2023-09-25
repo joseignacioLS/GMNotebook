@@ -73,6 +73,7 @@ const PageEdit = () => {
     setInputDisplay(data[selectedNote]?.display || "");
     setInputText(data[selectedNote]?.text || "");
   }, [data, selectedNote]);
+
   return (
     <div className={`${styles.pageEdit} ${!editMode && styles.height0}`}>
       <label>

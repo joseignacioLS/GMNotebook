@@ -7,7 +7,7 @@ export const saveToFile = (filename: string, content: any) => {
     "href",
     "data:text/plain;charset=utf-8," + encodeURIComponent(data)
   );
-  element.setAttribute("download", filename.replace(/ /g, "-")+".json");
+  element.setAttribute("download", filename.replace(/ /g, "-") + ".json");
   element.style.display = "none";
   document.body.appendChild(element);
   element.click();

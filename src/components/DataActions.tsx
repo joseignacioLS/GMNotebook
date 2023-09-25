@@ -5,54 +5,33 @@ import { DataContext } from "@/context/data";
 import { modalContext } from "@/context/modal";
 import Tree from "./Tree";
 import Button, { behaviourEnum } from "./Button/Button";
+import Text2Options from "./Modal/ModalDefaults/Text2Options";
 
 const DataActions = () => {
   const { updateData, data, resetData } = useContext(DataContext);
-  const { setContent, closeModal } = useContext(modalContext);
+  const { setContent } = useContext(modalContext);
 
   const openModalReset = () => {
     setContent(
-      <div
-        style={{
-          display: "flex",
-          flexDirection: "column",
-          gap: "1rem",
-          alignItems: "center",
-        }}
-      >
-        <p>Resetting the notebook will erase all your content.</p>
-        <p>
-          If you want to keep it, please{" "}
-          <Button
-            behaviour={behaviourEnum.POSITIVE}
-            onClick={() => saveToFile(data["RootPage"].title, data)}
-          >
-            Download
-          </Button>{" "}
-          it before resetting.
-        </p>
-
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "space-around",
-            width: "100%",
-          }}
-        >
-          <Button behaviour={behaviourEnum.NEUTRAL} onClick={closeModal}>
-            Close
-          </Button>
-          <Button
-            behaviour={behaviourEnum.NEGATIVE}
-            onClick={() => {
-              resetData();
-              closeModal();
-            }}
-          >
-            Reset
-          </Button>
-        </div>
-      </div>
+      <Text2Options
+        text={
+          <>
+            <p>
+              Resetting the notebook will erase all your content. If you want to
+              keep it, please{" "}
+              <Button
+                behaviour={behaviourEnum.POSITIVE}
+                onClick={() => saveToFile(data["RootPage"].title, data)}
+              >
+                Download
+              </Button>{" "}
+              it before resetting.
+            </p>
+          </>
+        }
+        positiveButtonAction={resetData}
+        positiveButtonText={"Reset"}
+      />
     );
   };
   return (

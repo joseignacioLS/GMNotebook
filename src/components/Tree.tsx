@@ -1,8 +1,7 @@
-import React, { ReactElement, useContext, useEffect, useState } from "react";
+import React, { ReactElement, useContext, useEffect } from "react";
 import styles from "./tree.module.scss";
 import { DataContext } from "@/context/data";
-import { dataI, leafI } from "@/context/constants";
-import { getTextReferences } from "@/utils/text";
+import { leafI } from "@/context/constants";
 import { generateColor } from "@/utils/color";
 import { NavigationContext } from "@/context/navigation";
 import { modalContext } from "@/context/modal";
@@ -78,12 +77,16 @@ const Tree = () => {
     setTree((oldValue: leafI[]) => relax(oldValue));
   };
 
-  useEffect(() => {
+  const relaxTreeForFirstVisualization = () => {
     let relaxedTree = tree;
     for (let i = 0; i < 5000; i++) {
       relaxedTree = relax(relaxedTree);
     }
     setTree(relaxedTree);
+  };
+
+  useEffect(() => {
+    relaxTreeForFirstVisualization();
     const interval = setInterval(relaxTreeMore, 50);
     return () => clearInterval(interval);
   }, [data]);
