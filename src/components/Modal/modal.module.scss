@@ -19,9 +19,8 @@
 
   .closeButton {
     position: absolute;
-    right: .5rem;
-    top: .5rem;
-    height: 1rem;
-    width: 1rem;
+    right: 0.5rem;
+    top: 0.5rem;
+    z-index: 1;
   }
 }
