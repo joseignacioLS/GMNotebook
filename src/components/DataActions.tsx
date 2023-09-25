@@ -60,7 +60,7 @@ const DataActions = () => {
       <Button naked={true} onClick={openModalReset}>
         <img src="/images/reset.svg" />
       </Button>
-      <Button naked={true} onClick={() => setContent(<Tree />)} disabled={true}>
+      <Button naked={true} onClick={() => setContent(<Tree />)}>
         <img src="/images/tree.svg" />
       </Button>
       <input

@@ -20,7 +20,8 @@ const NoteList = ({}) => {
     <div className={styles.noteListContainer}>
       {processedTextPieces.map((textPiece: referenceI, i: number) => {
         const showTitle = data[textPiece.key]?.title || "";
-        const referenceText = data[textPiece.key]?.text || "" ;
+        const referenceText = data[textPiece.key]?.text || "";
+        const expandable = referenceText.split(" ").length > 30;
         const showText = generateDisplayText(
           splitTextIntoReferences(referenceText),
           ""
@@ -39,7 +40,7 @@ const NoteList = ({}) => {
             color={textPiece.color}
             title={showTitle}
             text={showText}
-            shortText={shortShowText}
+            shortText={expandable ? shortShowText : undefined}
             visible={textPiece.visible}
           />
         );

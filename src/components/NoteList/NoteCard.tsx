@@ -19,7 +19,7 @@ const NoteCard = ({
   color: string;
   title: string;
   text: string | string[] | ReactElement | ReactElement[];
-  shortText: string | string[] | ReactElement | ReactElement[];
+  shortText: string | string[] | ReactElement | ReactElement[] | undefined;
   visible: boolean;
 }) => {
   const { selectedNote, setSelectedNote } = useContext(DataContext);
@@ -49,18 +49,20 @@ const NoteCard = ({
       >
         <img src="/images/book.svg" />
       </Button>
-      <Button
-        addClass={styles.expand}
-        naked={true}
-        onClick={(e) => {
-          e.stopPropagation();
-          toggleExpand();
-        }}
-      >
-        <img src={`/images/${isExpanded ? "minus" : "plus"}.svg`} />
-      </Button>
+      {shortText !== undefined && (
+        <Button
+          addClass={styles.expand}
+          naked={true}
+          onClick={(e) => {
+            e.stopPropagation();
+            toggleExpand();
+          }}
+        >
+          <img src={`/images/${isExpanded ? "minus" : "plus"}.svg`} />
+        </Button>
+      )}
       <h2>{title}</h2>
-      {isExpanded ? text : shortText}
+      {isExpanded || shortText === undefined ? text : shortText}
     </div>
   );
 };

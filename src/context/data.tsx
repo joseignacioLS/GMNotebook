@@ -7,7 +7,14 @@ import {
   useEffect,
   useState,
 } from "react";
-import { dataI, itemI, referenceI, textPieceI, tutorial } from "./constants";
+import {
+  dataI,
+  itemI,
+  leafI,
+  referenceI,
+  textPieceI,
+  tutorial,
+} from "./constants";
 import { NavigationContext } from "./navigation";
 
 interface contextOutputI {
@@ -22,6 +29,8 @@ interface contextOutputI {
   selectedNote: string;
   setSelectedNote: any;
   generateDisplayText: any;
+  tree: leafI[];
+  setTree: any;
 }
 
 export const DataContext = createContext<contextOutputI>({
@@ -36,6 +45,8 @@ export const DataContext = createContext<contextOutputI>({
   selectedNote: "",
   setSelectedNote: () => {},
   generateDisplayText: () => {},
+  tree: [],
+  setTree: () => {},
 });
 
 const checkItemVisibility = (id: string) => {
@@ -51,8 +62,32 @@ const checkItemVisibility = (id: string) => {
   );
 };
 
+const generateDataTree = (value: dataI) => {
+  const tree: leafI[] = Object.keys(value).map((key, index) => {
+    return {
+      index,
+      key,
+      children: [],
+      position: [
+        Math.floor(10 + Math.random() * 80),
+        Math.floor(10 + Math.random() * 80),
+      ],
+    };
+  });
+
+  Object.keys(value).forEach((key) => {
+    const leaf = tree.findIndex((v: leafI) => v.key === key);
+    const refes = getTextReferences(value[key].text);
+    tree[leaf].children = refes.map((v) => {
+      return tree.findIndex((k: leafI) => k.key === v);
+    });
+  });
+  return tree;
+};
+
 export const DataProvider = ({ children }: { children: ReactElement }) => {
   const [data, setData] = useState<dataI>(tutorial);
+  const [tree, setTree] = useState<leafI[]>([]);
   const [editMode, setEditMode] = useState<boolean>(false);
   const [textPieces, setTextPieces] = useState<textPieceI[]>([]);
   const [selectedNote, setSelectedNote] = useState<string>("RootPage");
@@ -192,7 +227,12 @@ export const DataProvider = ({ children }: { children: ReactElement }) => {
     if (!references) return setTextPieces([]);
     const refes = splitTextIntoReferences(referenceText);
     setTextPieces(refes);
+    setTimeout(updateVisibleReferences, 100);
   }, [path, data]);
+
+  useEffect(() => {
+    setTree(generateDataTree(data));
+  }, [data]);
 
   useEffect(() => {
     const retrieved = retrieveLocalStorage();
@@ -247,6 +287,8 @@ export const DataProvider = ({ children }: { children: ReactElement }) => {
         selectedNote,
         setSelectedNote,
         generateDisplayText,
+        tree,
+        setTree,
       }}
     >
       {children}

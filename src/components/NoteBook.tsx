@@ -57,8 +57,9 @@ const NoteBook = () => {
   const { path } = useContext(NavigationContext);
 
   useEffect(() => {
-    setEditMode(false);
+    setTimeout(() => setEditMode(false), 0);
   }, [path]);
+
   return (
     <div className={styles.notebook}>
       <Tutorial />

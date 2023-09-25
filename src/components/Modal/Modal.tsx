@@ -15,7 +15,7 @@ const Modal = () => {
               naked={true}
               onClick={closeModal}
             >
-              X
+              <img width={"2rem"} src="/images/close.svg" />
             </Button>
             {content}
           </div>
