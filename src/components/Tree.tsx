@@ -1,41 +1,11 @@
 import React, { ReactElement, useContext, useEffect, useState } from "react";
 import styles from "./tree.module.scss";
 import { DataContext } from "@/context/data";
-import { dataI } from "@/context/constants";
+import { dataI, leafI } from "@/context/constants";
 import { getTextReferences } from "@/utils/text";
 import { generateColor } from "@/utils/color";
 import { NavigationContext } from "@/context/navigation";
 import { modalContext } from "@/context/modal";
-
-interface leafI {
-  index: number;
-  key: string;
-  children: number[];
-  position: number[];
-}
-
-const generateDataTree = (value: dataI) => {
-  const tree: leafI[] = Object.keys(value).map((key, index) => {
-    return {
-      index,
-      key,
-      children: [],
-      position: [
-        Math.floor(10 + Math.random() * 80),
-        Math.floor(10 + Math.random() * 80),
-      ],
-    };
-  });
-
-  Object.keys(value).forEach((key) => {
-    const leaf = tree.findIndex((v: leafI) => v.key === key);
-    const refes = getTextReferences(value[key].text);
-    tree[leaf].children = refes.map((v) => {
-      return tree.findIndex((k: leafI) => k.key === v);
-    });
-  });
-  return tree;
-};
 
 const relax = (tree: leafI[]) => {
   const FORCE_CONSTANT = 0.00001;
@@ -100,13 +70,12 @@ const relax = (tree: leafI[]) => {
 };
 
 const Tree = () => {
-  const { data } = useContext(DataContext);
+  const { data, tree, setTree } = useContext(DataContext);
   const { navigateTo } = useContext(NavigationContext);
   const { closeModal } = useContext(modalContext);
-  const [tree, setTree] = useState<leafI[]>(generateDataTree(data));
 
   const relaxTreeMore = () => {
-    setTree((oldValue) => relax(oldValue));
+    setTree((oldValue: leafI[]) => relax(oldValue));
   };
 
   useEffect(() => {
@@ -115,9 +84,9 @@ const Tree = () => {
       relaxedTree = relax(relaxedTree);
     }
     setTree(relaxedTree);
-    const interval = setInterval(relaxTreeMore, 5);
+    const interval = setInterval(relaxTreeMore, 50);
     return () => clearInterval(interval);
-  }, []);
+  }, [data]);
 
   return (
     <div className={styles.treeContainer}>
