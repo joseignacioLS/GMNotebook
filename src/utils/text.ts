@@ -18,8 +18,8 @@ export const splitTextIntoReferences = (text: string): textPieceI[] => {
 
   const sliceText = (
     text: string,
-    index0: number = 0,
-    index1: number | undefined = undefined
+    index0: number,
+    index1: number
   ): string[] => {
     return [text.slice(0, index0), text.slice(index1)];
   };

@@ -129,7 +129,8 @@ export const DataProvider = ({ children }: { children: ReactElement }) => {
       }
     });
 
-    if (deletedKeys.length > 0) {
+    const currentPath = path.at(-1) || undefined;
+    if (currentPath !== undefined && deletedKeys.includes(currentPath)) {
       resetPath();
     }
 
