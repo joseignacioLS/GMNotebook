@@ -230,8 +230,8 @@ export const DataProvider = ({ children }: { children: ReactElement }) => {
   }, [textPieces, updateVisibleReferences, editMode]);
 
   useEffect(() => {
-    updateVisibleReferences();
-  }, [editMode]);
+    setTimeout(updateVisibleReferences, 0);
+  }, [editMode, data]);
 
   return (
     <DataContext.Provider

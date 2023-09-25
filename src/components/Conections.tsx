@@ -32,8 +32,8 @@ const Conections = ({}) => {
                 <span
                   key={ref}
                   onClick={() => {
-                    setSelectedNote(ref);
                     navigateTo(ref);
+                    setSelectedNote(ref);
                   }}
                 >
                   {data[ref]?.title}
