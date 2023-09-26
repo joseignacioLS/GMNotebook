@@ -16,6 +16,7 @@ import {
   tutorial,
 } from "./constants";
 import { NavigationContext } from "./navigation";
+import Reference from "@/components/Page/Reference";
 
 interface contextOutputI {
   data: dataI;
@@ -31,6 +32,7 @@ interface contextOutputI {
   generateDisplayText: any;
   tree: leafI[];
   setTree: any;
+  updateSelectedNote: any;
 }
 
 export const DataContext = createContext<contextOutputI>({
@@ -47,6 +49,7 @@ export const DataContext = createContext<contextOutputI>({
   generateDisplayText: () => {},
   tree: [],
   setTree: () => {},
+  updateSelectedNote: () => {},
 });
 
 const checkItemVisibility = (id: string) => {
@@ -63,26 +66,33 @@ const checkItemVisibility = (id: string) => {
 };
 
 const generateDataTree = (value: dataI) => {
-  const tree: leafI[] = Object.keys(value).map((key, index) => {
-    const n = key.split("").reduce((acc: number, curr: string) => {
-      return acc + curr.charCodeAt(0);
-    }, 0);
-    const x = (n * 321) % 80;
-    const y = (n * 581) % 80;
-    return {
-      index,
-      key,
-      children: [],
-      position: [10 + x, 10 + y],
-    };
-  });
+  const tree: leafI[] = Object.keys(value)
+    .filter((key) => {
+      return value[key].showInTree;
+    })
+    .map((key, index) => {
+      const n = key.split("").reduce((acc: number, curr: string) => {
+        return acc + curr.charCodeAt(0);
+      }, 0);
+      const x = (n * 321) % 80;
+      const y = (n * 581) % 80;
+      return {
+        index,
+        key,
+        children: [],
+        position: [10 + x, 10 + y],
+      };
+    });
 
   Object.keys(value).forEach((key) => {
     const leaf = tree.findIndex((v: leafI) => v.key === key);
+    if (leaf < 0) return;
     const refes = getTextReferences(value[key].text);
-    tree[leaf].children = refes.map((v) => {
-      return tree.findIndex((k: leafI) => k.key === v);
-    });
+    tree[leaf].children = refes
+      .map((v) => {
+        return tree.findIndex((k: leafI) => k.key === v);
+      })
+      .filter((v) => v > -1);
   });
   return tree;
 };
@@ -164,18 +174,12 @@ export const DataProvider = ({ children }: { children: ReactElement }) => {
         const reference: referenceI = ele as referenceI;
         const content: string = data[reference.key]?.display || "";
         return (
-          <span
+          <Reference
             key={i}
-            id={reference.id}
-            className={`${referenceStyle}`}
-            style={{
-              backgroundColor:
-                referenceStyle !== "" ? reference.color : "transparent",
-            }}
-            onClick={() => updateSelectedNote(reference.key || "")}
-          >
-            {content}
-          </span>
+            reference={reference}
+            referenceStyle={referenceStyle}
+            content={content}
+          />
         );
       } else if (ele.type === "text") {
         return <span key={i}>{ele.content}</span>;
@@ -240,8 +244,12 @@ export const DataProvider = ({ children }: { children: ReactElement }) => {
   useEffect(() => {
     const retrieved = retrieveLocalStorage();
     try {
-      const parsed = JSON.parse(retrieved) as dataI;
-      updateData(parsed);
+      const parsed = JSON.parse(retrieved);
+      Object.keys(parsed).forEach((key: string) => {
+        if (parsed[key].showInTree === undefined)
+          parsed[key].showInTree === false;
+      });
+      updateData(parsed as dataI);
     } catch (err) {
       console.log(err);
     }
@@ -292,6 +300,7 @@ export const DataProvider = ({ children }: { children: ReactElement }) => {
         generateDisplayText,
         tree,
         setTree,
+        updateSelectedNote,
       }}
     >
       {children}

@@ -24,8 +24,12 @@ export const loadFile = (inputSelector: string, callback: any) => {
     const fileContents = e.target?.result;
     if (!fileContents) return;
     try {
-      const parsed = JSON.parse(fileContents as string) as dataI;
-      callback(parsed);
+      const parsed = JSON.parse(fileContents as string);
+      Object.keys(parsed).forEach((key: string) => {
+        if (parsed[key].showInTree === undefined)
+          parsed[key].showInTree = false;
+      });
+      callback(parsed as dataI);
     } catch (err) {
       console.log(err);
     }

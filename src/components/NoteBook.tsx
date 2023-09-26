@@ -53,7 +53,7 @@ const generateToggle = (
 };
 
 const NoteBook = () => {
-  const { setEditMode, editMode, setSelectedNote } = useContext(DataContext);
+  const { setEditMode, editMode, updateSelectedNote } = useContext(DataContext);
   const { path } = useContext(NavigationContext);
 
   useEffect(() => {
@@ -70,7 +70,7 @@ const NoteBook = () => {
           addClass={styles.toggleColumn}
           onClick={() => {
             if (editMode) {
-              setSelectedNote(path.at(-1));
+              updateSelectedNote(path.at(-1));
             }
             setEditMode((v: boolean) => !v);
           }}

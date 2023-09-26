@@ -17,7 +17,7 @@ const NoteList = ({}) => {
     }, []);
 
   return (
-    <div className={styles.noteListContainer}>
+    <div className={styles.noteListContainer} id="notes">
       {processedTextPieces.map((textPiece: referenceI, i: number) => {
         const showTitle = data[textPiece.key]?.title || "";
         const referenceText = data[textPiece.key]?.text || "";

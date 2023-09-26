@@ -69,7 +69,7 @@ const relax = (tree: leafI[]) => {
 };
 
 const Tree = () => {
-  const { data, tree, setTree } = useContext(DataContext);
+  const { data, tree, setTree, updateSelectedNote } = useContext(DataContext);
   const { navigateTo } = useContext(NavigationContext);
   const { closeModal } = useContext(modalContext);
 
@@ -124,6 +124,7 @@ const Tree = () => {
             }}
             onClick={() => {
               closeModal();
+              updateSelectedNote(leaf.key);
               navigateTo(leaf.key);
             }}
           >

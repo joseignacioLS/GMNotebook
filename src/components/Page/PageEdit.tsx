@@ -15,6 +15,9 @@ const PageEdit = () => {
   const [inputDisplay, setInputDisplay] = useState<string>(
     data[selectedNote]?.display || ""
   );
+  const [inputTree, setInputTree] = useState<boolean>(
+    data[selectedNote]?.showInTree || false
+  );
 
   const handleUpdateData = (key: string, e: any) => {
     switch (key) {
@@ -27,6 +30,9 @@ const PageEdit = () => {
       case "display":
         setInputDisplay(e.currentTarget.value);
         break;
+      case "tree":
+        setInputTree(!!e.currentTarget.checked);
+        break;
       default:
         break;
     }
@@ -38,6 +44,7 @@ const PageEdit = () => {
       text: inputText,
       title: inputTitle,
       display: inputDisplay,
+      showInTree: inputTree,
     };
   };
 
@@ -72,6 +79,7 @@ const PageEdit = () => {
     setInputTitle(data[selectedNote]?.title || "");
     setInputDisplay(data[selectedNote]?.display || "");
     setInputText(data[selectedNote]?.text || "");
+    setInputTree(data[selectedNote]?.showInTree || false);
   }, [data, selectedNote]);
 
   return (
@@ -96,6 +104,17 @@ const PageEdit = () => {
           onChange={(e) => handleUpdateData("display", e)}
         ></input>
       </label>
+      <label>
+        <span data-help={"Decide if this note is shown in the tree"}>
+          Shown in Tree?
+        </span>
+        <input
+          type="checkbox"
+          checked={inputTree}
+          value={inputDisplay}
+          onChange={(e) => handleUpdateData("tree", e)}
+        ></input>
+      </label>
       <textarea
         value={inputText}
         onChange={(e) => handleUpdateData("text", e)}
@@ -105,7 +124,8 @@ const PageEdit = () => {
         disabled={
           inputText === data[selectedNote]?.text &&
           inputTitle === data[selectedNote]?.title &&
-          inputDisplay === data[selectedNote]?.display
+          inputDisplay === data[selectedNote]?.display &&
+          inputTree === data[selectedNote]?.showInTree
         }
       >
         <img src="/images/save.svg" />

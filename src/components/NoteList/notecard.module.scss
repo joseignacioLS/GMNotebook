@@ -15,6 +15,12 @@
 
   transition: margin 0.2s, padding 0.2s;
 
+  img {
+    width: auto;
+    max-height: 400px;
+    max-width: 100%;
+  }
+
   &.visibleNote {
     padding: 1rem;
     margin-bottom: 1rem;

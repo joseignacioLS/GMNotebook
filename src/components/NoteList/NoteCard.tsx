@@ -22,7 +22,7 @@ const NoteCard = ({
   shortText: string | string[] | ReactElement | ReactElement[] | undefined;
   visible: boolean;
 }) => {
-  const { selectedNote, setSelectedNote } = useContext(DataContext);
+  const { selectedNote, updateSelectedNote } = useContext(DataContext);
   const { navigateTo } = useContext(NavigationContext);
 
   const [isExpanded, setIsExpanded] = useState<boolean>(false);
@@ -43,7 +43,7 @@ const NoteCard = ({
         addClass={styles.linkVisit}
         naked={true}
         onClick={() => {
-          setSelectedNote(itemKey);
+          updateSelectedNote(itemKey);
           navigateTo(itemKey || "");
         }}
       >

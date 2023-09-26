@@ -20,6 +20,7 @@ export const NavigationContext = createContext<contextOutputI>({
 
 const resetNotesScroll = () => {
   document.querySelector("#text")?.scrollTo({ top: 0 });
+  document.querySelector("#notes")?.scrollTo({ top: 0 });
 };
 
 export const NavigationProvider = ({
