@@ -2,6 +2,8 @@ import React, { ReactElement, useContext } from "react";
 import Button, { behaviourEnum } from "../../Button/Button";
 import { modalContext } from "@/context/modal";
 
+import styles from "./text2options.module.scss";
+
 interface propsI {
   text: string | ReactElement | ReactElement[];
   positiveButtonText: string | ReactElement;
@@ -15,25 +17,10 @@ const Text2Options = ({
 }: propsI) => {
   const { closeModal } = useContext(modalContext);
   return (
-    <div
-      style={{
-        display: "flex",
-        flexDirection: "column",
-        gap: "1rem",
-        alignItems: "center",
-        width: "25rem",
-        textAlign: "center",
-      }}
-    >
+    <div className={styles.wrapper}>
       {text}
 
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "space-around",
-          width: "100%",
-        }}
-      >
+      <div className={styles.buttons}>
         <Button behaviour={behaviourEnum.NEUTRAL} onClick={closeModal}>
           Close
         </Button>
