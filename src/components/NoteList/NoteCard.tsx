@@ -5,6 +5,16 @@ import styles from "./notecard.module.scss";
 import { NavigationContext } from "@/context/navigation";
 import Button from "../Button/Button";
 
+interface propsI {
+  index: number;
+  itemKey: string;
+  color: string;
+  title: string;
+  text: string | string[] | ReactElement | ReactElement[];
+  shortText: string | string[] | ReactElement | ReactElement[] | undefined;
+  visible: boolean;
+}
+
 const NoteCard = ({
   index,
   itemKey,
@@ -13,15 +23,7 @@ const NoteCard = ({
   text,
   shortText,
   visible,
-}: {
-  index: number;
-  itemKey: string;
-  color: string;
-  title: string;
-  text: string | string[] | ReactElement | ReactElement[];
-  shortText: string | string[] | ReactElement | ReactElement[] | undefined;
-  visible: boolean;
-}) => {
+}: propsI) => {
   const { selectedNote, updateSelectedNote } = useContext(DataContext);
   const { navigateTo } = useContext(NavigationContext);
 

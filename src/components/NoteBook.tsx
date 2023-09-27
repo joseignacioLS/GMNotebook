@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from "react";
+import React, { useContext } from "react";
 import Page from "./Page/Page";
 import NoteList from "./NoteList/NoteList";
 
@@ -53,12 +53,9 @@ const generateToggle = (
 };
 
 const NoteBook = () => {
-  const { setEditMode, editMode, updateSelectedNote } = useContext(DataContext);
+  const { updateEditMode, editMode, updateSelectedNote } =
+    useContext(DataContext);
   const { path } = useContext(NavigationContext);
-
-  useEffect(() => {
-    setTimeout(() => setEditMode(false), 0);
-  }, [path]);
 
   return (
     <div className={styles.notebook}>
@@ -72,7 +69,7 @@ const NoteBook = () => {
             if (editMode) {
               updateSelectedNote(path.at(-1));
             }
-            setEditMode((v: boolean) => !v);
+            updateEditMode((v: boolean) => !v);
           }}
         >
           {generateToggle(!editMode, "Display", "Edit")}

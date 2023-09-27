@@ -13,6 +13,15 @@ const bgColorDictionary: { [key in behaviourEnum]: string } = {
   [behaviourEnum.NEGATIVE]: "lightcoral",
 };
 
+interface propsI {
+  children: ReactElement | string;
+  behaviour?: behaviourEnum;
+  naked?: boolean;
+  onClick: (e: any) => void;
+  addClass?: string;
+  disabled?: boolean;
+}
+
 const Button = ({
   children,
   behaviour = behaviourEnum.NEUTRAL,
@@ -20,14 +29,7 @@ const Button = ({
   onClick,
   addClass,
   disabled = false,
-}: {
-  children: ReactElement | string;
-  behaviour?: behaviourEnum;
-  naked?: boolean;
-  onClick: (e: any) => void;
-  addClass?: string;
-  disabled?: boolean;
-}) => {
+}: propsI) => {
   return (
     <button
       style={{

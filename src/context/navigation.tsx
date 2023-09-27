@@ -29,6 +29,7 @@ export const NavigationProvider = ({
   children: ReactElement;
 }) => {
   const [path, setPath] = useState<string[]>(["RootPage"]);
+  
   const navBack = () => {
     if (path.length === 1) return;
     setPath((oldValue: string[]) => oldValue.slice(0, oldValue.length - 1));

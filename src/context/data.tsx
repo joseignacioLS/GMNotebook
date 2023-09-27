@@ -22,7 +22,7 @@ interface contextOutputI {
   data: dataI;
   item: itemI;
   editMode: boolean;
-  setEditMode: any;
+  updateEditMode: any;
   textPieces: textPieceI[];
   updateTextPieces: (cb: (value: textPieceI[]) => textPieceI[]) => void;
   updateData: (value: dataI, reset: boolean) => void;
@@ -39,7 +39,7 @@ export const DataContext = createContext<contextOutputI>({
   data: tutorial,
   item: tutorial["RootPage"],
   editMode: false,
-  setEditMode: () => {},
+  updateEditMode: () => {},
   textPieces: [],
   updateTextPieces: (cb: (value: textPieceI[]) => {}) => {},
   updateData: (value: dataI, reset: boolean) => {},
@@ -106,15 +106,13 @@ export const DataProvider = ({ children }: { children: ReactElement }) => {
 
   const { path, resetPath, getCurrentPage } = useContext(NavigationContext);
 
-  const updateSelectedNote = (key: string) => {
-    setSelectedNote(key);
+  const updateData = (value: dataI, resetEntry: boolean = true) => {
+    value = cleanUpData(value);
     setTimeout(() => {
-      document.querySelector(`#note-${key}`)?.scrollIntoView();
-      // add animation to card
-      document.querySelector(`#note-${key}`)?.classList.add("flash");
-      setTimeout(() => {
-        document.querySelector(`#note-${key}`)?.classList.remove("flash");
-      }, 600);
+      setData(value);
+      setTree(generateDataTree(value));
+      if (resetEntry) resetPath();
+      saveToLocalStorage(value);
     }, 0);
   };
 
@@ -155,15 +153,6 @@ export const DataProvider = ({ children }: { children: ReactElement }) => {
     return value;
   };
 
-  const updateData = (value: dataI, resetEntry: boolean = true) => {
-    value = cleanUpData(value);
-    setTimeout(() => {
-      setData(value);
-      if (resetEntry) resetPath();
-      saveToLocalStorage(value);
-    }, 0);
-  };
-
   const resetData = () => {
     updateData({ ...tutorial }, true);
   };
@@ -178,8 +167,9 @@ export const DataProvider = ({ children }: { children: ReactElement }) => {
             key={i}
             reference={reference}
             referenceStyle={referenceStyle}
-            content={content}
-          />
+          >
+            {content}
+          </Reference>
         );
       } else if (ele.type === "text") {
         return <span key={i}>{ele.content}</span>;
@@ -219,6 +209,38 @@ export const DataProvider = ({ children }: { children: ReactElement }) => {
     return output;
   };
 
+  const updateVisibleReferences = () => {
+    setTextPieces((oldValue: textPieceI[]) => {
+      return oldValue.map((ref: textPieceI) => {
+        if (ref.type !== "reference") return ref;
+        const refItem = ref as referenceI;
+        const visible = checkItemVisibility(refItem.id || "");
+        const newRef = {
+          ...ref,
+          visible,
+        } as textPieceI;
+        return newRef;
+      }) as textPieceI[];
+    });
+  };
+
+  const updateEditMode = (value: boolean) => {
+    setEditMode(value);
+    updateVisibleReferences();
+  };
+
+  const updateSelectedNote = (key: string) => {
+    setSelectedNote(key);
+    setTimeout(() => {
+      document.querySelector(`#note-${key}`)?.scrollIntoView();
+      // add animation to card
+      document.querySelector(`#note-${key}`)?.classList.add("flash");
+      setTimeout(() => {
+        document.querySelector(`#note-${key}`)?.classList.remove("flash");
+      }, 600);
+    }, 0);
+  };
+
   useEffect(() => {
     if (data?.RootPage === undefined) {
       updateData(tutorial);
@@ -238,10 +260,6 @@ export const DataProvider = ({ children }: { children: ReactElement }) => {
   }, [path, data]);
 
   useEffect(() => {
-    setTree(generateDataTree(data));
-  }, [data]);
-
-  useEffect(() => {
     const retrieved = retrieveLocalStorage();
     try {
       const parsed = JSON.parse(retrieved);
@@ -255,21 +273,6 @@ export const DataProvider = ({ children }: { children: ReactElement }) => {
     }
   }, []);
 
-  const updateVisibleReferences = () => {
-    setTextPieces((oldValue: textPieceI[]) => {
-      return oldValue.map((ref: textPieceI) => {
-        if (ref.type !== "reference") return ref;
-        const refItem = ref as referenceI;
-        const visible = checkItemVisibility(refItem.id || "");
-        const newRef = {
-          ...ref,
-          visible,
-        } as textPieceI;
-        return newRef;
-      }) as textPieceI[];
-    });
-  };
-
   useEffect(() => {
     document
       .querySelector("#text")
@@ -281,8 +284,8 @@ export const DataProvider = ({ children }: { children: ReactElement }) => {
   }, [textPieces, updateVisibleReferences, editMode]);
 
   useEffect(() => {
-    updateVisibleReferences();
-  }, [editMode]);
+    setTimeout(() => updateEditMode(false), 0);
+  }, [path]);
 
   return (
     <DataContext.Provider
@@ -291,7 +294,7 @@ export const DataProvider = ({ children }: { children: ReactElement }) => {
         item: data[getCurrentPage()] || tutorial["RootPage"],
         textPieces,
         editMode,
-        setEditMode,
+        updateEditMode,
         updateTextPieces: setTextPieces,
         updateData,
         resetData,

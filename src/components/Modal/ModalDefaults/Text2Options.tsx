@@ -2,15 +2,17 @@ import React, { ReactElement, useContext } from "react";
 import Button, { behaviourEnum } from "../../Button/Button";
 import { modalContext } from "@/context/modal";
 
+interface propsI {
+  text: string | ReactElement | ReactElement[];
+  positiveButtonText: string | ReactElement;
+  positiveButtonAction: () => void;
+}
+
 const Text2Options = ({
   text,
   positiveButtonText,
   positiveButtonAction,
-}: {
-  text: string | ReactElement | ReactElement[];
-  positiveButtonText: string | ReactElement;
-  positiveButtonAction: () => void;
-}) => {
+}: propsI) => {
   const { closeModal } = useContext(modalContext);
   return (
     <div

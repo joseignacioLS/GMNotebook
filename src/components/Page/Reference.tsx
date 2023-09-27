@@ -4,22 +4,22 @@ import { referenceI } from "@/context/constants";
 import { DataContext } from "@/context/data";
 import { NavigationContext } from "@/context/navigation";
 
-const Reference = ({
-  reference,
-  referenceStyle,
-  content,
-}: {
+interface propsI {
   reference: referenceI;
   referenceStyle: string;
-  content: ReactElement | string;
-}) => {
+  children: ReactElement | string;
+}
+
+const Reference = ({ reference, referenceStyle, children }: propsI) => {
   const { selectedNote, updateSelectedNote } = useContext(DataContext);
   const { navigateTo } = useContext(NavigationContext);
+
   return (
     <span
       id={reference.id}
       className={`${referenceStyle}`}
       style={{
+        userSelect: "none",
         backgroundColor:
           referenceStyle !== "" ? reference.color : "transparent",
       }}
@@ -31,7 +31,7 @@ const Reference = ({
         }
       }}
     >
-      {content}
+      {children}
     </span>
   );
 };

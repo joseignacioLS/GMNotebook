@@ -4,52 +4,35 @@ import { DataContext } from "@/context/data";
 import { getTextReferences } from "@/utils/text";
 import Button from "../Button/Button";
 
-const PageEdit = () => {
+const PageEdit = ({}) => {
   const { data, updateData, editMode, selectedNote } = useContext(DataContext);
-  const [inputText, setInputText] = useState<string>(
-    data[selectedNote]?.text || ""
-  );
-  const [inputTitle, setInputTitle] = useState<string>(
-    data[selectedNote]?.title || ""
-  );
-  const [inputDisplay, setInputDisplay] = useState<string>(
-    data[selectedNote]?.display || ""
-  );
-  const [inputTree, setInputTree] = useState<boolean>(
-    data[selectedNote]?.showInTree || false
-  );
+  const [input, setInput] = useState<{
+    title: string;
+    text: string;
+    display: string;
+    showInTree: boolean;
+  }>({
+    text: data[selectedNote]?.text || "",
+    title: data[selectedNote]?.title || "",
+    display: data[selectedNote]?.display || "",
+    showInTree: data[selectedNote]?.showInTree || false,
+  });
 
-  const handleUpdateData = (key: string, e: any) => {
-    switch (key) {
-      case "text":
-        setInputText(e.currentTarget.value);
-        break;
-      case "title":
-        setInputTitle(e.currentTarget.value);
-        break;
-      case "display":
-        setInputDisplay(e.currentTarget.value);
-        break;
-      case "tree":
-        setInputTree(!!e.currentTarget.checked);
-        break;
-      default:
-        break;
-    }
+  const handleUpdateData = (key: string, value: any) => {
+    setInput((oldValue) => {
+      return { ...oldValue, [key]: value };
+    });
   };
 
   const generateItemFromInputs = () => {
     return {
       ...data[selectedNote],
-      text: inputText,
-      title: inputTitle,
-      display: inputDisplay,
-      showInTree: inputTree,
+      ...input,
     };
   };
 
   const generateNewEntries = () => {
-    return getTextReferences(inputText)
+    return getTextReferences(input.text)
       .filter((v) => {
         return !data[v];
       })
@@ -76,10 +59,12 @@ const PageEdit = () => {
   };
 
   useEffect(() => {
-    setInputTitle(data[selectedNote]?.title || "");
-    setInputDisplay(data[selectedNote]?.display || "");
-    setInputText(data[selectedNote]?.text || "");
-    setInputTree(data[selectedNote]?.showInTree || false);
+    setInput({
+      text: data[selectedNote]?.text || "",
+      title: data[selectedNote]?.title || "",
+      display: data[selectedNote]?.display || "",
+      showInTree: data[selectedNote]?.showInTree || false,
+    });
   }, [data, selectedNote]);
 
   return (
@@ -87,8 +72,8 @@ const PageEdit = () => {
       <label>
         <span data-help={"This is the title of the page"}>Title</span>
         <input
-          value={inputTitle}
-          onChange={(e) => handleUpdateData("title", e)}
+          value={input.title}
+          onChange={(e) => handleUpdateData("title", e.currentTarget.value)}
         ></input>
       </label>
       <label>
@@ -100,8 +85,8 @@ const PageEdit = () => {
           Display
         </span>
         <input
-          value={inputDisplay}
-          onChange={(e) => handleUpdateData("display", e)}
+          value={input.display}
+          onChange={(e) => handleUpdateData("display", e.currentTarget.value)}
         ></input>
       </label>
       <label>
@@ -110,22 +95,23 @@ const PageEdit = () => {
         </span>
         <input
           type="checkbox"
-          checked={inputTree}
-          value={inputDisplay}
-          onChange={(e) => handleUpdateData("tree", e)}
+          checked={input.showInTree}
+          onChange={(e) =>
+            handleUpdateData("showInTree", e.currentTarget.checked)
+          }
         ></input>
       </label>
       <textarea
-        value={inputText}
-        onChange={(e) => handleUpdateData("text", e)}
+        value={input.text}
+        onChange={(e) => handleUpdateData("text", e.currentTarget.value)}
       ></textarea>
       <Button
         onClick={saveData}
         disabled={
-          inputText === data[selectedNote]?.text &&
-          inputTitle === data[selectedNote]?.title &&
-          inputDisplay === data[selectedNote]?.display &&
-          inputTree === data[selectedNote]?.showInTree
+          input.text === data[selectedNote]?.text &&
+          input.title === data[selectedNote]?.title &&
+          input.display === data[selectedNote]?.display &&
+          input.showInTree === data[selectedNote]?.showInTree
         }
       >
         <img src="/images/save.svg" />
