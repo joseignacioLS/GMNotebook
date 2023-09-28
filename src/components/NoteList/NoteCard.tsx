@@ -6,7 +6,6 @@ import { NavigationContext } from "@/context/navigation";
 import Button from "../Button/Button";
 
 interface propsI {
-  index: number;
   itemKey: string;
   color: string;
   title: string;
@@ -16,7 +15,6 @@ interface propsI {
 }
 
 const NoteCard = ({
-  index,
   itemKey,
   color,
   title,
@@ -34,7 +32,6 @@ const NoteCard = ({
   };
   return (
     <div
-      key={index}
       id={"note-" + itemKey}
       className={`${styles.note} ${
         itemKey === selectedNote && styles.selected

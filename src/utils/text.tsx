@@ -1,6 +1,6 @@
 import { dataI, referenceI, textPieceI } from "@/context/constants";
 import { generateColor } from "./color";
-import { imageRegex } from "./constans";
+import { imageRegex, subtitleRegex, titleRegex } from "./constans";
 import { ReactElement } from "react";
 import Reference from "@/components/Page/Reference";
 
@@ -37,7 +37,7 @@ export const splitTextIntoReferences = (text: string): textPieceI[] => {
   };
 
   const output = [];
-  const regex = new RegExp(`note:[A-Za-z0-9]+(?:[^A-Za-z0-9]|$)`);
+  const regex = new RegExp(`(note:[A-Za-z0-9]+)(?:[^A-Za-z0-9]|$)`);
   const regexBreak = /\n/;
   try {
     let safe = 1000;
@@ -49,8 +49,10 @@ export const splitTextIntoReferences = (text: string): textPieceI[] => {
       const matchReg = workText.match(regex);
       const matchBreak = workText.match(regexBreak);
       const matchImg = workText.match(imageRegex);
+      const matchTitle = workText.match(titleRegex);
+      const matchSubtitle = workText.match(subtitleRegex);
 
-      const regMatch = matchReg?.[0] || "";
+      const regMatch = matchReg?.[1] || "";
       const regIndex =
         matchReg?.index !== undefined ? matchReg.index : Infinity;
       const breakMatch = matchBreak?.[0] || "";
@@ -59,6 +61,12 @@ export const splitTextIntoReferences = (text: string): textPieceI[] => {
       const imgMatch = matchImg?.[0] || "";
       const imgIndex =
         matchImg?.index !== undefined ? matchImg.index : Infinity;
+      const titleMatch = matchTitle?.[0] || "";
+      const titleIndex =
+        matchTitle?.index !== undefined ? matchTitle.index : Infinity;
+      const subtitleMatch = matchSubtitle?.[0] || "";
+      const subtitleIndex =
+        matchSubtitle?.index !== undefined ? matchSubtitle.index : Infinity;
 
       const first = [
         {
@@ -76,9 +84,20 @@ export const splitTextIntoReferences = (text: string): textPieceI[] => {
           index: imgIndex,
           type: "image",
         },
+        {
+          match: titleMatch,
+          index: titleIndex,
+          type: "title",
+        },
+        {
+          match: subtitleMatch,
+          index: subtitleIndex,
+          type: "subtitle",
+        },
       ].sort((a: any, b: any) => {
         return a.index > b.index ? 1 : -1;
       })[0];
+
       if (first.index === Infinity) {
         output.push({
           type: "text",
@@ -95,7 +114,7 @@ export const splitTextIntoReferences = (text: string): textPieceI[] => {
           first.index,
           first.index + key.length + 5
         );
-        output.push({ type: "text", content: addText });
+        if (addText !== "") output.push({ type: "text", content: addText });
         output.push({
           type: "reference",
           content: first.match,
@@ -110,10 +129,10 @@ export const splitTextIntoReferences = (text: string): textPieceI[] => {
           first.index,
           first.index + (first.match.length || 0)
         );
-        output.push({ type: "text", content: addText });
+        if (addText !== "") output.push({ type: "text", content: addText });
         output.push({
           type: "break",
-          content: first.match,
+          content: "break",
         });
       } else if (first.type === "image") {
         [addText, workText] = sliceText(
@@ -121,9 +140,31 @@ export const splitTextIntoReferences = (text: string): textPieceI[] => {
           first.index,
           first.index + (first.match.length || 0)
         );
-        output.push({ type: "text", content: addText });
+        if (addText !== "") output.push({ type: "text", content: addText });
         output.push({
           type: "image",
+          content: first.match,
+        });
+      } else if (first.type === "title") {
+        [addText, workText] = sliceText(
+          workText,
+          first.index,
+          first.index + (first.match.length || 0)
+        );
+        if (addText !== "") output.push({ type: "text", content: addText });
+        output.push({
+          type: "title",
+          content: first.match,
+        });
+      } else if (first.type === "subtitle") {
+        [addText, workText] = sliceText(
+          workText,
+          first.index,
+          first.index + (first.match.length || 0)
+        );
+        if (addText !== "") output.push({ type: "text", content: addText });
+        output.push({
+          type: "subtitle",
           content: first.match,
         });
       }
@@ -137,25 +178,47 @@ export const proccessTextPieces = (
   nakedRef: boolean,
   data: dataI
 ): ReactElement[] => {
-  const chuncks: ReactElement[] = text.map((ele, i) => {
-    if (ele.type === "reference") {
-      const reference: referenceI = ele as referenceI;
-      const content: string = data[reference.key]?.display || "";
-      return (
-        <Reference key={i} reference={reference} naked={nakedRef}>
-          {content}
-        </Reference>
-      );
-    } else if (ele.type === "text") {
-      return <span key={i}>{ele.content}</span>;
-    } else if (ele.type === "break") {
-      return <br key={i} />;
-    } else if (ele.type === "image") {
-      const url: string = ele.content.split("img:")[1];
-      return <img key={i} src={url} />;
-    }
-    return <></>;
-  });
+  const acceptedTypes = [
+    "reference",
+    "text",
+    "break",
+    "title",
+    "subtitle",
+    "image",
+  ];
+  const chuncks: ReactElement[] = text
+    .filter((ele) => acceptedTypes.includes(ele.type) && ele.content !== "")
+    .map((ele, i) => {
+      if (ele.type === "reference") {
+        const reference: referenceI = ele as referenceI;
+        const content: string = data[reference.key]?.display || "";
+        return (
+          <Reference key={content} reference={reference} naked={nakedRef}>
+            {content}
+          </Reference>
+        );
+      } else if (ele.type === "break") {
+        return <br key={`br-${i}`} />;
+      } else if (ele.type === "title") {
+        const content: string = ele.content.split("title:")[1];
+        return (
+          <span key={content} className="text-title">
+            {content}
+          </span>
+        );
+      } else if (ele.type === "subtitle") {
+        const content: string = ele.content.split("subtitle:")[1];
+        return (
+          <span key={content} className="text-subtitle">
+            {content}
+          </span>
+        );
+      } else if (ele.type === "image") {
+        const url: string = ele.content.split("img:")[1];
+        return <img key={url} src={url} />;
+      }
+      return <span key={`text-${i}`}>{ele.content}</span>;
+    });
   return chuncks;
 };
 
@@ -163,7 +226,7 @@ export const generateDisplayText = (
   text: textPieceI[],
   nakedRefs: boolean,
   data: dataI
-) => {
+): ReactElement[] => {
   const ps = [
     -1,
     ...text
@@ -172,15 +235,11 @@ export const generateDisplayText = (
     text.length,
   ];
   const output = [];
-  let pIndex = 0;
   for (let i = 0; i < ps.length - 1; i++) {
     const start = (ps[i] || -1) + 1;
     const end = ps[i + 1];
     const content = proccessTextPieces(text.slice(start, end), nakedRefs, data);
-    output.push(
-      <p key={`p-${pIndex}`}>{content.length > 0 ? content : " "}</p>
-    );
-    pIndex += 1;
+    output.push(<p key={`p-${i}`}>{content}</p>);
   }
   return output;
 };

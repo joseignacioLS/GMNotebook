@@ -13,7 +13,8 @@ const PageDisplay = () => {
   const [displayText, setDisplayText] = useState<ReactElement[]>([]);
 
   useEffect(() => {
-    setDisplayText(generateDisplayText(textPieces, false, data));
+    const newDisplay = generateDisplayText(textPieces, false, data);
+    setDisplayText(newDisplay);
   }, [textPieces, data]);
 
   return (

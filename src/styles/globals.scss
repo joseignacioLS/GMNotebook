@@ -1,10 +1,10 @@
-@import url('https://fonts.googleapis.com/css2?family=Inclusive+Sans:ital@0;1&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Inclusive+Sans:ital@0;1&display=swap");
 
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  font-family: 'Inclusive Sans', sans-serif;
+  font-family: "Inclusive Sans", sans-serif;
 }
 
 html,
@@ -33,7 +33,7 @@ h1 {
 p {
   min-height: 1.5ch;
   line-height: 2.5ch;
-  margin-bottom: .5rem;
+  margin-bottom: 0.5rem;
 }
 
 a {
@@ -53,7 +53,7 @@ div::-webkit-scrollbar-track {
 }
 
 div::-webkit-scrollbar-thumb {
-  background: #DDD;
+  background: #ddd;
   border-radius: 2px;
 }
 
@@ -65,14 +65,24 @@ img {
   width: 100%;
 }
 
-
 .flash {
-  animation: flash-item forwards ease .5s;
-  animation-delay: .1s;
+  animation: flash-item forwards ease 0.5s;
+  animation-delay: 0.1s;
 }
 
 @keyframes flash-item {
   50% {
     background-color: red;
   }
+}
+
+.text-title {
+  font-weight: bold;
+  font-size: 150%;
+  opacity: .9;
+}
+.text-subtitle {
+  font-weight: bold;
+  font-size: 125%;
+  opacity: .8;
 }
