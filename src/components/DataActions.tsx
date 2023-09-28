@@ -5,7 +5,7 @@ import { DataContext } from "@/context/data";
 import { modalContext } from "@/context/modal";
 import Tree from "./Tree";
 import Button, { behaviourEnum } from "./Button/Button";
-import Text2Options from "./Modal/ModalDefaults/Text2Options";
+import ModalTemplateConfirm from "./Modal/ModalDefaults/ModalTemplateConfirm";
 
 const DataActions = () => {
   const { updateData, data, resetData } = useContext(DataContext);
@@ -13,25 +13,22 @@ const DataActions = () => {
 
   const openModalReset = () => {
     setContent(
-      <Text2Options
-        text={
-          <>
-            <p>
-              Resetting the notebook will erase all your content. If you want to
-              keep it, please{" "}
-              <Button
-                behaviour={behaviourEnum.POSITIVE}
-                onClick={() => saveToFile(data["RootPage"].title, data)}
-              >
-                Download
-              </Button>{" "}
-              it before resetting.
-            </p>
-          </>
-        }
+      <ModalTemplateConfirm
         positiveButtonAction={resetData}
         positiveButtonText={"Reset"}
-      />
+      >
+        <p>
+          Resetting the notebook will erase all your content. If you want to
+          keep it, please{" "}
+          <Button
+            behaviour={behaviourEnum.POSITIVE}
+            onClick={() => saveToFile(data["RootPage"].title, data)}
+          >
+            Download
+          </Button>{" "}
+          it before resetting.
+        </p>
+      </ModalTemplateConfirm>
     );
   };
   return (

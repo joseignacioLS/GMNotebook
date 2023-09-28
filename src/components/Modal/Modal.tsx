@@ -5,23 +5,16 @@ import Button from "../Button/Button";
 
 const Modal = () => {
   const { isVisible, content, closeModal } = useContext(modalContext);
+  if (!isVisible) return;
   return (
-    <>
-      {isVisible && (
-        <div className={styles.modalContainer}>
-          <div className={styles.modal}>
-            <Button
-              addClass={styles.closeButton}
-              naked={true}
-              onClick={closeModal}
-            >
-              <img src="/images/close.svg" />
-            </Button>
-            {content}
-          </div>
-        </div>
-      )}
-    </>
+    <div className={styles.modalContainer}>
+      <div className={styles.modal}>
+        <Button addClass={styles.closeButton} naked={true} onClick={closeModal}>
+          <img src="/images/close.svg" />
+        </Button>
+        {content}
+      </div>
+    </div>
   );
 };
 

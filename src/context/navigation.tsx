@@ -29,26 +29,26 @@ export const NavigationProvider = ({
   children: ReactElement;
 }) => {
   const [path, setPath] = useState<string[]>(["RootPage"]);
-  
+
   const navBack = () => {
     if (path.length === 1) return;
     setPath((oldValue: string[]) => oldValue.slice(0, oldValue.length - 1));
     setTimeout(resetNotesScroll, 0);
   };
 
-  const navigateTo = (value: string) => {
+  const navigateTo = (value: string): void => {
     setPath((oldValue: string[]) => {
       return [...oldValue, value];
     });
     setTimeout(resetNotesScroll, 0);
   };
 
-  const resetPath = () => {
+  const resetPath = (): void => {
     setPath(["RootPage"]);
     setTimeout(resetNotesScroll, 0);
   };
 
-  const getCurrentPage = () => {
+  const getCurrentPage = (): string => {
     return path.at(-1) || "RootPage";
   };
 

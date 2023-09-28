@@ -1,6 +1,8 @@
-import { textPieceI } from "@/context/constants";
+import { dataI, referenceI, textPieceI } from "@/context/constants";
 import { generateColor } from "./color";
 import { imageRegex } from "./constans";
+import { ReactElement } from "react";
+import Reference from "@/components/Page/Reference";
 
 export const getWordCount = (text: string) => {
   return text?.split(" ").length;
@@ -11,6 +13,16 @@ export const getTextReferences = (text: string): string[] => {
     return v.split(":")[1];
   });
   return Array.from(new Set(matches || []));
+};
+
+export const removeReferences = (
+  text: string,
+  references: string[]
+): string => {
+  references.forEach((refe: string) => {
+    text = text.replace(new RegExp(`note\:${refe}`, "g"), refe);
+  });
+  return text;
 };
 
 export const splitTextIntoReferences = (text: string): textPieceI[] => {
@@ -117,5 +129,58 @@ export const splitTextIntoReferences = (text: string): textPieceI[] => {
       }
     }
   } catch (err) {}
+  return output;
+};
+
+export const proccessTextPieces = (
+  text: textPieceI[],
+  nakedRef: boolean,
+  data: dataI
+): ReactElement[] => {
+  const chuncks: ReactElement[] = text.map((ele, i) => {
+    if (ele.type === "reference") {
+      const reference: referenceI = ele as referenceI;
+      const content: string = data[reference.key]?.display || "";
+      return (
+        <Reference key={i} reference={reference} naked={nakedRef}>
+          {content}
+        </Reference>
+      );
+    } else if (ele.type === "text") {
+      return <span key={i}>{ele.content}</span>;
+    } else if (ele.type === "break") {
+      return <br key={i} />;
+    } else if (ele.type === "image") {
+      const url: string = ele.content.split("img:")[1];
+      return <img key={i} src={url} />;
+    }
+    return <></>;
+  });
+  return chuncks;
+};
+
+export const generateDisplayText = (
+  text: textPieceI[],
+  nakedRefs: boolean,
+  data: dataI
+) => {
+  const ps = [
+    -1,
+    ...text
+      .map((v, i) => (v.type === "break" ? i : undefined))
+      .filter((v) => v !== undefined),
+    text.length,
+  ];
+  const output = [];
+  let pIndex = 0;
+  for (let i = 0; i < ps.length - 1; i++) {
+    const start = (ps[i] || -1) + 1;
+    const end = ps[i + 1];
+    const content = proccessTextPieces(text.slice(start, end), nakedRefs, data);
+    output.push(
+      <p key={`p-${pIndex}`}>{content.length > 0 ? content : " "}</p>
+    );
+    pIndex += 1;
+  }
   return output;
 };

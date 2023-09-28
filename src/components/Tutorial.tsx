@@ -44,12 +44,12 @@ const Tutorial = () => {
   const [currentTip, setCurrentTip] = useState<number>(0);
   const { data, updateEditMode } = useContext(DataContext);
 
-  const handleNext = () => {
+  const handleNext = (): void => {
     setCurrentTip((v) => v + 1);
     handleTipIndexChange(currentTip + 1);
   };
 
-  const handleTipIndexChange = (currentTip: number) => {
+  const handleTipIndexChange = (currentTip: number): void => {
     if (currentTip === 4) {
       updateEditMode(true);
     }
@@ -59,7 +59,7 @@ const Tutorial = () => {
     }
   };
 
-  const checkIfTutorialIsDone = () => {
+  const checkIfTutorialIsDone = (): void => {
     const tutorialCheck = JSON.parse(retrieveLocalStorage("tutorial"));
     if (tutorialCheck?.check || window.innerWidth <= 800 || !data["note"]) {
       setCurrentTip(tips.length);

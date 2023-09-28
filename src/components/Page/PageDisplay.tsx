@@ -3,16 +3,17 @@ import styles from "./pagedisplay.module.scss";
 import { NavigationContext } from "@/context/navigation";
 import { DataContext } from "@/context/data";
 import Button from "../Button/Button";
+import { generateDisplayText } from "@/utils/text";
 
 const PageDisplay = () => {
-  const { data, item, textPieces, generateDisplayText, updateSelectedNote } =
+  const { data, item, textPieces, updateSelectedNote } =
     useContext(DataContext);
   const { path, navBack } = useContext(NavigationContext);
 
   const [displayText, setDisplayText] = useState<ReactElement[]>([]);
 
   useEffect(() => {
-    setDisplayText(generateDisplayText(textPieces, styles.reference));
+    setDisplayText(generateDisplayText(textPieces, false, data));
   }, [textPieces, data]);
 
   return (

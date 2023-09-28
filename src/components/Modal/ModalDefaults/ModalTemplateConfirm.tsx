@@ -2,24 +2,23 @@ import React, { ReactElement, useContext } from "react";
 import Button, { behaviourEnum } from "../../Button/Button";
 import { modalContext } from "@/context/modal";
 
-import styles from "./text2options.module.scss";
+import styles from "./modaltemplateconfirm.module.scss";
 
 interface propsI {
-  text: string | ReactElement | ReactElement[];
+  children: string | ReactElement;
   positiveButtonText: string | ReactElement;
   positiveButtonAction: () => void;
 }
 
-const Text2Options = ({
-  text,
+const ModalTemplateConfirm = ({
   positiveButtonText,
   positiveButtonAction,
+  children,
 }: propsI) => {
   const { closeModal } = useContext(modalContext);
   return (
     <div className={styles.wrapper}>
-      {text}
-
+      {children}
       <div className={styles.buttons}>
         <Button behaviour={behaviourEnum.NEUTRAL} onClick={closeModal}>
           Close
@@ -38,4 +37,4 @@ const Text2Options = ({
   );
 };
 
-export default Text2Options;
+export default ModalTemplateConfirm;

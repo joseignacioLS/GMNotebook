@@ -3,10 +3,10 @@ import styles from "./notelist.module.scss";
 import { DataContext } from "@/context/data";
 import NoteCard from "./NoteCard";
 import { referenceI, textPieceI } from "@/context/constants";
-import { splitTextIntoReferences } from "@/utils/text";
+import { generateDisplayText, splitTextIntoReferences } from "@/utils/text";
 
 const NoteList = ({}) => {
-  const { data, textPieces, generateDisplayText } = useContext(DataContext);
+  const { data, textPieces } = useContext(DataContext);
 
   const processedTextPieces: referenceI[] = textPieces
     .filter((v) => v.type === "reference")
@@ -24,13 +24,15 @@ const NoteList = ({}) => {
         const expandable = referenceText.split(" ").length > 30;
         const showText = generateDisplayText(
           splitTextIntoReferences(referenceText),
-          ""
+          true,
+          data
         );
         const shortShowText = generateDisplayText(
           splitTextIntoReferences(
             referenceText.split(" ").slice(0, 25).join(" ") + " ..."
           ),
-          ""
+          true,
+          data
         );
         return (
           <NoteCard

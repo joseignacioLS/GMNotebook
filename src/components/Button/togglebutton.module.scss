@@ -1,0 +1,23 @@
+.wrapper {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  gap: 0.5rem;
+  align-items: center;
+
+  .toggleSurface {
+    position: relative;
+    width: 4rem;
+    height: 2rem;
+    background-color: lightgrey;
+    border-radius: 1.5rem;
+
+    .toggleKnob {
+      position: absolute;
+      width: 2rem;
+      height: 2rem;
+      background-color: darkgrey;
+      border-radius: 50%;
+      transition: transform 0.3s;
+    }
+  }
+}

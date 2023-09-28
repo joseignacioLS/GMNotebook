@@ -1,6 +1,6 @@
 import { dataI } from "@/context/constants";
 
-export const saveToFile = (filename: string, content: any) => {
+export const saveToFile = (filename: string, content: any): void => {
   const data = JSON.stringify(content, null, 4);
   let element = document.createElement("a");
   element.setAttribute(
@@ -14,7 +14,7 @@ export const saveToFile = (filename: string, content: any) => {
   document.body.removeChild(element);
 };
 
-export const loadFile = (inputSelector: string, callback: any) => {
+export const loadFile = (inputSelector: string, callback: any): void => {
   const fileInput = document.querySelector(inputSelector) as any;
   if (!fileInput) return;
   const file = fileInput.files[0];

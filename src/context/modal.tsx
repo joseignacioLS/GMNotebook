@@ -20,12 +20,12 @@ export const ModalProvider = ({ children }: { children: ReactElement }) => {
     <p>This is the content</p>
   );
 
-  const updateContent = (children: ReactElement) => {
+  const updateContent = (children: ReactElement): void => {
     setContent(children);
     setIsVisible(true);
   };
 
-  const closeModal = () => {
+  const closeModal = (): void => {
     setIsVisible(false);
   };
 

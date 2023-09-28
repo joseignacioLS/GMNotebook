@@ -5,82 +5,21 @@ import { leafI } from "@/context/constants";
 import { generateColor } from "@/utils/color";
 import { NavigationContext } from "@/context/navigation";
 import { modalContext } from "@/context/modal";
-
-const relax = (tree: leafI[]) => {
-  const FORCE_CONSTANT = 0.00001;
-  const REPEL_CONSTANT = 2500;
-  const ATTRACT_CONSTANT = 5;
-
-  const forces = tree.map(() => [0, 0]);
-
-  tree.forEach((leaf: leafI, index: number) => {
-    // attractive force towards center of graph
-    const v = [leaf.position[0] - 50, leaf.position[1] - 50];
-    const d = Math.max(1, Math.sqrt(v[0] * v[0] + v[1] * v[1]));
-    forces[index] = [forces[index][0] - v[0] * d, forces[index][1] - v[1] * d];
-    tree.forEach((otherLeaf: leafI, otherIndex: number) => {
-      if (leaf.key === otherLeaf.key) return;
-      const v = [
-        leaf.position[0] - otherLeaf.position[0],
-        leaf.position[1] - otherLeaf.position[1],
-      ];
-      const d = Math.max(1, Math.sqrt(v[0] * v[0] + v[1] * v[1]));
-      // repulsive forces
-      forces[index] = [
-        forces[index][0] + (REPEL_CONSTANT * v[0]) / (d * d),
-        forces[index][1] + (REPEL_CONSTANT * v[1]) / (d * d),
-      ];
-      forces[otherIndex] = [
-        forces[otherIndex][0] - (REPEL_CONSTANT * v[0]) / (d * d),
-        forces[otherIndex][1] - (REPEL_CONSTANT * v[1]) / (d * d),
-      ];
-
-      // attractive forces
-      if (leaf.children.includes(otherIndex)) {
-        forces[index] = [
-          forces[index][0] - ATTRACT_CONSTANT * v[0] * d,
-          forces[index][1] - ATTRACT_CONSTANT * v[1] * d,
-        ];
-        forces[otherIndex] = [
-          forces[otherIndex][0] + ATTRACT_CONSTANT * v[0] * d,
-          forces[otherIndex][1] + ATTRACT_CONSTANT * v[1] * d,
-        ];
-      }
-    });
-  });
-
-  return tree.map((leaf: leafI, index: number) => {
-    // capping forces to eliminate small movements
-    const fX: number =
-      Math.abs(forces[index][0]) - 0 > 1 ? forces[index][0] : 0;
-    const fY: number =
-      Math.abs(forces[index][1]) - 0 > 1 ? forces[index][1] : 0;
-    leaf.position = [
-      leaf.position[0] + FORCE_CONSTANT * fX,
-      leaf.position[1] + FORCE_CONSTANT * fY,
-    ];
-    // limiting graph to the svg area
-    if (leaf.position[0] < 0) leaf.position[0] = 0;
-    if (leaf.position[1] < 0) leaf.position[1] = 0;
-    if (leaf.position[0] > 100) leaf.position[0] = 100;
-    if (leaf.position[1] > 100) leaf.position[1] = 100;
-    return leaf;
-  });
-};
+import { relaxTree } from "@/utils/tree";
 
 const Tree = () => {
   const { data, tree, setTree, updateSelectedNote } = useContext(DataContext);
   const { navigateTo } = useContext(NavigationContext);
   const { closeModal } = useContext(modalContext);
 
-  const relaxTreeMore = () => {
-    setTree((oldValue: leafI[]) => relax(oldValue));
+  const relaxTreeMore = (): void => {
+    setTree((oldValue: leafI[]) => relaxTree(oldValue));
   };
 
-  const relaxTreeForFirstVisualization = () => {
+  const relaxTreeForFirstVisualization = (): void => {
     let relaxedTree = tree;
     for (let i = 0; i < 5000; i++) {
-      relaxedTree = relax(relaxedTree);
+      relaxedTree = relaxTree(relaxedTree);
     }
     setTree(relaxedTree);
   };

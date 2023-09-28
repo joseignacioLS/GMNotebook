@@ -1,5 +1,10 @@
 import { retrieveLocalStorage, saveToLocalStorage } from "@/utils/localStorage";
-import { getTextReferences, splitTextIntoReferences } from "@/utils/text";
+import {
+  getTextReferences,
+  proccessTextPieces,
+  removeReferences,
+  splitTextIntoReferences,
+} from "@/utils/text";
 import {
   ReactElement,
   createContext,
@@ -17,6 +22,7 @@ import {
 } from "./constants";
 import { NavigationContext } from "./navigation";
 import Reference from "@/components/Page/Reference";
+import { generateDataTree } from "@/utils/tree";
 
 interface contextOutputI {
   data: dataI;
@@ -29,7 +35,6 @@ interface contextOutputI {
   resetData: () => void;
   selectedNote: string;
   setSelectedNote: any;
-  generateDisplayText: any;
   tree: leafI[];
   setTree: any;
   updateSelectedNote: any;
@@ -46,7 +51,6 @@ export const DataContext = createContext<contextOutputI>({
   resetData: () => {},
   selectedNote: "",
   setSelectedNote: () => {},
-  generateDisplayText: () => {},
   tree: [],
   setTree: () => {},
   updateSelectedNote: () => {},
@@ -65,38 +69,6 @@ const checkItemVisibility = (id: string) => {
   );
 };
 
-const generateDataTree = (value: dataI) => {
-  const tree: leafI[] = Object.keys(value)
-    .filter((key) => {
-      return value[key].showInTree;
-    })
-    .map((key, index) => {
-      const n = key.split("").reduce((acc: number, curr: string) => {
-        return acc + curr.charCodeAt(0);
-      }, 0);
-      const x = (n * 321) % 80;
-      const y = (n * 581) % 80;
-      return {
-        index,
-        key,
-        children: [],
-        position: [10 + x, 10 + y],
-      };
-    });
-
-  Object.keys(value).forEach((key) => {
-    const leaf = tree.findIndex((v: leafI) => v.key === key);
-    if (leaf < 0) return;
-    const refes = getTextReferences(value[key].text);
-    tree[leaf].children = refes
-      .map((v) => {
-        return tree.findIndex((k: leafI) => k.key === v);
-      })
-      .filter((v) => v > -1);
-  });
-  return tree;
-};
-
 export const DataProvider = ({ children }: { children: ReactElement }) => {
   const [data, setData] = useState<dataI>(tutorial);
   const [tree, setTree] = useState<leafI[]>([]);
@@ -106,7 +78,7 @@ export const DataProvider = ({ children }: { children: ReactElement }) => {
 
   const { path, resetPath, getCurrentPage } = useContext(NavigationContext);
 
-  const updateData = (value: dataI, resetEntry: boolean = true) => {
+  const updateData = (value: dataI, resetEntry: boolean = true): void => {
     value = cleanUpData(value);
     setTimeout(() => {
       setData(value);
@@ -116,20 +88,23 @@ export const DataProvider = ({ children }: { children: ReactElement }) => {
     }, 0);
   };
 
-  const cleanUpData = (value: dataI) => {
+  const cleanUpData = (value: dataI): dataI => {
     const deletedKeys: string[] = [];
     const references: string[] = ["RootPage"];
+
     Object.keys(value).forEach((key: string) => {
+      // get used references
       getTextReferences(value[key].text).forEach((v) => {
         if (!references.includes(v)) references.push(v);
       });
-
+      // delete emtpy references
       if (value[key].text === "" && key !== "RootPage") {
         delete value[key];
         deletedKeys.push(key);
       }
     });
 
+    // remove ununused references
     Object.keys(value).forEach((key: string) => {
       if (!references.includes(key)) {
         delete value[key];
@@ -137,79 +112,24 @@ export const DataProvider = ({ children }: { children: ReactElement }) => {
       }
     });
 
+    // reset path only if the current path is deleted
     const currentPath = path.at(-1) || undefined;
     if (currentPath !== undefined && deletedKeys.includes(currentPath)) {
       resetPath();
     }
 
+    // remove deleted keys from text
     Object.keys(value).forEach((key: string) => {
-      deletedKeys.forEach((deletedKey: string) => {
-        value[key].text = value[key].text.replace(
-          new RegExp(`note\:${deletedKey}`, "g"),
-          deletedKey
-        );
-      });
+      value[key].text = removeReferences(value[key].text, deletedKeys);
     });
     return value;
   };
 
-  const resetData = () => {
+  const resetData = (): void => {
     updateData({ ...tutorial }, true);
   };
 
-  const proccessTextPieces = (text: textPieceI[], referenceStyle: string) => {
-    const chuncks: ReactElement[] = text.map((ele, i) => {
-      if (ele.type === "reference") {
-        const reference: referenceI = ele as referenceI;
-        const content: string = data[reference.key]?.display || "";
-        return (
-          <Reference
-            key={i}
-            reference={reference}
-            referenceStyle={referenceStyle}
-          >
-            {content}
-          </Reference>
-        );
-      } else if (ele.type === "text") {
-        return <span key={i}>{ele.content}</span>;
-      } else if (ele.type === "break") {
-        return <br key={i} />;
-      } else if (ele.type === "image") {
-        const url: string = ele.content.split("img:")[1];
-        return <img key={i} src={url} />;
-      }
-      return <></>;
-    });
-    return chuncks;
-  };
-
-  const generateDisplayText = (text: textPieceI[], referenceStyle: string) => {
-    const ps = [
-      -1,
-      ...text
-        .map((v, i) => (v.type === "break" ? i : undefined))
-        .filter((v) => v !== undefined),
-      text.length,
-    ];
-    const output = [];
-    let pIndex = 0;
-    for (let i = 0; i < ps.length - 1; i++) {
-      const start = (ps[i] || -1) + 1;
-      const end = ps[i + 1];
-      const content = proccessTextPieces(
-        text.slice(start, end),
-        referenceStyle
-      );
-      output.push(
-        <p key={`p-${pIndex}`}>{content.length > 0 ? content : " "}</p>
-      );
-      pIndex += 1;
-    }
-    return output;
-  };
-
-  const updateVisibleReferences = () => {
+  const updateVisibleReferences = (): void => {
     setTextPieces((oldValue: textPieceI[]) => {
       return oldValue.map((ref: textPieceI) => {
         if (ref.type !== "reference") return ref;
@@ -224,12 +144,12 @@ export const DataProvider = ({ children }: { children: ReactElement }) => {
     });
   };
 
-  const updateEditMode = (value: boolean) => {
+  const updateEditMode = (value: boolean): void => {
     setEditMode(value);
     updateVisibleReferences();
   };
 
-  const updateSelectedNote = (key: string) => {
+  const updateSelectedNote = (key: string): void => {
     setSelectedNote(key);
     setTimeout(() => {
       document.querySelector(`#note-${key}`)?.scrollIntoView();
@@ -300,7 +220,6 @@ export const DataProvider = ({ children }: { children: ReactElement }) => {
         resetData,
         selectedNote,
         setSelectedNote,
-        generateDisplayText,
         tree,
         setTree,
         updateSelectedNote,

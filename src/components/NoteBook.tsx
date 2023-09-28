@@ -10,47 +10,7 @@ import Button from "./Button/Button";
 import PageEdit from "./Page/PageEdit";
 import { NavigationContext } from "@/context/navigation";
 import { DataContext } from "@/context/data";
-
-const generateToggle = (
-  isOn: boolean,
-  optionA: string = "",
-  optionB: string = ""
-) => {
-  return (
-    <div
-      style={{
-        display: "grid",
-        gridTemplateColumns: "1fr auto 1fr",
-        gap: ".5rem",
-        alignItems: "center",
-      }}
-    >
-      <span style={{ opacity: isOn ? "1" : ".25" }}>{optionA}</span>
-      <div
-        style={{
-          position: "relative",
-          width: "4rem",
-          height: "2rem",
-          backgroundColor: "lightgrey",
-          borderRadius: "1.5rem",
-        }}
-      >
-        <div
-          style={{
-            position: "absolute",
-            width: "2rem",
-            height: "2rem",
-            backgroundColor: "darkgrey",
-            borderRadius: "50%",
-            transform: !isOn ? "translateX(2rem)" : "translateX(0px)",
-            transition: "transform .3s",
-          }}
-        ></div>
-      </div>
-      <span style={{ opacity: !isOn ? "1" : ".25" }}>{optionB}</span>
-    </div>
-  );
-};
+import ToggleButton from "./Button/ToggleButton";
 
 const NoteBook = () => {
   const { updateEditMode, editMode, updateSelectedNote } =
@@ -72,7 +32,11 @@ const NoteBook = () => {
             updateEditMode((v: boolean) => !v);
           }}
         >
-          {generateToggle(!editMode, "Display", "Edit")}
+          <ToggleButton
+            isOn={!editMode}
+            leftOption="Display"
+            rightOption="Edit"
+          />
         </Button>
         {editMode ? <PageEdit /> : <NoteList />}
       </div>

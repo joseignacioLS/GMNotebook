@@ -6,22 +6,20 @@ import { NavigationContext } from "@/context/navigation";
 
 interface propsI {
   reference: referenceI;
-  referenceStyle: string;
   children: ReactElement | string;
+  naked?: boolean;
 }
 
-const Reference = ({ reference, referenceStyle, children }: propsI) => {
+const Reference = ({ reference, children, naked = false }: propsI) => {
   const { selectedNote, updateSelectedNote } = useContext(DataContext);
   const { navigateTo } = useContext(NavigationContext);
 
   return (
     <span
       id={reference.id}
-      className={`${referenceStyle}`}
+      className={`${styles.reference}`}
       style={{
-        userSelect: "none",
-        backgroundColor:
-          referenceStyle !== "" ? reference.color : "transparent",
+        backgroundColor: naked ? "transparent" : reference.color,
       }}
       onClick={() => {
         if (selectedNote === reference.key) {
