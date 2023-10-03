@@ -52,12 +52,6 @@ export const NavigationProvider = ({
     return path.at(-1) || "RootPage";
   };
 
-  useEffect(() => {
-    if (path.length < 1) {
-      resetPath();
-    }
-  }, [path]);
-
   return (
     <NavigationContext.Provider
       value={{ path, setPath, navBack, navigateTo, resetPath, getCurrentPage }}

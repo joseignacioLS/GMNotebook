@@ -1,7 +1,6 @@
 import { retrieveLocalStorage, saveToLocalStorage } from "@/utils/localStorage";
 import {
   getTextReferences,
-  proccessTextPieces,
   removeReferences,
   splitTextIntoReferences,
 } from "@/utils/text";
@@ -21,7 +20,6 @@ import {
   tutorial,
 } from "./constants";
 import { NavigationContext } from "./navigation";
-import Reference from "@/components/Page/Reference";
 import { generateDataTree } from "@/utils/tree";
 
 interface contextOutputI {
@@ -30,7 +28,6 @@ interface contextOutputI {
   editMode: boolean;
   updateEditMode: any;
   textPieces: textPieceI[];
-  updateTextPieces: (cb: (value: textPieceI[]) => textPieceI[]) => void;
   updateData: (value: dataI, reset: boolean) => void;
   resetData: () => void;
   selectedNote: string;
@@ -46,7 +43,6 @@ export const DataContext = createContext<contextOutputI>({
   editMode: false,
   updateEditMode: () => {},
   textPieces: [],
-  updateTextPieces: (cb: (value: textPieceI[]) => {}) => {},
   updateData: (value: dataI, reset: boolean) => {},
   resetData: () => {},
   selectedNote: "",
@@ -215,7 +211,6 @@ export const DataProvider = ({ children }: { children: ReactElement }) => {
         textPieces,
         editMode,
         updateEditMode,
-        updateTextPieces: setTextPieces,
         updateData,
         resetData,
         selectedNote,

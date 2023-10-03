@@ -3,6 +3,21 @@ import styles from "./conections.module.scss";
 import { DataContext } from "@/context/data";
 import { getTextReferences } from "@/utils/text";
 import { NavigationContext } from "@/context/navigation";
+import { dataI, itemI } from "@/context/constants";
+
+const generateUniqueReferences = (data: dataI, item: itemI) => {
+  return Array.from(
+    new Set(
+      Object.keys(data).reduce((acc: string[], key: string) => {
+        const refes = getTextReferences(data[key].text);
+        if (refes.includes(`${item.key}`)) {
+          return [...acc, key];
+        }
+        return acc;
+      }, [])
+    )
+  );
+};
 
 const Conections = ({}) => {
   const { item, data, updateSelectedNote } = useContext(DataContext);
@@ -11,20 +26,8 @@ const Conections = ({}) => {
   const [references, setReferences] = useState<string[]>([]);
 
   useEffect(() => {
-    setReferences(
-      Array.from(
-        new Set(
-          Object.keys(data).reduce((acc: string[], key: string) => {
-            const refes = getTextReferences(data[key].text);
-            if (refes.includes(`${item.key}`)) {
-              return [...acc, key];
-            }
-            return acc;
-          }, [])
-        )
-      )
-    );
-  }, [data, path]);
+    setReferences(generateUniqueReferences(data, item));
+  }, [data, item, path]);
 
   return (
     <div className={styles.conectionsContainer}>

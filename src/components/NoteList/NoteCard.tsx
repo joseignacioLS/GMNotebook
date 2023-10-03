@@ -1,35 +1,41 @@
 import { DataContext } from "@/context/data";
-import React, { ReactElement, useContext, useState } from "react";
+import React, { useContext, useState } from "react";
 
 import styles from "./notecard.module.scss";
 import { NavigationContext } from "@/context/navigation";
 import Button from "../Button/Button";
+import { generateDisplayText, splitTextIntoReferences } from "@/utils/text";
 
 interface propsI {
   itemKey: string;
   color: string;
   title: string;
-  text: string | string[] | ReactElement | ReactElement[];
-  shortText: string | string[] | ReactElement | ReactElement[] | undefined;
+  text: string;
   visible: boolean;
 }
 
-const NoteCard = ({
-  itemKey,
-  color,
-  title,
-  text,
-  shortText,
-  visible,
-}: propsI) => {
-  const { selectedNote, updateSelectedNote } = useContext(DataContext);
+const NoteCard = ({ itemKey, color, title, text, visible }: propsI) => {
+  const { data, selectedNote, updateSelectedNote } = useContext(DataContext);
   const { navigateTo } = useContext(NavigationContext);
 
+  const expandable = text.split(/[ \n]/g).length > 30;
   const [isExpanded, setIsExpanded] = useState<boolean>(false);
 
   const toggleExpand = () => {
     setIsExpanded((v) => !v);
   };
+
+  const displayText = generateDisplayText(
+    splitTextIntoReferences(text),
+    true,
+    data
+  );
+  const displayShortText = generateDisplayText(
+    splitTextIntoReferences(text.split(" ").slice(0, 25).join(" ") + " ..."),
+    true,
+    data
+  );
+
   return (
     <div
       id={"note-" + itemKey}
@@ -48,7 +54,7 @@ const NoteCard = ({
       >
         <img src="/images/book.svg" />
       </Button>
-      {shortText !== undefined && (
+      {expandable && (
         <Button
           addClass={styles.expand}
           naked={true}
@@ -61,7 +67,8 @@ const NoteCard = ({
         </Button>
       )}
       <h2>{title}</h2>
-      {isExpanded || shortText === undefined ? text : shortText}
+      {(!expandable || isExpanded) && displayText}
+      {expandable && !isExpanded && displayShortText}
     </div>
   );
 };

@@ -22,7 +22,8 @@ main {
   padding: 1rem;
 }
 
-h1 {
+h1,
+h2 {
   margin-bottom: 1rem;
 
   &::-webkit-scrollbar {
@@ -78,11 +79,12 @@ img {
 
 .text-title {
   font-weight: bold;
-  font-size: 150%;
-  opacity: .9;
-}
-.text-subtitle {
-  font-weight: bold;
   font-size: 125%;
   opacity: .8;
+}
+
+.text-subtitle {
+  font-weight: bold;
+  font-size: 112%;
+  opacity: .6;
 }
