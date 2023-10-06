@@ -1,12 +1,20 @@
-import React from "react";
+import React, { ReactElement } from "react";
 import styles from "./togglebutton.module.scss";
 
 interface propsI {
   isOn: boolean;
-  leftOption: string;
-  rightOption: string;
+  leftOption?: string;
+  rightOption?: string;
+  leftButton?: string | ReactElement;
+  rightButton?: string | ReactElement;
 }
-const ToggleButton = ({ isOn, leftOption, rightOption }: propsI) => {
+const ToggleButton = ({
+  isOn,
+  leftOption,
+  rightOption,
+  leftButton,
+  rightButton,
+}: propsI) => {
   return (
     <div className={styles.wrapper}>
       <span style={{ opacity: isOn ? "1" : ".25" }}>{leftOption}</span>
@@ -16,7 +24,9 @@ const ToggleButton = ({ isOn, leftOption, rightOption }: propsI) => {
           style={{
             transform: !isOn ? "translateX(2rem)" : "translateX(0px)",
           }}
-        ></div>
+        >
+          {isOn ? rightButton : leftButton}
+        </div>
       </div>
       <span style={{ opacity: !isOn ? "1" : ".25" }}>{rightOption}</span>
     </div>
