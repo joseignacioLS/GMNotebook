@@ -5,6 +5,8 @@
   align-items: center;
   cursor: pointer;
 
+  user-select: none;
+
   span {
     color: inherit;
   }
@@ -18,6 +20,7 @@
 
     .toggleKnob {
       position: absolute;
+      padding: 10%;
       width: 2rem;
       height: 2rem;
       background-color: darkgrey;

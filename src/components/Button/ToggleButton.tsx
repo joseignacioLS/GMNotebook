@@ -22,7 +22,7 @@ const ToggleButton = ({
         <div
           className={styles.toggleKnob}
           style={{
-            transform: !isOn ? "translateX(2rem)" : "translateX(0px)",
+            transform: isOn ? "translateX(2rem)" : "translateX(0px)",
           }}
         >
           {isOn ? rightButton : leftButton}

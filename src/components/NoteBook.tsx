@@ -33,9 +33,9 @@ const NoteBook = () => {
           }}
         >
           <ToggleButton
-            isOn={!editMode}
-            leftOption="Display"
-            rightOption="Edit"
+            isOn={editMode}
+            leftButton={<img src="/images/book.svg" />}
+            rightButton={<img src="/images/edit.svg" />}
           />
         </Button>
         {editMode ? <PageEdit /> : <NoteList />}

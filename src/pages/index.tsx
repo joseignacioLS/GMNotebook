@@ -17,14 +17,14 @@ export default function Home() {
           position: "fixed",
           top: "1rem",
           right: "1rem",
-          zIndex: "99",
+          zIndex: "10",
         }}
         onClick={() => setDarkMode((v) => !v)}
       >
         <ToggleButton
-          isOn={!darkMode}
-          rightButton={"☀️"}
-          leftButton={"🌙"}
+          isOn={darkMode}
+          leftButton={<img src="/images/sun.svg" />}
+          rightButton={<img src="/images/moon.svg" />}
         ></ToggleButton>
       </div>
       <NoteBook />
