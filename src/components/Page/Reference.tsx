@@ -20,6 +20,7 @@ const Reference = ({ reference, children, naked = false }: propsI) => {
       className={`${styles.reference}`}
       style={{
         backgroundColor: naked ? "transparent" : reference.color,
+        outline: selectedNote === reference.key ? "3px solid red" : "0",
       }}
       onClick={() => {
         if (selectedNote === reference.key) {
