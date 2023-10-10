@@ -6,7 +6,6 @@ const Page = ({}) => {
   return (
     <div className={`${styles.pageContainer}`}>
       <PageDisplay />
-      <PageEdit />
     </div>
   );
 };
