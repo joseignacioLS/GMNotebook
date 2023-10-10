@@ -16,6 +16,7 @@ const NoteList = ({}) => {
         return gmMode || data[ref.key]?.showToPlayers;
       })
       .map((v: textPieceI) => v as referenceI)
+      .filter(v => v.visible)
       .reduce((acc: referenceI[], curr: referenceI) => {
         if (acc.some((item: referenceI) => item.key === curr.key)) return acc;
         return [...acc, curr];

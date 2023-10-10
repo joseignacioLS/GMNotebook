@@ -40,6 +40,7 @@ export const splitTextIntoReferences = (text: string): textPieceI[] => {
   const regex = new RegExp(`(note:[A-Za-z0-9]+)(?:[^A-Za-z0-9]|$)`);
   const regexBreak = /\n/;
   try {
+    let index = 0;
     let safe = 1000;
     while (workText.length > 0 && safe > 0) {
       safe -= 1;
@@ -121,8 +122,9 @@ export const splitTextIntoReferences = (text: string): textPieceI[] => {
           key: key,
           color: generateColor(key),
           visible: true,
-          id: key,
+          id: key + `_${index}`,
         });
+        index += 1;
       } else if (first.type === "break") {
         [addText, workText] = sliceText(
           workText,
