@@ -5,6 +5,7 @@ import { useState } from "react";
 
 export default function Home() {
   const [darkMode, setDarkMode] = useState<boolean>(true);
+
   return (
     <main
       style={{

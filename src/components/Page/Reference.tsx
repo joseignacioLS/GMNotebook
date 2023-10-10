@@ -11,18 +11,24 @@ interface propsI {
 }
 
 const Reference = ({ reference, children, naked = false }: propsI) => {
-  const { selectedNote, updateSelectedNote } = useContext(DataContext);
+  const { data, selectedNote, updateSelectedNote, gmMode } =
+    useContext(DataContext);
   const { navigateTo } = useContext(NavigationContext);
+
+  const unaccesible = !gmMode && !data[reference.key]?.showToPlayers;
 
   return (
     <span
       id={reference.id}
       className={`${styles.reference}`}
       style={{
-        backgroundColor: naked ? "transparent" : reference.color,
+        backgroundColor: naked || unaccesible ? "transparent" : reference.color,
         outline: selectedNote === reference.key ? "3px solid red" : "0",
+        cursor: unaccesible ? "default" : "pointer",
+        userSelect: unaccesible ? "auto" : "none",
       }}
       onClick={() => {
+        if (unaccesible) return;
         if (selectedNote === reference.key) {
           navigateTo(reference.key);
         } else {

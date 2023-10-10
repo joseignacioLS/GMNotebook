@@ -15,7 +15,8 @@ interface propsI {
 }
 
 const NoteCard = ({ itemKey, color, title, text, visible }: propsI) => {
-  const { data, selectedNote, updateSelectedNote } = useContext(DataContext);
+  const { data, selectedNote, updateSelectedNote, gmMode } =
+    useContext(DataContext);
   const { navigateTo } = useContext(NavigationContext);
 
   const expandable = text.split(/[ \n]/g).length > 30;
@@ -28,12 +29,14 @@ const NoteCard = ({ itemKey, color, title, text, visible }: propsI) => {
   const displayText = generateDisplayText(
     splitTextIntoReferences(text),
     true,
-    data
+    data,
+    gmMode
   );
   const displayShortText = generateDisplayText(
     splitTextIntoReferences(text.split(" ").slice(0, 25).join(" ") + " ..."),
     true,
-    data
+    data,
+    gmMode
   );
 
   return (

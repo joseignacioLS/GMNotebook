@@ -225,7 +225,8 @@ export const proccessTextPieces = (
 export const generateDisplayText = (
   text: textPieceI[],
   nakedRefs: boolean,
-  data: dataI
+  data: dataI,
+  gmMode: boolean
 ): ReactElement[] => {
   const ps = [
     -1,
@@ -238,8 +239,17 @@ export const generateDisplayText = (
   for (let i = 0; i < ps.length - 1; i++) {
     const start = (ps[i] || -1) + 1;
     const end = ps[i + 1];
-    const content = proccessTextPieces(text.slice(start, end), nakedRefs, data);
-    output.push(<p key={`p-${i}`}>{content}</p>);
+    const spoilerBreak = text.slice(start, end)?.[0]?.content === "-----";
+    if (!gmMode && spoilerBreak) {
+      break;
+    } else if (!spoilerBreak) {
+      const content = proccessTextPieces(
+        text.slice(start, end),
+        nakedRefs,
+        data
+      );
+      output.push(<p key={`p-${i}`}>{content}</p>);
+    }
   }
   return output;
 };

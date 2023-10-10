@@ -22,6 +22,8 @@ import {
 import { NavigationContext } from "./navigation";
 import { generateDataTree } from "@/utils/tree";
 
+import { useSearchParams } from "next/navigation";
+
 interface contextOutputI {
   data: dataI;
   item: itemI;
@@ -35,6 +37,7 @@ interface contextOutputI {
   tree: leafI[];
   setTree: any;
   updateSelectedNote: any;
+  gmMode: boolean;
 }
 
 export const DataContext = createContext<contextOutputI>({
@@ -50,6 +53,7 @@ export const DataContext = createContext<contextOutputI>({
   tree: [],
   setTree: () => {},
   updateSelectedNote: () => {},
+  gmMode: false,
 });
 
 const checkItemVisibility = (id: string) => {
@@ -71,8 +75,11 @@ export const DataProvider = ({ children }: { children: ReactElement }) => {
   const [editMode, setEditMode] = useState<boolean>(false);
   const [textPieces, setTextPieces] = useState<textPieceI[]>([]);
   const [selectedNote, setSelectedNote] = useState<string>("RootPage");
+  const [gmMode, setGmMode] = useState<boolean>(true);
 
   const { path, resetPath, getCurrentPage } = useContext(NavigationContext);
+
+  const queryParams = useSearchParams();
 
   const updateData = (value: dataI, resetEntry: boolean = true): void => {
     value = cleanUpData(value);
@@ -190,6 +197,12 @@ export const DataProvider = ({ children }: { children: ReactElement }) => {
   }, []);
 
   useEffect(() => {
+    const gmMode = queryParams.get("gm");
+    const gameName = queryParams.get("game");
+    setGmMode(gmMode === "true" && gmMode !== null);
+  }, [queryParams]);
+
+  useEffect(() => {
     document
       .querySelector("#text")
       ?.addEventListener("scroll", updateVisibleReferences);
@@ -218,6 +231,7 @@ export const DataProvider = ({ children }: { children: ReactElement }) => {
         tree,
         setTree,
         updateSelectedNote,
+        gmMode,
       }}
     >
       {children}

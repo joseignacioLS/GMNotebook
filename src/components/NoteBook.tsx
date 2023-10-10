@@ -13,7 +13,7 @@ import { DataContext } from "@/context/data";
 import ToggleButton from "./Button/ToggleButton";
 
 const NoteBook = () => {
-  const { updateEditMode, editMode, updateSelectedNote } =
+  const { updateEditMode, editMode, updateSelectedNote, gmMode } =
     useContext(DataContext);
   const { path } = useContext(NavigationContext);
 
@@ -22,22 +22,19 @@ const NoteBook = () => {
       <Tutorial />
       <Page />
       <div className={styles.rightColumn}>
-        <Button
-          naked={true}
-          addClass={styles.toggleColumn}
-          onClick={() => {
-            if (editMode) {
-              updateSelectedNote(path.at(-1));
-            }
-            updateEditMode((v: boolean) => !v);
-          }}
-        >
+        {gmMode && (
           <ToggleButton
             isOn={editMode}
             leftButton={<img src="/images/book.svg" />}
             rightButton={<img src="/images/edit.svg" />}
+            onClick={() => {
+              if (editMode) {
+                updateSelectedNote(path.at(-1));
+              }
+              updateEditMode((v: boolean) => !v);
+            }}
           />
-        </Button>
+        )}
         {editMode ? <PageEdit /> : <NoteList />}
       </div>
       <Conections />

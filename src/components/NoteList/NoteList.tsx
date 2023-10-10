@@ -5,12 +5,16 @@ import NoteCard from "./NoteCard";
 import { referenceI, textPieceI } from "@/context/constants";
 
 const NoteList = ({}) => {
-  const { data, textPieces } = useContext(DataContext);
+  const { data, textPieces, gmMode } = useContext(DataContext);
   const [notes, setNotes] = useState<referenceI[]>([]);
 
   useEffect(() => {
     const processedTextPieces: referenceI[] = textPieces
-      .filter((v) => v.type === "reference")
+      .filter((v) => {
+        if (v.type !== "reference") return false;
+        const ref = v as referenceI;
+        return gmMode || data[ref.key]?.showToPlayers;
+      })
       .map((v: textPieceI) => v as referenceI)
       .reduce((acc: referenceI[], curr: referenceI) => {
         if (acc.some((item: referenceI) => item.key === curr.key)) return acc;

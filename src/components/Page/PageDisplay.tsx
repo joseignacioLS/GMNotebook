@@ -6,14 +6,14 @@ import Button from "../Button/Button";
 import { generateDisplayText } from "@/utils/text";
 
 const PageDisplay = () => {
-  const { data, item, textPieces, updateSelectedNote } =
+  const { data, item, textPieces, updateSelectedNote, gmMode } =
     useContext(DataContext);
   const { path, navBack } = useContext(NavigationContext);
 
   const [displayText, setDisplayText] = useState<ReactElement[]>([]);
 
   useEffect(() => {
-    const newDisplay = generateDisplayText(textPieces, false, data);
+    const newDisplay = generateDisplayText(textPieces, false, data, gmMode);
     setDisplayText(newDisplay);
   }, [textPieces, data]);
 

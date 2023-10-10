@@ -11,11 +11,13 @@ const PageEdit = ({}) => {
     text: string;
     display: string;
     showInTree: boolean;
+    showToPlayers: boolean;
   }>({
     text: data[selectedNote]?.text || "",
     title: data[selectedNote]?.title || "",
     display: data[selectedNote]?.display || "",
     showInTree: data[selectedNote]?.showInTree || false,
+    showToPlayers: data[selectedNote]?.showToPlayers || false,
   });
 
   const handleUpdateData = (key: string, value: any) => {
@@ -64,6 +66,7 @@ const PageEdit = ({}) => {
       title: data[selectedNote]?.title || "",
       display: data[selectedNote]?.display || "",
       showInTree: data[selectedNote]?.showInTree || false,
+      showToPlayers: data[selectedNote]?.showToPlayers || false,
     });
   }, [data, selectedNote]);
 
@@ -90,6 +93,16 @@ const PageEdit = ({}) => {
         ></input>
       </label>
       <label>
+        <span data-help={"Is this visible to players"}>Show to players?</span>
+        <input
+          type="checkbox"
+          checked={input.showToPlayers}
+          onChange={(e) =>
+            handleUpdateData("showToPlayers", e.currentTarget.checked)
+          }
+        ></input>
+      </label>
+      <label>
         <span data-help={"Decide if this note is shown in the tree"}>
           Shown in Tree?
         </span>
@@ -111,7 +124,8 @@ const PageEdit = ({}) => {
           input.text === data[selectedNote]?.text &&
           input.title === data[selectedNote]?.title &&
           input.display === data[selectedNote]?.display &&
-          input.showInTree === data[selectedNote]?.showInTree
+          input.showInTree === data[selectedNote]?.showInTree &&
+          input.showToPlayers === data[selectedNote]?.showToPlayers
         }
       >
         <img src="/images/save.svg" />
