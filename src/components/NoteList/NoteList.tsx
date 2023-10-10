@@ -12,6 +12,7 @@ const NoteList = ({}) => {
     const processedTextPieces: referenceI[] = textPieces
       .filter((v) => v.type === "reference")
       .map((v: textPieceI) => v as referenceI)
+      .filter(v => v.visible)
       .reduce((acc: referenceI[], curr: referenceI) => {
         if (acc.some((item: referenceI) => item.key === curr.key)) return acc;
         return [...acc, curr];
