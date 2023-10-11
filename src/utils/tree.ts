@@ -1,5 +1,5 @@
 import { dataI, leafI } from "@/context/constants";
-import { getTextReferences } from "./text";
+import { extractReferences } from "./text";
 
 export const generateDataTree = (value: dataI): leafI[] => {
   const tree: leafI[] = Object.keys(value)
@@ -26,10 +26,10 @@ export const generateDataTree = (value: dataI): leafI[] => {
   Object.keys(value).forEach((key: string) => {
     const leaf = tree.findIndex((v: leafI) => v.key === key);
     if (leaf < 0) return;
-    const refes = getTextReferences(value[key].text);
+    const refes = extractReferences(value[key].text);
     tree[leaf].children = refes
       .map((v) => {
-        return tree.findIndex((k: leafI) => k.key === v);
+        return tree.findIndex((k: leafI) => k.key === v.split("_")[0]);
       })
       .filter((v) => v > -1);
   });

@@ -2,38 +2,62 @@ import React, { useContext, useEffect, useState } from "react";
 import styles from "./notelist.module.scss";
 import { DataContext } from "@/context/data";
 import NoteCard from "./NoteCard";
-import { referenceI, textPieceI } from "@/context/constants";
+import { extractReferences } from "@/utils/text";
 
 const NoteList = ({}) => {
-  const { data, textPieces } = useContext(DataContext);
-  const [notes, setNotes] = useState<referenceI[]>([]);
+  const { item } = useContext(DataContext);
+  const [references, setReferences] = useState<string[]>([]);
+
+  const checkIfVisible = (itemKey: string) => {
+    const items = Array.from(
+      document.querySelectorAll(`#text .reference${itemKey}`)
+    );
+    return items.some((item) => {
+      const boundingRect = item.getBoundingClientRect();
+      if (!boundingRect) return false;
+      const notesContainer = document.querySelector("#text") as any;
+      const titleSpace = 80;
+      return (
+        boundingRect.top >= titleSpace &&
+        boundingRect.top <= (notesContainer?.offsetHeight || 0) + titleSpace
+      );
+    });
+  };
+
+  const updateReferences = () => {
+    const extractedReferences = extractReferences(item.text);
+    const filteredReferences = extractedReferences.reduce(
+      (acc: string[], key: string) => {
+        const visible = checkIfVisible(key);
+        if (!visible) return acc;
+        const searchKey = key.split("_")[0];
+        const alreadyThere = acc.some((reference: string) => {
+          return searchKey === reference.split("_")[0];
+        });
+        if (alreadyThere) return acc;
+        return [...acc, key] as string[];
+      },
+      [] as string[]
+    );
+    setReferences(filteredReferences);
+  };
 
   useEffect(() => {
-    const processedTextPieces: referenceI[] = textPieces
-      .filter((v) => v.type === "reference")
-      .map((v: textPieceI) => v as referenceI)
-      .filter(v => v.visible)
-      .reduce((acc: referenceI[], curr: referenceI) => {
-        if (acc.some((item: referenceI) => item.key === curr.key)) return acc;
-        return [...acc, curr];
-      }, []);
-    setNotes(processedTextPieces);
-    return () => setNotes([]);
-  }, [data, textPieces]);
+    setTimeout(updateReferences, 100);
+    document
+      .querySelector("#text")
+      ?.addEventListener("scroll", updateReferences);
+    return () => {
+      document
+        .querySelector("#text")
+        ?.removeEventListener("scroll", updateReferences);
+    };
+  }, [item.text]);
 
   return (
     <div className={styles.noteListContainer} id="notes">
-      {notes.map((textPiece: referenceI) => {
-        return (
-          <NoteCard
-            key={textPiece.key}
-            itemKey={textPiece.key}
-            color={textPiece.color}
-            title={data[textPiece.key]?.title || ""}
-            text={data[textPiece.key]?.text || ""}
-            visible={textPiece.visible}
-          />
-        );
+      {references.map((reference: string) => {
+        return <NoteCard key={reference} itemKey={reference} />;
       })}
     </div>
   );

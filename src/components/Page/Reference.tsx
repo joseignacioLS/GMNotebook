@@ -3,26 +3,26 @@ import styles from "./reference.module.scss";
 import { referenceI } from "@/context/constants";
 import { DataContext } from "@/context/data";
 import { NavigationContext } from "@/context/navigation";
+import { generateColor } from "@/utils/color";
 
 interface propsI {
   reference: referenceI;
-  children: ReactElement | string;
   naked?: boolean;
 }
 
-const Reference = ({ reference, children, naked = false }: propsI) => {
-  const { selectedNote, updateSelectedNote } = useContext(DataContext);
+const Reference = ({ reference, naked = false }: propsI) => {
+  const { selectedNote, updateSelectedNote, data } = useContext(DataContext);
   const { navigateTo } = useContext(NavigationContext);
 
   return (
     <span
-      id={reference.id}
-      className={`${styles.reference}`}
+      className={`${styles.reference} reference${reference.id}`}
       style={{
-        backgroundColor: naked ? "transparent" : reference.color,
+        backgroundColor: naked ? "transparent" : generateColor(reference.key),
         outline: selectedNote === reference.key ? "3px solid red" : "0",
       }}
       onClick={() => {
+        if (naked) return;
         if (selectedNote === reference.key) {
           navigateTo(reference.key);
         } else {
@@ -30,7 +30,7 @@ const Reference = ({ reference, children, naked = false }: propsI) => {
         }
       }}
     >
-      {children}
+      {data[reference.key]?.display}
     </span>
   );
 };

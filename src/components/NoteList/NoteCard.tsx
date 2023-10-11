@@ -1,55 +1,53 @@
 import { DataContext } from "@/context/data";
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 
 import styles from "./notecard.module.scss";
 import { NavigationContext } from "@/context/navigation";
 import Button from "../Button/Button";
-import { generateDisplayText, splitTextIntoReferences } from "@/utils/text";
+import { processText } from "@/utils/text";
+import { generateColor } from "@/utils/color";
 
 interface propsI {
   itemKey: string;
-  color: string;
-  title: string;
-  text: string;
-  visible: boolean;
 }
 
-const NoteCard = ({ itemKey, color, title, text, visible }: propsI) => {
+const NoteCard = ({ itemKey }: propsI) => {
   const { data, selectedNote, updateSelectedNote } = useContext(DataContext);
   const { navigateTo } = useContext(NavigationContext);
 
-  const expandable = text.split(/[ \n]/g).length > 30;
   const [isExpanded, setIsExpanded] = useState<boolean>(false);
 
   const toggleExpand = () => {
     setIsExpanded((v) => !v);
   };
 
-  const displayText = generateDisplayText(
-    splitTextIntoReferences(text),
-    true,
-    data
-  );
-  const displayShortText = generateDisplayText(
-    splitTextIntoReferences(text.split(" ").slice(0, 25).join(" ") + " ..."),
-    true,
-    data
+  const key = itemKey.split("_")[0];
+
+  const title = data[key]?.title || "";
+  const text = data[key]?.text || "";
+  const expandable = text?.split(/[ \n]/g).length > 30;
+
+  const displayText = processText(text, true);
+
+  const displayShortText = processText(
+    text.split(" ").slice(0, 25).join(" ") + " ...",
+    true
   );
 
   return (
     <div
-      id={"note-" + itemKey}
+      id={`note-${key.split("_")[0]}`}
       className={`${styles.note} ${
         itemKey === selectedNote && styles.selected
-      } ${visible && styles.visibleNote}`}
-      style={{ backgroundColor: color }}
+      } ${styles.visibleNote}`}
+      style={{ backgroundColor: generateColor(key) }}
     >
       <Button
         addClass={styles.linkVisit}
         naked={true}
         onClick={() => {
-          updateSelectedNote(itemKey);
-          navigateTo(itemKey || "");
+          updateSelectedNote(key);
+          navigateTo(key || "");
         }}
       >
         <img src="/images/book.svg" />

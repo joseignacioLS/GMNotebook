@@ -1,8 +1,8 @@
 import React, { useContext, useEffect, useState } from "react";
 import styles from "./pageedit.module.scss";
 import { DataContext } from "@/context/data";
-import { getTextReferences } from "@/utils/text";
 import Button from "../Button/Button";
+import { extractReferences } from "@/utils/text";
 
 const PageEdit = ({}) => {
   const { data, updateData, editMode, selectedNote } = useContext(DataContext);
@@ -32,7 +32,10 @@ const PageEdit = ({}) => {
   };
 
   const generateNewEntries = () => {
-    return getTextReferences(input.text)
+    return extractReferences(input.text)
+      .map((v) => {
+        return v.split("_")[0];
+      })
       .filter((v) => {
         return !data[v];
       })

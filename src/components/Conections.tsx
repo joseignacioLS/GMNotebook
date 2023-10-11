@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from "react";
 import styles from "./conections.module.scss";
 import { DataContext } from "@/context/data";
-import { getTextReferences } from "@/utils/text";
+import { extractReferences } from "@/utils/text";
 import { NavigationContext } from "@/context/navigation";
 import { dataI, itemI } from "@/context/constants";
 
@@ -9,8 +9,8 @@ const generateUniqueReferences = (data: dataI, item: itemI) => {
   return Array.from(
     new Set(
       Object.keys(data).reduce((acc: string[], key: string) => {
-        const refes = getTextReferences(data[key].text);
-        if (refes.includes(`${item.key}`)) {
+        const refes = extractReferences(data[key].text);
+        if (refes.map((refe) => refe.split("_")[0]).includes(`${item.key}`)) {
           return [...acc, key];
         }
         return acc;
