@@ -12,7 +12,7 @@ import { NavigationContext } from "@/context/navigation";
 import { DataContext } from "@/context/data";
 import ToggleButton from "./Button/ToggleButton";
 
-const NoteBook = () => {
+const NoteBook = ({ gmMode = true }: { gmMode: boolean }) => {
   const { updateEditMode, editMode, updateSelectedNote } =
     useContext(DataContext);
   const { path } = useContext(NavigationContext);
@@ -22,25 +22,27 @@ const NoteBook = () => {
       <Tutorial />
       <Page />
       <div className={styles.rightColumn}>
-        <Button
-          naked={true}
-          addClass={styles.toggleColumn}
-          onClick={() => {
-            if (editMode) {
-              updateSelectedNote(path.at(-1));
-            }
-            updateEditMode((v: boolean) => !v);
-          }}
-        >
-          <ToggleButton
-            isOn={editMode}
-            leftButton={<img src="/images/book.svg" />}
-            rightButton={<img src="/images/edit.svg" />}
-          />
-        </Button>
+        {gmMode && (
+          <Button
+            naked={true}
+            addClass={styles.toggleColumn}
+            onClick={() => {
+              if (editMode) {
+                updateSelectedNote(path.at(-1));
+              }
+              updateEditMode((v: boolean) => !v);
+            }}
+          >
+            <ToggleButton
+              isOn={editMode}
+              leftButton={<img src="/images/book.svg" />}
+              rightButton={<img src="/images/edit.svg" />}
+            />
+          </Button>
+        )}
         {editMode ? <PageEdit /> : <NoteList />}
       </div>
-      <Conections />
+      {gmMode && <Conections />}
       <DataActions />
     </div>
   );

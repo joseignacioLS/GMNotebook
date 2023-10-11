@@ -32,7 +32,10 @@ export const processLine = (
   plain: boolean,
   wrapped = false
 ) => {
-  if (line.match(/^\# /)) {
+  if (line[0] === "*") {
+    return null
+  }
+  else if (line.match(/^\# /)) {
     return (
       <p key={line} className="text-title">
         {processLine(line.slice(1), index, plain, true)}
