@@ -59,7 +59,7 @@ export const games: { [key: string]: {} } = {
       "title": "La Viuda",
       "key": "Viuda",
       "display": "Viuda",
-      "text": "Wellby.\n\nHumana de aspecto muy afligido por la muerte de su marido. Busca ayuda para recuperar el colgante.\n-----\nForma parte de la secta de note:Umberlee, y conseguirle el note:colganteUmberlee hará posible el ritual de note:Windside.",
+      "text": "Wellby.\n\nHumana de aspecto muy afligido por la muerte de su marido. Busca ayuda para recuperar el colgante.\n\n*Forma parte de la secta de note:Umberlee, y conseguirle el note:colganteUmberlee hará posible el ritual de note:Windside.",
       "showInTree": true,
       "showToPlayers": false
     },
@@ -169,7 +169,7 @@ export const games: { [key: string]: {} } = {
     },
     "geografia": {
       "title": "Geografia",
-      "text": "# note:mingard\n## note:granBosque\n- note:Linen\n\n## note:bosqueRobles\n- note:Cour\n- note:Oakwood\n\n## note:bahiaVerde\n- note:Windside\n\n## note:picosSur\n\n## note:underdark",
+      "text": "# note:mingard\n## note:bahiaVerde\n- note:Windside\n*\n*## note:bosqueRobles\n*- note:Cour\n*- note:Oakwood\n*\n*## note:granBosque\n*- note:Linen\n*\n*## note:picosSur\n*\n*## note:underdark",
       "display": "Geografía",
       "key": "geografia",
       "showInTree": true,
@@ -343,7 +343,7 @@ export const games: { [key: string]: {} } = {
     },
     "resources": {
       "title": "Recursos",
-      "text": "note:spells\nnote:feats\n-----\nnote:potionPrices",
+      "text": "note:spells\nnote:feats",
       "display": "Recursos",
       "key": "resources",
       "showInTree": true,
@@ -359,7 +359,7 @@ export const games: { [key: string]: {} } = {
     },
     "a0s0": {
       "title": "A1S0: La cripta de Windside",
-      "text": "La party llega a note:Windside en busca de trabajo. Rápidamente encuentran una taberna en los barrios trabajadores de Windside, el note:tabernaOlga.\n\n- note:CarmenV ha tenido algunos problemas con note:Olga.\n- note:Carmen ha averiguado que hay un enano de las minas del sur que podría requerir ayuda para limpiarlas de goblins.\n\nTras ser despachados por Olga, hablan con una mujer afligida, una note:Viuda que solicita ayuda para recuperar el note:colganteUmberlee de su marido (miembro de los note:Vistra) que se encuentra en las criptas de la catedral. Negocian con ella recuperarlo por 150gp y devolvérselo al día siguiente, antes de que el cuerpo sea enterrado.\n\nTras valorar como recuperarlo deciden investigar la catedral. Primero la visitan por dentro, sin éxito, y luego por idea de note:Carmen, la recorren por fuera en donde encuentran una entrada a las criptas.\n\n- note:CarmenV acusa a note:Adrian de robo en pleno de la calle para que el guarda de la puerta lo persiga.\n- note:Adrian huye de los guardias y consigue despistarlos.\n\nAl ver que la puerta está cerrada, deciden volver de noche. Tras deshacerse del guarda usando el conjuro sleep.\n\nEntran a la cripta y encuentran la entrada a la zona reservada, donde se encuentra el cuerpo que buscan. La puerta parece no poder ser forzada, sino que debe ser abierta mediante algún ritual. Usando sangre de un cuerpo reciente consiguen que se abra.\n\n- Tanto note:Adrian como note:CarmenV mancillan los cadáveres de la cripta.\n\nUna vez dentro encuentran el cadáver del marido y recuperan el colgante, pero esto hace que los muertos se levanten y les ataquen.\n\n- note:Carmen ha perdido una espada corta en el combate.\n\nAl ver que los muertos no se detienen deciden huir y volver a la note:tabernaOlga, donde han quedado con la note:Viuda.\n\n-----\nPosible quest futura: Limpiar las minas del sur, propiedad de los enanos, de goblins.",
+      "text": "La party llega a note:Windside en busca de trabajo. Rápidamente encuentran una taberna en los barrios trabajadores de Windside, el note:tabernaOlga.\n\n- note:CarmenV ha tenido algunos problemas con note:Olga.\n- note:Carmen ha averiguado que hay un enano de las minas del sur que podría requerir ayuda para limpiarlas de goblins.\n\nTras ser despachados por Olga, hablan con una mujer afligida, una note:Viuda que solicita ayuda para recuperar el note:colganteUmberlee de su marido (miembro de los note:Vistra) que se encuentra en las criptas de la catedral. Negocian con ella recuperarlo por 150gp y devolvérselo al día siguiente, antes de que el cuerpo sea enterrado.\n\nTras valorar como recuperarlo deciden investigar la catedral. Primero la visitan por dentro, sin éxito, y luego por idea de note:Carmen, la recorren por fuera en donde encuentran una entrada a las criptas.\n\n- note:CarmenV acusa a note:Adrian de robo en pleno de la calle para que el guarda de la puerta lo persiga.\n- note:Adrian huye de los guardias y consigue despistarlos.\n\nAl ver que la puerta está cerrada, deciden volver de noche. Tras deshacerse del guarda usando el conjuro sleep.\n\nEntran a la cripta y encuentran la entrada a la zona reservada, donde se encuentra el cuerpo que buscan. La puerta parece no poder ser forzada, sino que debe ser abierta mediante algún ritual. Usando sangre de un cuerpo reciente consiguen que se abra.\n\n- Tanto note:Adrian como note:CarmenV mancillan los cadáveres de la cripta.\n\nUna vez dentro encuentran el cadáver del marido y recuperan el colgante, pero esto hace que los muertos se levanten y les ataquen.\n\n- note:Carmen ha perdido una espada corta en el combate.\n\nAl ver que los muertos no se detienen deciden huir y volver a la note:tabernaOlga, donde han quedado con la note:Viuda.\n\n*Posible quest futura: Limpiar las minas del sur, propiedad de los enanos, de goblins.",
       "display": "La cripta de Windside",
       "key": "a0s0",
       "showInTree": false,
@@ -592,7 +592,7 @@ export const games: { [key: string]: {} } = {
     },
     "historia": {
       "title": "Historia",
-      "text": "Description",
+      "text": "# Drows\nnote:leyendaDrow",
       "display": "Historia",
       "key": "historia",
       "showInTree": true
