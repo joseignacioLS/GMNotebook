@@ -12,7 +12,8 @@ interface propsI {
 }
 
 const NoteCard = ({ itemKey }: propsI) => {
-  const { data, selectedNote, updateSelectedNote } = useContext(DataContext);
+  const { data, selectedNote, updateSelectedNote, gmMode } =
+    useContext(DataContext);
   const { navigateTo } = useContext(NavigationContext);
 
   const [isExpanded, setIsExpanded] = useState<boolean>(false);
@@ -27,11 +28,12 @@ const NoteCard = ({ itemKey }: propsI) => {
   const text = data[key]?.text || "";
   const expandable = text?.split(/[ \n]/g).length > 30;
 
-  const displayText = processText(text, true);
+  const displayText = processText(text, true, gmMode);
 
   const displayShortText = processText(
     text.split(" ").slice(0, 25).join(" ") + " ...",
-    true
+    true,
+    gmMode
   );
 
   return (

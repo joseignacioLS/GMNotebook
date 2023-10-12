@@ -1,10 +1,16 @@
 import Modal from "@/components/Modal/Modal";
 import NoteBook from "../components/NoteBook";
 import ToggleButton from "@/components/Button/ToggleButton";
-import { useState } from "react";
+import { useContext, useEffect, useState } from "react";
+import { DataContext } from "@/context/data";
 
 export default function Home() {
   const [darkMode, setDarkMode] = useState<boolean>(true);
+  const { setGmMode } = useContext(DataContext);
+
+  useEffect(() => {
+    setGmMode(true);
+  }, []);
   return (
     <main
       style={{

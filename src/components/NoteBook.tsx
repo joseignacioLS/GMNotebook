@@ -12,8 +12,8 @@ import { NavigationContext } from "@/context/navigation";
 import { DataContext } from "@/context/data";
 import ToggleButton from "./Button/ToggleButton";
 
-const NoteBook = ({ gmMode = true }: { gmMode: boolean }) => {
-  const { updateEditMode, editMode, updateSelectedNote } =
+const NoteBook = () => {
+  const { gmMode, updateEditMode, editMode, updateSelectedNote } =
     useContext(DataContext);
   const { path } = useContext(NavigationContext);
 

@@ -18,7 +18,7 @@ const Tree = () => {
 
   const relaxTreeForFirstVisualization = (): void => {
     let relaxedTree = tree;
-    for (let i = 0; i < 5000; i++) {
+    for (let i = 0; i < 10000; i++) {
       relaxedTree = relaxTree(relaxedTree);
     }
     setTree(relaxedTree);
@@ -28,7 +28,7 @@ const Tree = () => {
     relaxTreeForFirstVisualization();
     const interval = setInterval(relaxTreeMore, 50);
     return () => clearInterval(interval);
-  }, [data]);
+  }, []);
 
   return (
     <div className={styles.treeContainer}>
@@ -36,12 +36,12 @@ const Tree = () => {
         {tree.reduce((acc: ReactElement[], curr: leafI) => {
           return [
             ...acc,
-            ...curr.children.map((index) => {
+            ...Array.from(new Set(curr.children)).map((index) => {
               const origin = curr.position;
               const destiny = tree[index].position;
               return (
                 <path
-                  key={curr.key + index}
+                  key={curr.key + tree[index].key}
                   d={`M${origin[0]} ${origin[1]} L${destiny[0]} ${destiny[1]}Z`}
                   stroke="black"
                 />

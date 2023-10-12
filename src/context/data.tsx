@@ -7,7 +7,7 @@ import {
   useEffect,
   useState,
 } from "react";
-import { dataI, itemI, leafI, textPieceI, tutorial } from "./constants";
+import { dataI, itemI, leafI, tutorial } from "./constants";
 import { NavigationContext } from "./navigation";
 import { generateDataTree } from "@/utils/tree";
 
@@ -23,6 +23,8 @@ interface contextOutputI {
   tree: leafI[];
   setTree: any;
   updateSelectedNote: any;
+  gmMode: boolean;
+  setGmMode: any;
 }
 
 export const DataContext = createContext<contextOutputI>({
@@ -37,6 +39,8 @@ export const DataContext = createContext<contextOutputI>({
   tree: [],
   setTree: () => {},
   updateSelectedNote: () => {},
+  gmMode: false,
+  setGmMode: () => {},
 });
 
 export const DataProvider = ({ children }: { children: ReactElement }) => {
@@ -44,6 +48,7 @@ export const DataProvider = ({ children }: { children: ReactElement }) => {
   const [tree, setTree] = useState<leafI[]>([]);
   const [editMode, setEditMode] = useState<boolean>(false);
   const [selectedNote, setSelectedNote] = useState<string>("RootPage");
+  const [gmMode, setGmMode] = useState<boolean>(false);
 
   const { path, resetPath, getCurrentPage } = useContext(NavigationContext);
 
@@ -53,7 +58,7 @@ export const DataProvider = ({ children }: { children: ReactElement }) => {
       setData(value);
       setTree(generateDataTree(value));
       if (resetEntry) resetPath();
-      saveToLocalStorage(value);
+      gmMode && saveToLocalStorage(value);
     }, 0);
   };
 
@@ -128,6 +133,7 @@ export const DataProvider = ({ children }: { children: ReactElement }) => {
   }, [path, data]);
 
   useEffect(() => {
+    if (!gmMode) return;
     const retrieved = retrieveLocalStorage();
     try {
       const parsed = JSON.parse(retrieved);
@@ -139,7 +145,7 @@ export const DataProvider = ({ children }: { children: ReactElement }) => {
     } catch (err) {
       console.log(err);
     }
-  }, []);
+  }, [gmMode]);
 
   useEffect(() => {
     setTimeout(() => updateEditMode(false), 0);
@@ -159,6 +165,8 @@ export const DataProvider = ({ children }: { children: ReactElement }) => {
         tree,
         setTree,
         updateSelectedNote,
+        gmMode,
+        setGmMode,
       }}
     >
       {children}

@@ -21,21 +21,29 @@ interface lineProcessI {
   index: number;
 }
 
-export const processText = (text: string, plain: boolean = false) => {
+export const processText = (
+  text: string,
+  plain: boolean = false,
+  gmMode: boolean = true
+) => {
   const lines = text.split("\n");
-  return lines.map((l, i) => processLine(l, i, plain));
+  return lines
+    .filter((l) => {
+      return gmMode || l[0] !== "*";
+    })
+    .map((l, i) => {
+      const line = l[0] === "*" ? l.slice(1) : l;
+      return processLine(line, i, plain);
+    });
 };
 
 export const processLine = (
   line: string,
   index: number,
   plain: boolean,
-  wrapped = false
+  wrapped: boolean = false
 ) => {
-  if (line[0] === "*") {
-    return null
-  }
-  else if (line.match(/^\# /)) {
+  if (line.match(/^\# /)) {
     return (
       <p key={line} className="text-title">
         {processLine(line.slice(1), index, plain, true)}
