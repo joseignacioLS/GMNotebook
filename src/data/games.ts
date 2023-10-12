@@ -4,7 +4,7 @@ export const games: { [key: string]: {} } = {
       "title": "Mingard",
       "key": "RootPage",
       "display": "Mingard",
-      "text": "note:party\nnote:arcos\nnote:lore\nnote:resources\n-----\nnote:gmResources",
+      "text": "note:party\nnote:arcos\nnote:lore\nnote:resources\n*note:gmResources",
       "showInTree": false,
       "showToPlayers": true
     },
@@ -447,7 +447,7 @@ export const games: { [key: string]: {} } = {
     },
     "a0": {
       "title": "Arco 0: La llegada a Windside",
-      "text": "# Resumen\nTras semanas recorriendo el norte de note:mingard, la note:party se dirige a note:Windside en busca de trabajo y descanso de sus días en los caminos. \n## Cuaderno Sesiones\n- note:a0s0\n-----\n## Quests\n- note:a0q1\n- note:a0q2\n- note:a0q3",
+      "text": "# Resumen\nTras semanas recorriendo el norte de note:mingard, la note:party se dirige a note:Windside en busca de trabajo y descanso de sus días en los caminos. \n## Cuaderno Sesiones\n- note:a0s0\n*## Quests\n*- note:a0q1\n*- note:a0q2\n*- note:a0q3",
       "display": "Arco 0: La llegada a Windside",
       "key": "a0",
       "showInTree": true,
