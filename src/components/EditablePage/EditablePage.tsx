@@ -58,10 +58,6 @@ const EditablePage = () => {
   };
 
   useEffect(() => {
-    setCaret(inputRef.current, cursorPosition);
-  }, [text]);
-
-  useEffect(() => {
     document.addEventListener("keydown", (event) => {
       if (event.key === "Enter") {
         document.execCommand("insertLineBreak");
@@ -69,6 +65,10 @@ const EditablePage = () => {
       }
     });
   }, []);
+
+  useEffect(() => {
+    setCaret(inputRef.current, cursorPosition);
+  }, [text]);
 
   useEffect(() => {
     const newText = processText(item.text);
@@ -83,12 +83,11 @@ const EditablePage = () => {
       contentEditable
       onInput={(e) => {
         getCaret();
-        setText(inputRef.current.innerHTML);
+        setText(processText(inputRef.current.textContent))
       }}
-      dangerouslySetInnerHTML={{
-        __html: text,
-      }}
-    ></div>
+    >
+      {text}
+    </div>
   );
 };
 
