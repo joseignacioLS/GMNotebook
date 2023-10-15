@@ -55,6 +55,7 @@ const PageEdit = ({}) => {
   const saveData = () => {
     const newItem = generateItemFromInputs();
     const newEntries = generateNewEntries();
+    if (!data[selectedNote]) return
     updateData(
       { ...data, [data[selectedNote].key]: newItem, ...newEntries },
       false

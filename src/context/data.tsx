@@ -53,12 +53,12 @@ export const DataProvider = ({ children }: { children: ReactElement }) => {
   const { path, resetPath, getCurrentPage } = useContext(NavigationContext);
 
   const updateData = (value: dataI, resetEntry: boolean = true): void => {
-    value = cleanUpData(value);
+    const cleanData = cleanUpData(value);
     setTimeout(() => {
-      setData(value);
-      setTree(generateDataTree(value));
+      setData(cleanData);
+      setTree(generateDataTree(cleanData));
       if (resetEntry) resetPath();
-      gmMode && saveToLocalStorage(value);
+      gmMode && saveToLocalStorage(cleanData);
     }, 0);
   };
 
@@ -94,9 +94,9 @@ export const DataProvider = ({ children }: { children: ReactElement }) => {
     }
 
     // remove deleted keys from text
-    Object.keys(value).forEach((key: string) => {
-      value[key].text = removeReferences(value[key].text, deletedKeys);
-    });
+    // Object.keys(value).forEach((key: string) => {
+    //   value[key].text = removeReferences(value[key].text, deletedKeys);
+    // });
     return value;
   };
 
