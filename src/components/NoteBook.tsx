@@ -43,7 +43,7 @@ const NoteBook = () => {
         {editMode ? <PageEdit /> : <NoteList />}
       </div>
       {gmMode && <Conections />}
-      <DataActions />
+      {gmMode && <DataActions />}
     </div>
   );
 };

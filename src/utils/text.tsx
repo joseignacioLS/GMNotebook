@@ -45,13 +45,13 @@ export const processLine = (
 ) => {
   if (line.match(/^\# /)) {
     return (
-      <p key={line} className="text-title">
+      <p key={line} id={`p-${index}`} className="text-title">
         {processLine(line.slice(1), index, plain, true)}
       </p>
     );
   } else if (line.match(/^\#\# /)) {
     return (
-      <p key={line} className="text-subtitle">
+      <p key={line} id={`p-${index}`} className="text-subtitle">
         {processLine(line.slice(2), index, plain, true)}
       </p>
     );
@@ -117,13 +117,17 @@ export const processLine = (
     return wrapped ? (
       <span key={line + index}>{result.result}</span>
     ) : (
-      <p key={line + index}>{result.result}</p>
+      <p id={`p-${index}`} key={line + index}>
+        {result.result}
+      </p>
     );
   }
   return wrapped ? (
     <span key={line + index}>{line}</span>
   ) : (
-    <p key={line + index}>{line}</p>
+    <p id={`p-${index}`} key={line + index}>
+      {line}
+    </p>
   );
 };
 

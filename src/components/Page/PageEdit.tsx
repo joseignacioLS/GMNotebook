@@ -62,6 +62,43 @@ const PageEdit = ({}) => {
   };
 
   useEffect(() => {
+    saveData();
+  }, [input.text, input.display, input.title, input.showInTree]);
+
+  const handleCursorChange = (e: any) => {
+    const cursorPosition = e.currentTarget?.selectionStart;
+    const text = e.currentTarget.value;
+    const paragraphLength = text
+      .split("\n")
+      .map((v: string) => v.length)
+      .reduce((acc: number[], curr: number) => {
+        if (acc.length === 0) return [curr];
+        return [...acc, curr + 1 + acc[acc.length - 1]];
+      }, []);
+    let pIndex = 0;
+
+    for (let i = 1; i < paragraphLength.length; i++) {
+      if (
+        paragraphLength[i - 1] < cursorPosition &&
+        paragraphLength[i] >= cursorPosition
+      ) {
+        pIndex = i;
+      }
+    }
+
+    const allParagraphs = Array.from(document.querySelectorAll("#text > p"));
+    let index = 0;
+    for (let p of allParagraphs) {
+      p?.classList.remove("edit-p");
+      if (index === pIndex && p.innerHTML !== "") {
+        p?.scrollIntoView();
+        p?.classList.add("edit-p");
+      }
+      index += 1;
+    }
+  };
+
+  useEffect(() => {
     setInput({
       text: data[selectedNote]?.text || "",
       title: data[selectedNote]?.title || "",
@@ -105,20 +142,11 @@ const PageEdit = ({}) => {
         ></input>
       </label>
       <textarea
+        onSelect={handleCursorChange}
+        onInput={handleCursorChange}
         value={input.text}
         onChange={(e) => handleUpdateData("text", e.currentTarget.value)}
       ></textarea>
-      <Button
-        onClick={saveData}
-        disabled={
-          input.text === data[selectedNote]?.text &&
-          input.title === data[selectedNote]?.title &&
-          input.display === data[selectedNote]?.display &&
-          input.showInTree === data[selectedNote]?.showInTree
-        }
-      >
-        <img src="/images/save.svg" />
-      </Button>
     </div>
   );
 };

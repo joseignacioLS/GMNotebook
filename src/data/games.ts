@@ -28,7 +28,7 @@ export const games: { [key: string]: {} } = {
       "key": "Carmen",
       "display": "Celebrindal",
       "text": "Celebrindal de Linen (Carmen). Exploradora elfa del bosque.\n\nCelebrindal nació en note:Linen, donde desde niña entrenó con el arco y las espadas para convertirse en una guerrera de su pueblo. Al llegar la festividad de su vigésimo sexto invierno, como es costumbre en su pueblo, el consejo consultó con las estrellas el propósito de Celebrindal. Tras días de ritual, el consejo se acercó a Celebrindal para comunicarle que las estrellas no tenían destino para ella allí, y que debía buscarlo fuera.\n\nCon su equipo de caza y la bendición de su pueblo, Carmir se puso en marcha a recorrer el amplio mundo en busca de propósito. Fue en los caminos donde se encontró con note:Adrian, con quien se sintió identificada y decidió formar grupo.\n\n# Feats\nnote:featDarkVision\nnote:featKeenSenses\nnote:featFeyAncestry\nnote:featTrance\nnote:featFleetOfFoot\nnote:featMaskOfTheWild\nnote:featFavoredEnemy\nnote:featNaturalExplorer\nnote:featWanderer",
-      "showInTree": true,
+      "showInTree": false,
       "showToPlayers": true
     },
     "CarmenV": {
@@ -36,7 +36,7 @@ export const games: { [key: string]: {} } = {
       "key": "CarmenV",
       "display": "Lilith",
       "text": "Lilith (Carmen): Hechicera Tielfling.\n\nCrecida en las calles sin conocer una familia, empezó utilizando su carisma para ganarse la vida. Lo que comenzó siendo pequeños espectáculos para sacar unas monedas y poder comer o dormir con un techo sobre la cabeza, la llevó a incorporarse a un grupo de bandidos. Llegando a ser la mano derecha del grupo y pareja del derekBandido.\n\nFue con ellos cuando descubrió su facilidad para manipular las energías y que, a pesar de que \"engañar\" era una manera fácil de ganarse la vida, ella no estaba de acuerdo con los \"daños colaterales\".\n\nDurante su último golpe junto a los bandidos, las cosas salieron mal y Lilith decidió abandonar, en contra de los intereses de derekBandido. Por suerte para ella, no anduvo mucho sola antes de encontrarse con note:Adrian y note:Carmen, con quien vio la oportunidad de dejar su pasado atrás.\n\n# Feats\nnote:featDarkVision\nnote:featHellishResistance\nnote:featInfernalLegacy\nnote:featSpellCasting\nnote:featDraconicBloodline",
-      "showInTree": true,
+      "showInTree": false,
       "showToPlayers": true
     },
     "Olga": {
@@ -44,7 +44,7 @@ export const games: { [key: string]: {} } = {
       "key": "Olga",
       "display": "Olga",
       "text": "Es una orca de gran tamaño, algo intimidante. Su cabeza está rapada y sus dos colmillos inferiores salen de su boca, sobre todo cuando sonrie. Viste ropajes de trabajo, con un delantal y un trapo al hombro. Es la dueña de y regenta note:tabernaOlga, y además hace de enlace entre los grupos de aventureros y los locales, apuntando los posibles trabajos y repartiendolos entre los grupos.",
-      "showInTree": true,
+      "showInTree": false,
       "showToPlayers": true
     },
     "tabernaOlga": {
@@ -60,7 +60,7 @@ export const games: { [key: string]: {} } = {
       "key": "Viuda",
       "display": "Viuda",
       "text": "Wellby.\n\nHumana de aspecto muy afligido por la muerte de su marido. Busca ayuda para recuperar el colgante.\n\n*Forma parte de la secta de note:Umberlee, y conseguirle el note:colganteUmberlee hará posible el ritual de note:Windside.",
-      "showInTree": true,
+      "showInTree": false,
       "showToPlayers": false
     },
     "colganteUmberlee": {
@@ -68,7 +68,7 @@ export const games: { [key: string]: {} } = {
       "key": "colganteUmberlee",
       "display": "colgante",
       "text": "Colgante de metal con dos olas enfrendadas grabadas\n-----\nColgante de la deidad note:Umberlee.\n\nEstá encantado, y produce efectos caóticos en posesión de manos inexpertas.",
-      "showInTree": true,
+      "showInTree": false,
       "showToPlayers": false
     },
     "criptaWindside": {
@@ -83,22 +83,22 @@ export const games: { [key: string]: {} } = {
       "title": "Comerciante asaltado",
       "key": "comerciante",
       "display": "comerciante",
-      "text": "Un humano con signos de vejez ya. Viste con buenas ropas, aunque gastadas. Lleva toda la vida en los caminos, transportando mercancías y comerciando con ellas. Está muy indignado por el estado de los cominos del note:bosqueRobles.",
-      "showInTree": true
+      "text": "Un gnomo con signos de vejez ya. Viste con buenas ropas, aunque gastadas. Lleva toda la vida en los caminos, transportando mercancías y comerciando con ellas. Está muy indignado por el estado de los cominos del note:bosqueRobles.",
+      "showInTree": false
     },
     "posadaBosque": {
       "title": "El Carro Cansado",
       "key": "posadaBosque",
       "display": "El Carro Cansado",
-      "text": "Una alegre posada en los caminos del bosque entre note:Cour y note:Windside. Se encuentra a pie del camino, en un pequeño claro entre los árboles. Es un edificio de madera de 2 plantas con espacio para dejar carromatos y caballos en el exterior y amplio porche. El interior es acogedor y los precios no son extremadamente caros. Está regentada por la enana Ila y su marido Ek.",
-      "showInTree": true
+      "text": "Una alegre posada localizada en note:Oakwood. Es un edificio de madera de 2 plantas con espacio para dejar carromatos y caballos en el exterior y amplio porche. El interior es acogedor y los precios no son extremadamente caros. Está regentada por la enana Ila y su marido Ek.",
+      "showInTree": false
     },
     "Umberlee": {
       "title": "Umberlee",
       "key": "Umberlee",
       "display": "Umberlee",
       "text": "Umberlee es la diosa del mar, una maliciosa entidad que busca el caos y el sacrificio como máxima.",
-      "showInTree": true
+      "showInTree": false
     },
     "Adrian": {
       "title": "El Drow Monje",
@@ -113,7 +113,7 @@ export const games: { [key: string]: {} } = {
       "text": "Trio de aventureros de diferentes origenes en note:mingard. Viajan de ciudad en ciudad buscando ganarse la vida.\n- note:Adrian\n- note:Carmen\n- note:CarmenV",
       "display": "Party",
       "key": "party",
-      "showInTree": true,
+      "showInTree": false,
       "showToPlayers": true
     },
     "derekBandido": {
@@ -177,7 +177,7 @@ export const games: { [key: string]: {} } = {
     },
     "guaridaKobold": {
       "title": "La guarida de los Kobolds",
-      "text": "La guarida de los Kobolds se encuentra escondida dentro del note:bosqueRobles, a media jornada de camino.\n\nConsiste en las antiguas ruinas de una casa de campo de dos plantas. Las paredes están derruidas y cuesta discernir la forma original de la estructura.\n\nEn la guarida se encuentra note:derekBandido, quien junto a una hechicera humana, note:Cicil, ha tomado el control de un pequeño grupo de note:kobolds y los usa para asaltar los caminos.\n\nimg:https://i.imgur.com/l2DTW1f.png",
+      "text": "La guarida de los Kobolds se encuentra escondida dentro del note:bosqueRobles, a media jornada de camino.\n\nConsiste en una cueva de 3 cámaras, plagada de note:kobolds y con una trampa en el pasillo entre la primera y la segunda cámara (DEX: 15 o 1d8 daño rocas).\n\nEn la guarida se encuentra note:derekBandido, quien junto a una hechicera humana, note:Cicil, ha tomado el control de un pequeño grupo de note:kobolds y los usa para asaltar los caminos.\n\nimg:https://i.imgur.com/sPZJspU.png\n\nAl llegar a la tercera cámara, note:derekBandido y note:Cicil tratarán de engañar a quien entre usando una ilusión de un Kobold grande (10x10ft) al que note:derekBandido da voz mientras note:Cicil genera la ilusión. Mientras duré la ilusión los note:kobolds estarán de parte de los bandidos, pero si se rompe harán una tirada de INT (DC 10) como grupo para darse cuenta de que estaban siendo engañados\n\n## Tesoro\n- 5 gemas (50pg)\n- 2 pieles de oso (30pg)\n- Chain Mail (75pg)\n- 2 shortswords (20pg)",
       "display": "guarida kobold",
       "key": "guaridaKobold",
       "showInTree": true
@@ -501,14 +501,14 @@ export const games: { [key: string]: {} } = {
     },
     "Oakwood": {
       "title": "Oakwood",
-      "text": "Pequeña aldea situada en el camino que cruza el note:bosqueRobles, entre note:Windside y note:Cour",
+      "text": "Pequeña aldea situada en el camino que cruza el note:bosqueRobles, entre note:Windside y note:Cour.\n\nEstá conformada por algunas pequeñas casas de gente que se dedica a la caza, pesca y agricultura, comerciando con todo aquel que cruza el bosque.\n\nOakwood es famoso por el note:lagoAzul y cuenta con una capilla, donde el note:monjeOakwood pasa sus días.\n\n*img:https://i.imgur.com/FbUCHIz.jpg",
       "display": "Oakwood",
       "key": "Oakwood",
       "showInTree": false
     },
     "kobolds": {
       "title": "kobolds",
-      "text": "# Stats\nHP: 8\nAC: 12\nSpeed: 30ft\n# Ataque\n## Melee\nDaga: +1 --> 1d4+1\n## Ranged\nPiedra: +2 --> 1d4 - 2\n# Feats\nnote:featSunLightSensitivity\nnote:featPackTactics\nimg:https://i.imgur.com/OfKIW6C.jpg",
+      "text": "# Stats\nHP: 5\nAC: 12\nSpeed: 30ft\n# Ataque\n## Melee\nDaga: +2 --> 1d4+1\n## Ranged\nPiedra: +2 --> 1d4 - 2\n# Feats\nnote:featSunLightSensitivity\nnote:featPackTactics\nimg:https://i.imgur.com/OfKIW6C.jpg",
       "display": "kobolds",
       "key": "kobolds",
       "showInTree": false
@@ -574,11 +574,11 @@ export const games: { [key: string]: {} } = {
       "text": "Tras días de viaje la party llega a la ciudad de note:Windside, donde planean pasar unos días resolviendo asuntos locales, adquiriendo nuevo equipo y disfrutando de la gran ciudad. Los guardias y los locales les recomiendan alojarse en note:tabernaOlga. Allí note:Olga les recibe amablemente y si no preguntan ellos les consultará si están buscando trabajo.\nEn la taberna podrán ver a note:Viuda, que pide ayuda para recuperar el note:colganteUmberlee de su marido fallecido hace poco.\nEl colgante se encuentra junto al cuerpo del marido, en la note:criptaWindside.",
       "display": "El colgante de la Viuda",
       "key": "a0q1",
-      "showInTree": false
+      "showInTree": true
     },
     "a0q2": {
       "title": "Los kobolds del bosque",
-      "text": "La party viaja a note:Cour, cuando cruzando el note:bosqueRobles se encuentran con un carromato volcado con todo su contenido desparramado en medio del camino siendo asaltado por un 3 note:kobolds. El objetivo de su ataque es un note:comerciante.\n\n- El note:comerciante está malherido, si se tarda demasiado en actuar puede morir.\n- Los note:kobolds huirán al ser atacados por la party.\n\nimg:https://i.imgur.com/ux2sn9q.jpg\n\nMás adelante se encuentra note:posadaBosque, la posada de note:Oakwood, un pueblo cuya vida está siendo gravemente afectada por los asaltos de los note:kobolds.\n\nLa gente del lugar les comentarán sus problemas: \n- Un grupo de kobolds que aparecen desde el interior del bosque y asaltan a los comerciantes que cruzan el camino del bosque, aislandoles e impidiendoles comerciar con el exterior.\n- Han realizado varias partidas tratando de buscar la note:guaridaKobold, pero la densidad del bosque les hace imposible encontrar el origen de los note:kobolds.\n\nLa note:guaridaKobold se encuentra sumergida al oeste de note:Oakwood, metida en el bosque.\n- Hay rastros de las incursiones kobold (survival DC 25).\n- Desde el punto del ataque al note:comerciante se puede seguir el rastro (survival DC 15) hasta la note:guaridaKobold",
+      "text": "La party viaja a note:Cour, cuando cruzando llegando a note:Oakwood se encuentran con un carromato volcado con todo su contenido desparramado en medio del camino siendo asaltado por un 5 note:kobolds. El objetivo de su ataque es un note:comerciante.\n\n- El note:comerciante está malherido, si se tarda demasiado en actuar puede morir.\n- Subida de nivel al acabar el combate\n\nimg:https://i.imgur.com/ux2sn9q.jpg\n\nSiguiendo el camino se encuentra note:Oakwood, allí pueden descansar en note:posadaBosque.\n\nLa gente del pueblo les hablará de su principal problema. Los note:kobolds del bosque. Unos seres reptilianos que aparecieron hace unas semanas y que aterrorizan a todo aquel que cruza los caminos cercanos a note:Oakwood.\n\n- Los note:kobolds atacan en grupo y parecen venir del oeste, más allá del nacimiento del note:rioLan.\n- Tanto el comercio como la caza se han visto afectados por la presencia de los note:kobolds.\n- No han conseguido dar caza a estas alimañas, parece que la note:guaridaKobold se encuentra bien metido en el bosque, en zona de osos, y los pobre pueblerinos no se atreven a avanzar tanto.\n\nAdemás, hay rumores en el pueblo:\n\n- Los note:kobolds tienen a un Rey Kobold, de gran tamaño y fuerza, que los dirige. Un kobold más grande e inteligente que los demás, con un plan malévolo y ansias de venganza.\n- Por su fuera poco, los pescadores hablan de note:a0q2s1 al atardecer, reflejos de fantasmas que no pueden ver flotando sobre la superficie, y que cantan una melodía endemoniada.\n\n\nLa note:guaridaKobold se encuentra sumergida al oeste de note:Oakwood, metida en el bosque.\n- Hay rastros de las incursiones kobold (survival DC 22).\n- Desde el punto del ataque al note:comerciante se puede seguir el rastro (survival DC 15) hasta la note:guaridaKobold\n- Cruzar los bosques es peligroso, es territorio de osos y uno podría aparecer y atacar a la party.",
       "display": "Los kobolds del bosque",
       "key": "a0q2",
       "showInTree": true
@@ -610,6 +610,48 @@ export const games: { [key: string]: {} } = {
       "display": "underdark",
       "key": "underdark",
       "showInTree": false
+    },
+    "rioLan": {
+      "title": "río Lan",
+      "text": "Río que nace en la fuente de Osos, al noroeste de note:Oakwood y fluye hasta note:lagoAzul. Separa el territorio de los osos de la zona de caza de los habitantes de note:Oakwood.",
+      "display": "río Lan",
+      "key": "rioLan",
+      "showInTree": false
+    },
+    "lagoAzul": {
+      "title": "Lago Azul",
+      "text": "Lago al sureste de note:Oakwood. Famoso por su abundante pesca y aguas tranquilas.",
+      "display": "Lago Azul",
+      "key": "lagoAzul",
+      "showInTree": false
+    },
+    "monjeOakwood": {
+      "title": "Monje de Oakwood",
+      "text": "Anciano monje que vive en la capilla en la colina al este de Oakwood.\n\n\n* Si es tratado con respeto y se le muestra la firmeza de seguir el camino del monje, podría proporcionar las note:sandaliasDeMono.",
+      "display": "Monje de Oakwood",
+      "key": "monjeOakwood",
+      "showInTree": false
+    },
+    "psicoMedusas": {
+      "title": "Psicomedusas",
+      "text": "# Stats\nHP: 8\nAC: 13\nSpeed: swim 30ft, walk 15ft\nResistente a blunt y eléctrico\n# Ataque\n## Melee\nMordisco: +1 --> 1d6\n## Ranged\nAgarre con tentáculo: +3 --> DC: 16 DEX\nSi se supera: 1d4 - 2\nSi no se supera: Agarrado, 1d4 daño por turno (DC: 14 STR o cortar tentáculo)\n## Spells\n- Canción de caza: las medusas emiten una melodía que encandila a quien la oye y la obliga a caminar hacia ellas. Charm DC 18.\n## Tentáculo\nAC: 8\nHP: 3",
+      "display": "Psicomedusas",
+      "key": "psicoMedusas",
+      "showInTree": false
+    },
+    "sandaliasDeMono": {
+      "title": "Sandalias de Mono",
+      "text": "Sandalias que impiden tomar la acción de correr, pero proporcionan ventaja en acrobátics",
+      "display": "Sandalias de Mono",
+      "key": "sandaliasDeMono",
+      "showInTree": false
+    },
+    "a0q2s1": {
+      "title": "Las luces en el Lago Azul",
+      "text": "En el note:lagoAzul, al atardecer, puede verse en la superficie del agua unas luces fantasmagóricas, reflejo de entes que a simple vista no se ven.\n\nCon su aparición se escucha una melodía endemoniada que atrae a quien la escuche hacia el agua para no volver nunca.\n\nEstá plagado de note:psicoMedusas que al atardecer se iluminan y emiten una melodía que encandila a quien la escucha.\n\nLas luces se ven desde una distancia de 20ft de la orilla, desde donde ya puede escucharse la canción. Las medusas no salen del agua a menos que tengan una presa clara a la que atacar.",
+      "display": "Las luces en el Lago Azul",
+      "key": "a0q2s1",
+      "showInTree": true
     }
   }
 }
