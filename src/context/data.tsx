@@ -53,12 +53,13 @@ export const DataProvider = ({ children }: { children: ReactElement }) => {
   const { path, resetPath, getCurrentPage } = useContext(NavigationContext);
 
   const updateData = (value: dataI, resetEntry: boolean = true): void => {
+    console.log(value);
     const cleanData = cleanUpData(value);
     setTimeout(() => {
       setData(cleanData);
       setTree(generateDataTree(cleanData));
       if (resetEntry) resetPath();
-      gmMode && saveToLocalStorage(cleanData);
+      saveToLocalStorage(cleanData);
     }, 0);
   };
 

@@ -11,6 +11,7 @@ import PageEdit from "./Page/PageEdit";
 import { NavigationContext } from "@/context/navigation";
 import { DataContext } from "@/context/data";
 import ToggleButton from "./Button/ToggleButton";
+import EditablePage from "./EditablePage/EditablePage";
 
 const NoteBook = () => {
   const { gmMode, updateEditMode, editMode, updateSelectedNote } =
@@ -19,7 +20,8 @@ const NoteBook = () => {
 
   return (
     <div className={styles.notebook}>
-      <Tutorial />
+      <EditablePage />
+      {/* <Tutorial />
       <Page />
       <div className={styles.rightColumn}>
         {gmMode && (
@@ -42,7 +44,7 @@ const NoteBook = () => {
         )}
         {editMode ? <PageEdit /> : <NoteList />}
       </div>
-      {gmMode && <Conections />}
+      {gmMode && <Conections />} */}
       {gmMode && <DataActions />}
     </div>
   );

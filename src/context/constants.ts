@@ -38,7 +38,7 @@ export const tutorial: dataI = {
     title: "Main page",
     key: "RootPage",
     display: "",
-    text: "Welcome to the Game Master Notebook companion!\n\n    If you are no itch.io, please switch to full-screen mode :)\n\n    This is the starting page of your notebook, use it as base for the rest of your notes.\n\n    This is a note:note. Notes appear in the right column and show you some information about themselfs.\n\n    You can note:modPage of any page by enabling edit-mode. Use the toggle button on top of the right column\n\n    In order to note:createNote, just write note:<keyword>, and the note will appear to the right.\n\n    Use the note:rightBottomButtons to reset (top), upload (middle) or download (bottom) your current notebook.\n\n    What else can I do?\n    - Add note:images\n    - Add note:titlesSubtitles",
+    text: "Welcome to the Game Master Notebook companion!\n\n    If you are no itch.io, please switch to full-screen mode :)\n\n    This is the starting page of your notebook, use it as base for the rest of your notes.\n\n    This is a note:note. Notes appear in the right column and show you some information about themselfs.\n\n    You can note:modPage of any page by enabling edit-mode. Use the toggle button on top of the right column\n\n    In order to note:createNote, just write note:, and the note will appear to the right.\n\n    Use the note:rightBottomButtons to reset (top), upload (middle) or download (bottom) your current notebook.\n\n    What else can I do?\n    - Add note:images\n    - Add note:titlesSubtitles<span>hola!</span>",
     showInTree: false,
   },
   note: {
