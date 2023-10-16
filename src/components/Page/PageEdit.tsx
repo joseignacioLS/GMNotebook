@@ -5,7 +5,8 @@ import Button from "../Button/Button";
 import { extractReferences } from "@/utils/text";
 
 const PageEdit = ({}) => {
-  const { data, updateData, editMode, selectedNote } = useContext(DataContext);
+  const { item, data, updateData, editMode, selectedNote } =
+    useContext(DataContext);
   const [input, setInput] = useState<{
     title: string;
     text: string;
@@ -55,7 +56,7 @@ const PageEdit = ({}) => {
   const saveData = () => {
     const newItem = generateItemFromInputs();
     const newEntries = generateNewEntries();
-    if (!data[selectedNote]) return
+    if (!data[selectedNote]) return;
     updateData(
       { ...data, [data[selectedNote].key]: newItem, ...newEntries },
       false
@@ -91,7 +92,11 @@ const PageEdit = ({}) => {
     let index = 0;
     for (let p of allParagraphs) {
       p?.classList.remove("edit-p");
-      if (index === pIndex && p.innerHTML !== "") {
+      if (
+        index === pIndex &&
+        p.innerHTML !== "" &&
+        item.title === input.title
+      ) {
         p?.scrollIntoView();
         p?.classList.add("edit-p");
       }

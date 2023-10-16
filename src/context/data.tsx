@@ -73,10 +73,10 @@ export const DataProvider = ({ children }: { children: ReactElement }) => {
         if (!references.includes(key)) references.push(key);
       });
       // delete emtpy references
-      if (value[key].text === "" && key !== "RootPage") {
-        delete value[key];
-        deletedKeys.push(key);
-      }
+      // if (value[key].text === "" && key !== "RootPage") {
+      //   delete value[key];
+      //   deletedKeys.push(key);
+      // }
     });
 
     // remove ununused references
