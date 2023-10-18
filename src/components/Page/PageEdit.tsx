@@ -1,8 +1,8 @@
 import React, { useContext, useEffect, useState } from "react";
 import styles from "./pageedit.module.scss";
 import { DataContext } from "@/context/data";
-import Button from "../Button/Button";
 import { extractReferences } from "@/utils/text";
+import { useUpdate } from "@/hooks/customHooks";
 
 const PageEdit = ({}) => {
   const { item, data, updateData, editMode, selectedNote } =
@@ -54,6 +54,7 @@ const PageEdit = ({}) => {
   };
 
   const saveData = () => {
+    console.log("edit save");
     const newItem = generateItemFromInputs();
     const newEntries = generateNewEntries();
     if (!data[selectedNote]) return;
@@ -63,9 +64,12 @@ const PageEdit = ({}) => {
     );
   };
 
-  useEffect(() => {
-    saveData();
-  }, [input.text, input.display, input.title, input.showInTree]);
+  useUpdate(saveData, [
+    input.text,
+    input.display,
+    input.title,
+    input.showInTree,
+  ]);
 
   const handleCursorChange = (e: any) => {
     const cursorPosition = e.currentTarget?.selectionStart;

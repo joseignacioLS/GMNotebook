@@ -1,16 +1,12 @@
-import Modal from "@/components/Modal/Modal";
-import NoteBook from "../components/NoteBook";
+import Button from "@/components/Button/Button";
 import ToggleButton from "@/components/Button/ToggleButton";
-import { useContext, useEffect, useState } from "react";
-import { DataContext } from "@/context/data";
+import Welcome from "@/components/Welcome";
+import { useRouter } from "next/router";
+import { useState } from "react";
 
 export default function Home() {
   const [darkMode, setDarkMode] = useState<boolean>(true);
-  const { setGmMode } = useContext(DataContext);
 
-  useEffect(() => {
-    setGmMode(true);
-  }, []);
   return (
     <main
       style={{
@@ -33,8 +29,7 @@ export default function Home() {
           rightButton={<img src="/images/moon.svg" />}
         ></ToggleButton>
       </div>
-      <NoteBook />
-      <Modal />
+      <Welcome />
     </main>
   );
 }

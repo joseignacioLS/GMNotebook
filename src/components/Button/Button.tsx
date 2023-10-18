@@ -34,6 +34,7 @@ const Button = ({
     <button
       style={{
         backgroundColor: naked ? "transparent" : bgColorDictionary[behaviour],
+        borderRadius: naked ? "0" : ".5rem",
         padding: naked ? "0" : ".5rem",
       }}
       className={`${styles.button} ${addClass}`}

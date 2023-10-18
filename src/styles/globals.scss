@@ -75,17 +75,21 @@ img {
 
 .text-title {
   font-weight: bold;
-  font-size: 125%;
-  opacity: .8;
+  font-size: 140%;
+  // opacity: .8;
 }
 
 .text-subtitle {
   font-weight: bold;
-  font-size: 112%;
-  opacity: .6;
+  font-size: 100%;
+  // opacity: .6;
 }
 
 .edit-p {
-  background-color: rgba(255,0,0,.4);
-  border-radius: .5rem;
+  background-color: rgba(255, 0, 0, 0.4);
+  border-radius: 0.5rem;
+}
+
+.gm-only {
+  opacity: 0.5;
 }
