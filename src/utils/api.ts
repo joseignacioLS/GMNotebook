@@ -14,7 +14,7 @@ export const getRequest = (url: string): any => {
 };
 
 export const postRequest = (url: string, data: {} = {}) => {
-  fetch(url, {
+  return fetch(url, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",

@@ -9,10 +9,11 @@ const LoginForm = () => {
   const { data } = useContext(DataContext);
   const handleSubmit = async (e: any) => {
     e.preventDefault();
-    const res = postRequest(`http://localhost:4200/login`, {
+    const res = await postRequest(`http://localhost:4200/login`, {
       name: data.RootPage.key,
       password: input,
     });
+    console.log(res)
   };
   return (
     <div>
