@@ -1,5 +1,5 @@
 export const getRequest = (url: string): any => {
-  console.log({url})
+  console.log({ url })
   return fetch(url)
     .then((res) => {
       if (!res.ok) throw Error;
@@ -9,7 +9,6 @@ export const getRequest = (url: string): any => {
       return data.data;
     })
     .catch((err) => {
-      console.log(err)
       return null;
     });
 };
@@ -20,6 +19,6 @@ export const postRequest = (url: string, data: {} = {}) => {
     headers: {
       "Content-Type": "application/json",
     },
-    body: JSON.stringify({ data }),
+    body: JSON.stringify({ ...data }),
   });
 };

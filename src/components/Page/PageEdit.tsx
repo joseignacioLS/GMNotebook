@@ -54,7 +54,6 @@ const PageEdit = ({}) => {
   };
 
   const saveData = () => {
-    console.log("edit save");
     const newItem = generateItemFromInputs();
     const newEntries = generateNewEntries();
     if (!data[selectedNote]) return;

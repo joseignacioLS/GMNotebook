@@ -68,13 +68,12 @@ export const DataProvider = ({ children }: { children: ReactElement }) => {
       if (resetEntry) resetPath();
       gmMode && saveToLocalStorage(cleanData);
     }, 0);
-    console.log(serverTimeout);
     clearTimeout(serverTimeout);
     const to = setTimeout(() => {
       const game = searchParams.get("game");
-      postRequest(`http://localhost:4200/${game}`, cleanData);
+      postRequest(`http://localhost:4200/${game}`, { data: cleanData });
       setServerTimeout(undefined);
-    }, 3000);
+    }, 15000);
     setServerTimeout(to);
   };
 

@@ -6,21 +6,22 @@ import { useRouter } from "next/router";
 import { useSearchParams } from "next/navigation";
 import { getRequest } from "@/utils/api";
 import { DataContext } from "@/context/data";
+import Button from "@/components/Button/Button";
+import LoginForm from "@/components/Forms/LoginForm/LoginForm";
+import { modalContext } from "@/context/modal";
 
 export default function Home() {
   const [darkMode, setDarkMode] = useState<boolean>(true);
   const router = useRouter();
   const searchParams = useSearchParams();
-  const { updateData } = useContext(DataContext);
+  const { updateData, gmMode, setGmMode } = useContext(DataContext);
+  const { setContent } = useContext(modalContext);
 
   const getDataFromServer = async () => {
     const game = searchParams.get("game");
-    console.log({ game });
     if (game === null) return;
     const data = await getRequest(`http://localhost:4200/${game}`);
-    console.log({ data });
     if (data === null) {
-      console.log("here");
       router.push("/");
     } else {
       updateData(JSON.parse(data), true);
@@ -52,6 +53,27 @@ export default function Home() {
           leftButton={<img src="/images/sun.svg" />}
           rightButton={<img src="/images/moon.svg" />}
         ></ToggleButton>
+      </div>
+
+      <div
+        style={{
+          position: "fixed",
+          bottom: "1rem",
+          left: "8rem",
+          zIndex: "10",
+        }}
+      >
+        <Button
+          onClick={() => {
+            if (gmMode) {
+              setGmMode(false);
+            } else {
+              setContent(<LoginForm />);
+            }
+          }}
+        >
+          {gmMode ? "GM" : "NoGm"}
+        </Button>
       </div>
       <NoteBook />
       <Modal />

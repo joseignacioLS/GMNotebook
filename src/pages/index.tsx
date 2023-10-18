@@ -1,7 +1,6 @@
-import Button from "@/components/Button/Button";
 import ToggleButton from "@/components/Button/ToggleButton";
+import Modal from "@/components/Modal/Modal";
 import Welcome from "@/components/Welcome";
-import { useRouter } from "next/router";
 import { useState } from "react";
 
 export default function Home() {
@@ -30,6 +29,7 @@ export default function Home() {
         ></ToggleButton>
       </div>
       <Welcome />
+      <Modal />
     </main>
   );
 }

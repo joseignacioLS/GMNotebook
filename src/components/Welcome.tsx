@@ -1,17 +1,33 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import styles from "./welcome.module.scss";
 import { useRouter } from "next/router";
 import Button, { behaviourEnum } from "./Button/Button";
+import { modalContext } from "@/context/modal";
+import { getRequest } from "@/utils/api";
+import CreateForm from "./Forms/CreateForm/CreateForm";
 
 const Welcome = () => {
   const router = useRouter();
   const [input, setInput] = useState<string>("");
 
-  const handleClick = (e: any) => {
-    e.preventDefault();
-    if (input === "") return;
-    router.push(`/${input}`);
+  const { setContent } = useContext(modalContext);
+
+  const checkGame = async () => {
+    return await getRequest(`http://localhost:4200/check/${input}`);
   };
+
+  const handleClick = async (e: any) => {
+    e.preventDefault();
+
+    if (input === "") return;
+    const gameExists = await checkGame();
+    if (gameExists) {
+      return router.push(`/${input}`);
+    }
+    // open the other modal
+    setContent(<CreateForm name={input} />);
+  };
+
   return (
     <form className={styles.welcome} onSubmit={handleClick}>
       <h1>Welcome to the GMNotebook</h1>
