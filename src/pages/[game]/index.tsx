@@ -2,23 +2,34 @@ import Modal from "@/components/Modal/Modal";
 import ToggleButton from "@/components/Button/ToggleButton";
 import { useContext, useEffect, useState } from "react";
 import NoteBook from "@/components/NoteBook";
-import { games } from "@/data/games";
-import { DataContext } from "@/context/data";
 import { useRouter } from "next/router";
+import { useSearchParams } from "next/navigation";
+import { getRequest } from "@/utils/api";
+import { DataContext } from "@/context/data";
 
 export default function Home() {
-  const { updateData } = useContext(DataContext);
   const [darkMode, setDarkMode] = useState<boolean>(true);
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const { updateData } = useContext(DataContext);
+
+  const getDataFromServer = async () => {
+    const game = searchParams.get("game");
+    console.log({ game });
+    if (game === null) return;
+    const data = await getRequest(`http://localhost:4200/${game}`);
+    console.log({ data });
+    if (data === null) {
+      console.log("here");
+      router.push("/");
+    } else {
+      updateData(JSON.parse(data), true);
+    }
+  };
 
   useEffect(() => {
-    const game = router.query.game as string;
-    if (games[game] !== undefined) {
-      updateData(games[game], true);
-    } else if (game !== undefined) {
-      router.push("/");
-    }
-  }, [games, router]);
+    getDataFromServer();
+  }, [router]);
 
   return (
     <main
@@ -30,8 +41,8 @@ export default function Home() {
       <div
         style={{
           position: "fixed",
-          top: "1rem",
-          right: "1rem",
+          bottom: "1rem",
+          left: "1rem",
           zIndex: "10",
         }}
         onClick={() => setDarkMode((v) => !v)}

@@ -10,6 +10,9 @@ import {
 import { dataI, itemI, leafI, tutorial } from "./constants";
 import { NavigationContext } from "./navigation";
 import { generateDataTree } from "@/utils/tree";
+import { useSearchParams } from "next/navigation";
+import { postRequest } from "@/utils/api";
+import { useRouter } from "next/router";
 
 interface contextOutputI {
   data: dataI;
@@ -49,6 +52,11 @@ export const DataProvider = ({ children }: { children: ReactElement }) => {
   const [editMode, setEditMode] = useState<boolean>(false);
   const [selectedNote, setSelectedNote] = useState<string>("RootPage");
   const [gmMode, setGmMode] = useState<boolean>(false);
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const [serverTimeout, setServerTimeout] = useState<
+    NodeJS.Timeout | undefined
+  >(undefined);
 
   const { path, resetPath, getCurrentPage } = useContext(NavigationContext);
 
@@ -60,6 +68,14 @@ export const DataProvider = ({ children }: { children: ReactElement }) => {
       if (resetEntry) resetPath();
       gmMode && saveToLocalStorage(cleanData);
     }, 0);
+    console.log(serverTimeout);
+    clearTimeout(serverTimeout);
+    const to = setTimeout(() => {
+      const game = searchParams.get("game");
+      postRequest(`http://localhost:4200/${game}`, cleanData);
+      setServerTimeout(undefined);
+    }, 3000);
+    setServerTimeout(to);
   };
 
   const cleanUpData = (value: dataI): dataI => {
@@ -73,10 +89,10 @@ export const DataProvider = ({ children }: { children: ReactElement }) => {
         if (!references.includes(key)) references.push(key);
       });
       // delete emtpy references
-      if (value[key].text === "" && key !== "RootPage") {
-        delete value[key];
-        deletedKeys.push(key);
-      }
+      // if (value[key].text === "" && key !== "RootPage") {
+      //   delete value[key];
+      //   deletedKeys.push(key);
+      // }
     });
 
     // remove ununused references
@@ -133,23 +149,13 @@ export const DataProvider = ({ children }: { children: ReactElement }) => {
   }, [path, data]);
 
   useEffect(() => {
-    if (!gmMode) return;
-    const retrieved = retrieveLocalStorage();
-    try {
-      const parsed = JSON.parse(retrieved);
-      Object.keys(parsed).forEach((key: string) => {
-        if (parsed[key].showInTree === undefined)
-          parsed[key].showInTree === false;
-      });
-      updateData(parsed as dataI);
-    } catch (err) {
-      console.log(err);
-    }
-  }, [gmMode]);
-
-  useEffect(() => {
     setTimeout(() => updateEditMode(false), 0);
   }, [path]);
+
+  useEffect(() => {
+    const retrievedGm = router.query.gm === "true";
+    setGmMode(retrievedGm);
+  }, [router]);
 
   return (
     <DataContext.Provider

@@ -32,8 +32,8 @@ export const processText = (
       return gmMode || l[0] !== "*";
     })
     .map((l, i) => {
-      const line = l[0] === "*" ? l.slice(1) : l;
-      return processLine(line, i, plain);
+      const gmOnly = l[0] === "*";
+      return processLine(gmOnly ? l.slice(1) : l, i, plain, false, gmOnly);
     });
 };
 
@@ -41,18 +41,27 @@ export const processLine = (
   line: string,
   index: number,
   plain: boolean,
-  wrapped: boolean = false
+  wrapped: boolean = false,
+  gmOnly: boolean = false
 ) => {
   if (line.match(/^\# /)) {
     return (
-      <p key={line} id={`p-${index}`} className="text-title">
-        {processLine(line.slice(1), index, plain, true)}
+      <p
+        key={line}
+        id={`p-${index}`}
+        className={`text-title ${gmOnly && "gm-only"}`}
+      >
+        {processLine(line.slice(1), index, plain, true, gmOnly)}
       </p>
     );
   } else if (line.match(/^\#\# /)) {
     return (
-      <p key={line} id={`p-${index}`} className="text-subtitle">
-        {processLine(line.slice(2), index, plain, true)}
+      <p
+        key={line}
+        id={`p-${index}`}
+        className={`text-subtitle ${gmOnly && "gm-only"}`}
+      >
+        {processLine(line.slice(2), index, plain, true, gmOnly)}
       </p>
     );
   }
@@ -117,7 +126,11 @@ export const processLine = (
     return wrapped ? (
       <span key={line + index}>{result.result}</span>
     ) : (
-      <p id={`p-${index}`} key={line + index}>
+      <p
+        id={`p-${index}`}
+        key={line + index}
+        className={`${gmOnly && "gm-only"}`}
+      >
         {result.result}
       </p>
     );
@@ -125,7 +138,11 @@ export const processLine = (
   return wrapped ? (
     <span key={line + index}>{line}</span>
   ) : (
-    <p id={`p-${index}`} key={line + index}>
+    <p
+      id={`p-${index}`}
+      key={line + index}
+      className={`${gmOnly && "gm-only"}`}
+    >
       {line}
     </p>
   );

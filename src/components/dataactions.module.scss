@@ -16,7 +16,8 @@
   max-height: 3rem;
   transition: max-height 0.3s;
 
-  box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.2);
+  outline: 1px solid black;
+  
 
   &:hover {
     max-height: 12rem;
