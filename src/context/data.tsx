@@ -11,6 +11,7 @@ import { NavigationContext } from "./navigation";
 import { generateDataTree } from "@/utils/tree";
 import { postRequest } from "@/utils/api";
 import { useRouter } from "next/router";
+import { useUpdate } from "@/hooks/customHooks";
 
 interface contextOutputI {
   data: dataI;
@@ -77,6 +78,7 @@ export const DataProvider = ({ children }: { children: ReactElement }) => {
 
   const saveToServer = () => {
     clearTimeout(serverTimeout);
+    if (gameName === "") return;
     const to = setTimeout(async () => {
       const response = await postRequest(`${gameName}`, { data: data });
       if (response.status === 200) {

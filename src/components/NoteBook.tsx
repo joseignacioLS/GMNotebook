@@ -10,10 +10,13 @@ import { DataContext } from "@/context/data";
 import ToggleButton from "./Button/ToggleButton";
 import { darkModeContext } from "@/context/darkmode";
 import MiniLogin from "./Forms/MiniLogin/MiniLogin";
+import { loadFile, saveToFile } from "@/utils/file";
 
 const NoteBook = () => {
   const { darkMode, toggleDarkMode } = useContext(darkModeContext);
   const {
+    data,
+    updateData,
     gmMode,
     updateEditMode,
     editMode,
@@ -54,6 +57,19 @@ const NoteBook = () => {
           onClick={toggleDarkMode}
         ></ToggleButton>
         <MiniLogin />
+        <Button onClick={() => {}}>
+          <input
+            data-tip={"Upload"}
+            type="file"
+            id="file"
+            onChange={() => {
+              loadFile("#file", updateData);
+            }}
+          />
+        </Button>
+        <Button onClick={() => saveToFile(data["RootPage"].title, data)}>
+          <img src="/images/download.svg" />
+        </Button>
         <Button
           onClick={() => {}}
           behaviour={

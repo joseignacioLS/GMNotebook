@@ -32,10 +32,28 @@
 
 .actionButtons {
   display: grid;
-  grid-template-columns: auto 1fr auto;
-  gap: 1rem;
+  grid-template-columns: auto 1fr auto auto auto;
+  gap: .5rem;
   padding-top: 1rem;
   padding-right: 1rem;
+
+  input {
+    width: 1rem;
+  }
+
+  input::-webkit-file-upload-button {
+    visibility: hidden;
+  }
+  input::before {
+    content: "";
+    height: 1rem;
+    width: 1rem;
+    cursor: pointer;
+    display: block;
+    background-image: url("/images/upload.svg");
+    background-position: center;
+    background-size: 100%;
+  }
 }
 
 @media (max-width: 800px) {
