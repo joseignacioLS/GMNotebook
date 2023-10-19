@@ -14,6 +14,7 @@ import ToggleButton from "./Button/ToggleButton";
 import { modalContext } from "@/context/modal";
 import LoginForm from "./Forms/LoginForm/LoginForm";
 import { darkModeContext } from "@/context/darkmode";
+import MiniLogin from "./Forms/MiniLogin/MiniLogin";
 
 const NoteBook = () => {
   const { darkMode, toggleDarkMode } = useContext(darkModeContext);
@@ -60,20 +61,7 @@ const NoteBook = () => {
           rightButton={<img src="/images/moon.svg" />}
           onClick={toggleDarkMode}
         ></ToggleButton>
-
-        <ToggleButton
-          isOn={gmMode}
-          leftButton={<img src="/images/locked.svg" />}
-          rightButton={<img src="/images/unlocked.svg" />}
-          onClick={() => {
-            if (gmMode) {
-              setGmMode(false);
-              updateEditMode(false);
-            } else {
-              setContent(<LoginForm />);
-            }
-          }}
-        ></ToggleButton>
+        <MiniLogin />
       </div>
       {gmMode && <DataActions />}
     </div>

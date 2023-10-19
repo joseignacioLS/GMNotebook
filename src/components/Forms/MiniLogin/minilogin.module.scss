@@ -1,0 +1,26 @@
+.wrapper {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+
+  .passwordInput {
+    height: 100%;
+    width: 2rem;
+    padding: 0;
+    margin: 0;
+    border: 0;
+    outline: 0;
+    border-radius: 200px 200px 200px 200px;
+    transition: width 0.3s;
+    text-align: center;
+
+    &.expanded {
+      width: 100%;
+      padding: 0.5rem 2rem .5rem .5rem;
+    }
+  }
+  .button {
+    border-radius: 50% !important;
+    transform: translateX(-100%)
+  }
+}
