@@ -28,6 +28,8 @@ interface contextOutputI {
   updateSelectedNote: any;
   gmMode: boolean;
   setGmMode: any;
+  gameName: string;
+  setGameName: (value: string) => void;
 }
 
 export const DataContext = createContext<contextOutputI>({
@@ -44,9 +46,12 @@ export const DataContext = createContext<contextOutputI>({
   updateSelectedNote: () => {},
   gmMode: false,
   setGmMode: () => {},
+  gameName: "",
+  setGameName: (value: string) => {},
 });
 
 export const DataProvider = ({ children }: { children: ReactElement }) => {
+  const [gameName, setGameName] = useState<string>("");
   const [data, setData] = useState<dataI>(tutorial);
   const [tree, setTree] = useState<leafI[]>([]);
   const [editMode, setEditMode] = useState<boolean>(false);
@@ -71,7 +76,7 @@ export const DataProvider = ({ children }: { children: ReactElement }) => {
     clearTimeout(serverTimeout);
     const to = setTimeout(() => {
       const game = searchParams.get("game");
-      postRequest(`http://localhost:4200/${game}`, { data: cleanData });
+      postRequest(`${game}`, { data: cleanData });
       setServerTimeout(undefined);
     }, 15000);
     setServerTimeout(to);
@@ -172,6 +177,8 @@ export const DataProvider = ({ children }: { children: ReactElement }) => {
         updateSelectedNote,
         gmMode,
         setGmMode,
+        gameName,
+        setGameName,
       }}
     >
       {children}

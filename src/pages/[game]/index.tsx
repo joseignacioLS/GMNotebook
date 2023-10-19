@@ -14,16 +14,18 @@ export default function Home() {
   const [darkMode, setDarkMode] = useState<boolean>(true);
   const router = useRouter();
   const searchParams = useSearchParams();
-  const { updateData, gmMode, setGmMode } = useContext(DataContext);
+  const { updateData, gmMode, setGmMode, setGameName, updateEditMode } =
+    useContext(DataContext);
   const { setContent } = useContext(modalContext);
 
   const getDataFromServer = async () => {
     const game = searchParams.get("game");
     if (game === null) return;
-    const data = await getRequest(`http://localhost:4200/${game}`);
+    const data = await getRequest(`${game}`);
     if (data === null) {
       router.push("/");
     } else {
+      setGameName(game);
       updateData(JSON.parse(data), true);
     }
   };
@@ -39,42 +41,6 @@ export default function Home() {
         color: darkMode ? "white" : "black",
       }}
     >
-      <div
-        style={{
-          position: "fixed",
-          bottom: "1rem",
-          left: "1rem",
-          zIndex: "10",
-        }}
-        onClick={() => setDarkMode((v) => !v)}
-      >
-        <ToggleButton
-          isOn={darkMode}
-          leftButton={<img src="/images/sun.svg" />}
-          rightButton={<img src="/images/moon.svg" />}
-        ></ToggleButton>
-      </div>
-
-      <div
-        style={{
-          position: "fixed",
-          bottom: "1rem",
-          left: "8rem",
-          zIndex: "10",
-        }}
-      >
-        <Button
-          onClick={() => {
-            if (gmMode) {
-              setGmMode(false);
-            } else {
-              setContent(<LoginForm />);
-            }
-          }}
-        >
-          {gmMode ? "GM" : "NoGm"}
-        </Button>
-      </div>
       <NoteBook />
       <Modal />
     </main>

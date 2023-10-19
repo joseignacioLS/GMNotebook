@@ -19,7 +19,7 @@ const PageEdit = ({}) => {
     showInTree: data[selectedNote]?.showInTree || false,
   });
 
-  const handleUpdateData = (key: string, value: any) => {
+  const handleInput = (key: string, value: any) => {
     setInput((oldValue) => {
       return { ...oldValue, [key]: value };
     });
@@ -122,7 +122,7 @@ const PageEdit = ({}) => {
         <span data-help={"This is the title of the page"}>Title</span>
         <input
           value={input.title}
-          onChange={(e) => handleUpdateData("title", e.currentTarget.value)}
+          onChange={(e) => handleInput("title", e.currentTarget.value)}
         ></input>
       </label>
       <label>
@@ -135,7 +135,7 @@ const PageEdit = ({}) => {
         </span>
         <input
           value={input.display}
-          onChange={(e) => handleUpdateData("display", e.currentTarget.value)}
+          onChange={(e) => handleInput("display", e.currentTarget.value)}
         ></input>
       </label>
       <label>
@@ -145,16 +145,14 @@ const PageEdit = ({}) => {
         <input
           type="checkbox"
           checked={input.showInTree}
-          onChange={(e) =>
-            handleUpdateData("showInTree", e.currentTarget.checked)
-          }
+          onChange={(e) => handleInput("showInTree", e.currentTarget.checked)}
         ></input>
       </label>
       <textarea
         onSelect={handleCursorChange}
         onInput={handleCursorChange}
         value={input.text}
-        onChange={(e) => handleUpdateData("text", e.currentTarget.value)}
+        onChange={(e) => handleInput("text", e.currentTarget.value)}
       ></textarea>
     </div>
   );

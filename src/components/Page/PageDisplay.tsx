@@ -13,7 +13,7 @@ const PageDisplay = () => {
   useEffect(() => {
     const newDisplay = processText(item.text, false, gmMode);
     setDisplayText(newDisplay);
-  }, [item.text]);
+  }, [item.text, gmMode]);
 
   return (
     <div className={`${styles.pageDisplay}`}>

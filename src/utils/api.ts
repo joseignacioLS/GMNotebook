@@ -1,6 +1,9 @@
 export const getRequest = (url: string): any => {
-  console.log({ url })
-  return fetch(url)
+  const base_url =
+    process.env.NODE_ENV === "development"
+      ? "http://localhost:4200/"
+      : process.env.NEXT_PUBLIC_SERVER;
+  return fetch(base_url + url)
     .then((res) => {
       if (!res.ok) throw Error;
       return res.json();
@@ -14,7 +17,11 @@ export const getRequest = (url: string): any => {
 };
 
 export const postRequest = (url: string, data: {} = {}) => {
-  return fetch(url, {
+  const base_url =
+    process.env.NODE_ENV === "development"
+      ? "http://localhost:4200/"
+      : process.env.NEXT_PUBLIC_SERVER;
+  return fetch(base_url + url, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",

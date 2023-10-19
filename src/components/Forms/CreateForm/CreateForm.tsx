@@ -4,6 +4,7 @@ import Button from "@/components/Button/Button";
 import { getRequest, postRequest } from "@/utils/api";
 import { modalContext } from "@/context/modal";
 import { useRouter } from "next/router";
+import { loginRegex } from "@/utils/constans";
 
 interface Iinput {
   name: { value: string; touched: boolean; valid: boolean };
@@ -15,7 +16,7 @@ function CreateForm({ name }: { name: string }) {
     name: {
       value: name,
       touched: false,
-      valid: name.match(/^[A-Z0-9]{6,18}$/i) !== null,
+      valid: name.match(loginRegex) !== null,
     },
     password: { value: "", touched: false, valid: false },
   });
@@ -25,7 +26,7 @@ function CreateForm({ name }: { name: string }) {
   const router = useRouter();
 
   const checkGame = async () => {
-    return await getRequest(`http://localhost:4200/check/${input.name.value}`);
+    return await getRequest(`check/${input.name.value}`);
   };
 
   const handleInput = (key: string, value: string) => {
@@ -35,7 +36,7 @@ function CreateForm({ name }: { name: string }) {
         [key]: {
           value,
           touched: true,
-          valid: value.match(/^[A-Z0-9]{6,18}$/i) !== null,
+          valid: value.match(loginRegex) !== null,
         },
       };
     });
@@ -48,7 +49,7 @@ function CreateForm({ name }: { name: string }) {
       return;
     }
     const response = await postRequest(
-      `http://localhost:4200/create/${input.name.value}`,
+      `create/${input.name.value}`,
       {
         data: {
           RootPage: {

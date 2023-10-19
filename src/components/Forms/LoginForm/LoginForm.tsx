@@ -1,19 +1,21 @@
 import React, { useContext, useState } from "react";
 import styles from "./loginform.module.scss";
 import Button from "@/components/Button/Button";
-import { postRequest } from "@/utils/api";
 import { DataContext } from "@/context/data";
+import { modalContext } from "@/context/modal";
+import { loginToServer } from "@/utils/login";
+import { loginRegex } from "@/utils/constans";
 
 const LoginForm = () => {
   const [input, setInput] = useState<string>("");
-  const { data } = useContext(DataContext);
+  const { setGmMode, gameName } = useContext(DataContext);
+  const { closeModal } = useContext(modalContext);
   const handleSubmit = async (e: any) => {
     e.preventDefault();
-    const res = await postRequest(`http://localhost:4200/login`, {
-      name: data.RootPage.key,
-      password: input,
-    });
-    console.log(res)
+    if (await loginToServer(gameName, input)) {
+      setGmMode(true);
+      closeModal();
+    }
   };
   return (
     <div>
@@ -27,10 +29,7 @@ const LoginForm = () => {
             setInput(e.currentTarget.value);
           }}
         />
-        <Button
-          onClick={() => {}}
-          disabled={input.match(/^[A-Z0-9]{6,18}$/i) === null}
-        >
+        <Button onClick={() => {}} disabled={input.match(loginRegex) === null}>
           Create
         </Button>
       </form>

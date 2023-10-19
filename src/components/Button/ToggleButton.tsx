@@ -7,6 +7,7 @@ interface propsI {
   rightOption?: string;
   leftButton?: string | ReactElement;
   rightButton?: string | ReactElement;
+  onClick?: any;
 }
 const ToggleButton = ({
   isOn,
@@ -14,6 +15,7 @@ const ToggleButton = ({
   rightOption,
   leftButton,
   rightButton,
+  onClick,
 }: propsI) => {
   return (
     <div className={styles.wrapper}>
@@ -21,6 +23,7 @@ const ToggleButton = ({
       <div className={styles.toggleSurface}>
         <div
           className={styles.toggleKnob}
+          onClick={onClick}
           style={{
             transform: isOn ? "translateX(2rem)" : "translateX(0px)",
           }}

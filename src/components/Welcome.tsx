@@ -13,7 +13,7 @@ const Welcome = () => {
   const { setContent } = useContext(modalContext);
 
   const checkGame = async () => {
-    return await getRequest(`http://localhost:4200/check/${input}`);
+    return await getRequest(`check/${input}`);
   };
 
   const handleClick = async (e: any) => {
