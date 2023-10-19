@@ -36,6 +36,8 @@ const NoteCard = ({ itemKey }: propsI) => {
     gmMode
   );
 
+  if (!gmMode && !data[key]?.showToPlayers) return <></>;
+
   return (
     <div
       id={`note-${key.split("_")[0]}`}

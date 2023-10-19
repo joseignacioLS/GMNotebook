@@ -1,5 +1,4 @@
-import { retrieveLocalStorage, saveToLocalStorage } from "@/utils/localStorage";
-import { extractReferences, removeReferences } from "@/utils/text";
+import { extractReferences } from "@/utils/text";
 import {
   ReactElement,
   createContext,
@@ -58,7 +57,6 @@ export const DataProvider = ({ children }: { children: ReactElement }) => {
   const [selectedNote, setSelectedNote] = useState<string>("RootPage");
   const [gmMode, setGmMode] = useState<boolean>(false);
   const router = useRouter();
-  const searchParams = useSearchParams();
   const [serverTimeout, setServerTimeout] = useState<
     NodeJS.Timeout | undefined
   >(undefined);
@@ -71,16 +69,24 @@ export const DataProvider = ({ children }: { children: ReactElement }) => {
       setData(cleanData);
       setTree(generateDataTree(cleanData));
       if (resetEntry) resetPath();
-      gmMode && saveToLocalStorage(cleanData);
     }, 0);
+  };
+
+  const saveToServer = () => {
     clearTimeout(serverTimeout);
     const to = setTimeout(() => {
-      const game = searchParams.get("game");
-      postRequest(`${game}`, { data: cleanData });
+      postRequest(`${gameName}`, { data: data });
       setServerTimeout(undefined);
-    }, 15000);
+    }, 3000);
     setServerTimeout(to);
   };
+
+  useEffect(() => {
+    saveToServer();
+    return () => {
+      clearTimeout(serverTimeout);
+    };
+  }, [data]);
 
   const cleanUpData = (value: dataI): dataI => {
     const deletedKeys: string[] = [];

@@ -24,7 +24,6 @@ const NoteBook = () => {
 
   return (
     <div className={styles.notebook}>
-      <Tutorial />
       <Page />
       <div className={styles.rightColumn}>
         {gmMode && (
@@ -52,6 +51,7 @@ const NoteBook = () => {
           display: "flex",
           justifyContent: "flex-start",
           gap: "1rem",
+          paddingTop: "1rem"
         }}
       >
         <ToggleButton

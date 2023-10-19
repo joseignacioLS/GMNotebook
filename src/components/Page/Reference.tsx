@@ -11,7 +11,8 @@ interface propsI {
 }
 
 const Reference = ({ reference, naked = false }: propsI) => {
-  const { selectedNote, updateSelectedNote, data } = useContext(DataContext);
+  const { selectedNote, updateSelectedNote, data, gmMode } =
+    useContext(DataContext);
   const { navigateTo } = useContext(NavigationContext);
 
   return (
@@ -24,7 +25,7 @@ const Reference = ({ reference, naked = false }: propsI) => {
       onClick={() => {
         if (naked) return;
         if (selectedNote === reference.key) {
-          if (data[reference.key].showToPlayers) {
+          if (data[reference.key].showToPlayers || gmMode) {
             navigateTo(reference.key);
           }
         } else {

@@ -5,6 +5,7 @@ import { getRequest, postRequest } from "@/utils/api";
 import { modalContext } from "@/context/modal";
 import { useRouter } from "next/router";
 import { loginRegex } from "@/utils/constans";
+import Spinner from "@/components/Spinner/Spinner";
 
 interface Iinput {
   name: { value: string; touched: boolean; valid: boolean };
@@ -20,6 +21,8 @@ function CreateForm({ name }: { name: string }) {
     },
     password: { value: "", touched: false, valid: false },
   });
+  const [loading, setLoading] = useState<boolean>(false);
+  const [warning, setWarning] = useState<string>("");
 
   const { closeModal } = useContext(modalContext);
 
@@ -30,6 +33,7 @@ function CreateForm({ name }: { name: string }) {
   };
 
   const handleInput = (key: string, value: string) => {
+    setWarning("");
     setInput((oldvalue) => {
       return {
         ...oldvalue,
@@ -44,25 +48,25 @@ function CreateForm({ name }: { name: string }) {
 
   const handleSubmit = async (e: any) => {
     e.preventDefault();
+    setLoading(true);
     const gameExists = await checkGame();
+    setLoading(false);
     if (gameExists) {
+      setWarning("Sorry, that name is not available");
       return;
     }
-    const response = await postRequest(
-      `create/${input.name.value}`,
-      {
-        data: {
-          RootPage: {
-            title: "Main Page",
-            key: input.name.value,
-            text: "Description",
-            display: "rootpage",
-            showInTree: true,
-          },
+    const response = await postRequest(`create/${input.name.value}`, {
+      data: {
+        RootPage: {
+          title: "Main Page",
+          key: input.name.value,
+          text: "Description",
+          display: "rootpage",
+          showInTree: true,
         },
-        password: input.password.value,
-      }
-    );
+      },
+      password: input.password.value,
+    });
     if (response !== null) {
       setTimeout(() => {
         router.push(`/${input.name.value}`);
@@ -70,6 +74,14 @@ function CreateForm({ name }: { name: string }) {
       }, 1000);
     }
   };
+  if (loading) {
+    return (
+      <div>
+        <p>Creating game</p>
+        <Spinner />
+      </div>
+    );
+  }
   return (
     <div>
       <h2>Create a new game</h2>
@@ -90,6 +102,7 @@ function CreateForm({ name }: { name: string }) {
             handleInput("password", e.currentTarget.value);
           }}
         />
+        {warning !== "" && <p>{warning}</p>}
         <Button
           onClick={() => {}}
           disabled={!input.name.valid || !input.password.valid}

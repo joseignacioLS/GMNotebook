@@ -30,7 +30,7 @@ const LoginForm = () => {
           }}
         />
         <Button onClick={() => {}} disabled={input.match(loginRegex) === null}>
-          Create
+          LogIn
         </Button>
       </form>
     </div>

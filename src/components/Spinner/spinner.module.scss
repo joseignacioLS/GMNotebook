@@ -1,0 +1,22 @@
+.spinner {
+  width: 200px;
+  height: 20px;
+  position: relative;
+  .dot {
+    position: absolute;
+    left: 50%;
+    top: 0;
+    height: 100%;
+    aspect-ratio: 1/1;
+    border-radius: 50%;
+    background-color: coral;
+    animation: spin 2s ease infinite;
+    transform: translateX(-200%);
+  }
+}
+
+@keyframes spin {
+  50% {
+    transform: translateX(200%);
+  }
+}
