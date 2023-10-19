@@ -1,24 +1,21 @@
-import React, { useContext, useState } from "react";
+import React, { useContext } from "react";
 import Page from "./Page/Page";
 import NoteList from "./NoteList/NoteList";
 
 import styles from "./notebook.module.scss";
-import Conections from "./Conections";
 import DataActions from "./DataActions";
-import Tutorial from "./Tutorial";
 import Button from "./Button/Button";
 import PageEdit from "./Page/PageEdit";
 import { NavigationContext } from "@/context/navigation";
 import { DataContext } from "@/context/data";
 import ToggleButton from "./Button/ToggleButton";
 import { modalContext } from "@/context/modal";
-import LoginForm from "./Forms/LoginForm/LoginForm";
 import { darkModeContext } from "@/context/darkmode";
 import MiniLogin from "./Forms/MiniLogin/MiniLogin";
 
 const NoteBook = () => {
   const { darkMode, toggleDarkMode } = useContext(darkModeContext);
-  const { gmMode, updateEditMode, editMode, updateSelectedNote, setGmMode } =
+  const { gmMode, updateEditMode, editMode, updateSelectedNote } =
     useContext(DataContext);
   const { setContent } = useContext(modalContext);
   const { path } = useContext(NavigationContext);
