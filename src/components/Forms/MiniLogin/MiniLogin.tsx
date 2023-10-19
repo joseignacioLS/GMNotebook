@@ -8,19 +8,25 @@ const MiniLogin = () => {
   const [expanded, setExpanded] = useState<boolean>(false);
   const [password, setPassword] = useState<string>("");
   const [error, setError] = useState<boolean>(false);
-  const { setGmMode, gameName, gmMode } = useContext(DataContext);
+  const [loading, setLoading] = useState<boolean>(false);
+  const { setGmMode, gameName, gmMode, updateEditMode } =
+    useContext(DataContext);
 
-  const handleSubmit = async (e: any) => {
-    e.preventDefault();
+  const turnOffGmMode = () => {
+    updateEditMode(false);
+    setGmMode(false);
+  };
 
-    if (gmMode) {
-      return setGmMode(false);
-    }
-    if (!expanded) {
-      return setExpanded(true);
-    }
+  const expandInputAndFocus = () => {
+    const element = document.querySelector("#input-password") as any;
+    element?.focus();
+    setExpanded(true);
+  };
 
+  const makeLoginRequest = async () => {
+    setLoading(true);
     const response: boolean = await loginToServer(gameName, password);
+    setLoading(false);
 
     if (response) {
       setGmMode(true);
@@ -29,10 +35,24 @@ const MiniLogin = () => {
       setError(true);
       setTimeout(() => setError(false), 500);
     }
+  };
+
+  const handleSubmit = (e: any) => {
+    e.preventDefault();
+
+    if (gmMode) {
+      return turnOffGmMode();
+    }
+    if (!expanded) {
+      return expandInputAndFocus();
+    }
+
+    makeLoginRequest();
     setPassword("");
   };
 
   const handleInput = (value: string) => {
+    if (!expanded || loading) return;
     setPassword(value);
     if (value === "") {
       setExpanded(false);
@@ -42,6 +62,7 @@ const MiniLogin = () => {
   return (
     <form className={styles.wrapper} onSubmit={handleSubmit}>
       <input
+        id={"input-password"}
         className={`${styles.passwordInput} 
         ${expanded && styles.expanded}`}
         placeholder="password"
@@ -54,8 +75,9 @@ const MiniLogin = () => {
       <Button
         addClass={`${styles.button} 
         ${expanded && styles.expanded}  
-        ${error && styles.buzz}`}
-        behaviour={gmMode ? behaviourEnum.NEGATIVE : behaviourEnum.NEUTRAL}
+        ${error && styles.buzz} 
+        ${loading && styles.rotate}`}
+        behaviour={gmMode ? behaviourEnum.POSITIVE : behaviourEnum.NEUTRAL}
         onClick={() => {}}
       >
         {gmMode ? (

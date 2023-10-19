@@ -6,10 +6,9 @@ import {
   useEffect,
   useState,
 } from "react";
-import { dataI, itemI, leafI, tutorial } from "./constants";
+import { dataI, itemI, leafI, placeholder } from "./constants";
 import { NavigationContext } from "./navigation";
 import { generateDataTree } from "@/utils/tree";
-import { useSearchParams } from "next/navigation";
 import { postRequest } from "@/utils/api";
 import { useRouter } from "next/router";
 
@@ -29,11 +28,12 @@ interface contextOutputI {
   setGmMode: any;
   gameName: string;
   setGameName: (value: string) => void;
+  updatedWithServer: boolean;
 }
 
 export const DataContext = createContext<contextOutputI>({
-  data: tutorial,
-  item: tutorial["RootPage"],
+  data: placeholder,
+  item: placeholder["RootPage"],
   editMode: false,
   updateEditMode: () => {},
   updateData: (value: dataI, reset: boolean) => {},
@@ -47,16 +47,18 @@ export const DataContext = createContext<contextOutputI>({
   setGmMode: () => {},
   gameName: "",
   setGameName: (value: string) => {},
+  updatedWithServer: false,
 });
 
 export const DataProvider = ({ children }: { children: ReactElement }) => {
   const [gameName, setGameName] = useState<string>("");
-  const [data, setData] = useState<dataI>(tutorial);
+  const [data, setData] = useState<dataI>(placeholder);
   const [tree, setTree] = useState<leafI[]>([]);
   const [editMode, setEditMode] = useState<boolean>(false);
   const [selectedNote, setSelectedNote] = useState<string>("RootPage");
   const [gmMode, setGmMode] = useState<boolean>(false);
   const router = useRouter();
+  const [updatedWithServer, setUpdatedWithServer] = useState<boolean>(false);
   const [serverTimeout, setServerTimeout] = useState<
     NodeJS.Timeout | undefined
   >(undefined);
@@ -64,6 +66,7 @@ export const DataProvider = ({ children }: { children: ReactElement }) => {
   const { path, resetPath, getCurrentPage } = useContext(NavigationContext);
 
   const updateData = (value: dataI, resetEntry: boolean = true): void => {
+    setUpdatedWithServer(false);
     const cleanData = cleanUpData(value);
     setTimeout(() => {
       setData(cleanData);
@@ -74,8 +77,13 @@ export const DataProvider = ({ children }: { children: ReactElement }) => {
 
   const saveToServer = () => {
     clearTimeout(serverTimeout);
-    const to = setTimeout(() => {
-      postRequest(`${gameName}`, { data: data });
+    const to = setTimeout(async () => {
+      const response = await postRequest(`${gameName}`, { data: data });
+      if (response.status === 200) {
+        setUpdatedWithServer(true);
+      } else {
+        setUpdatedWithServer(false);
+      }
       setServerTimeout(undefined);
     }, 3000);
     setServerTimeout(to);
@@ -98,11 +106,6 @@ export const DataProvider = ({ children }: { children: ReactElement }) => {
         const key = v.split("_")[0];
         if (!references.includes(key)) references.push(key);
       });
-      // delete emtpy references
-      // if (value[key].text === "" && key !== "RootPage") {
-      //   delete value[key];
-      //   deletedKeys.push(key);
-      // }
     });
 
     // remove ununused references
@@ -118,16 +121,11 @@ export const DataProvider = ({ children }: { children: ReactElement }) => {
     if (currentPath !== undefined && deletedKeys.includes(currentPath)) {
       resetPath();
     }
-
-    // remove deleted keys from text
-    // Object.keys(value).forEach((key: string) => {
-    //   value[key].text = removeReferences(value[key].text, deletedKeys);
-    // });
     return value;
   };
 
   const resetData = (): void => {
-    updateData({ ...tutorial }, true);
+    updateData({ ...placeholder }, true);
   };
 
   const updateEditMode = (value: boolean): void => {
@@ -148,7 +146,7 @@ export const DataProvider = ({ children }: { children: ReactElement }) => {
 
   useEffect(() => {
     if (data?.RootPage === undefined) {
-      updateData(tutorial);
+      updateData(placeholder);
       return;
     }
     const currentPage = getCurrentPage();
@@ -171,7 +169,7 @@ export const DataProvider = ({ children }: { children: ReactElement }) => {
     <DataContext.Provider
       value={{
         data,
-        item: data[getCurrentPage()] || tutorial["RootPage"],
+        item: data[getCurrentPage()] || placeholder["RootPage"],
         editMode,
         updateEditMode,
         updateData,
@@ -185,6 +183,7 @@ export const DataProvider = ({ children }: { children: ReactElement }) => {
         setGmMode,
         gameName,
         setGameName,
+        updatedWithServer,
       }}
     >
       {children}

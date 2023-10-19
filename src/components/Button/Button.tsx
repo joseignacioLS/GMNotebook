@@ -14,7 +14,7 @@ const bgColorDictionary: { [key in behaviourEnum]: string } = {
 };
 
 interface propsI {
-  children: ReactElement | string;
+  children?: ReactElement | string;
   behaviour?: behaviourEnum;
   naked?: boolean;
   onClick: (e: any) => void;

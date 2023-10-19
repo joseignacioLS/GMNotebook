@@ -3,21 +3,23 @@ import Page from "./Page/Page";
 import NoteList from "./NoteList/NoteList";
 
 import styles from "./notebook.module.scss";
-import DataActions from "./DataActions";
-import Button from "./Button/Button";
+import Button, { behaviourEnum } from "./Button/Button";
 import PageEdit from "./Page/PageEdit";
 import { NavigationContext } from "@/context/navigation";
 import { DataContext } from "@/context/data";
 import ToggleButton from "./Button/ToggleButton";
-import { modalContext } from "@/context/modal";
 import { darkModeContext } from "@/context/darkmode";
 import MiniLogin from "./Forms/MiniLogin/MiniLogin";
 
 const NoteBook = () => {
   const { darkMode, toggleDarkMode } = useContext(darkModeContext);
-  const { gmMode, updateEditMode, editMode, updateSelectedNote } =
-    useContext(DataContext);
-  const { setContent } = useContext(modalContext);
+  const {
+    gmMode,
+    updateEditMode,
+    editMode,
+    updateSelectedNote,
+    updatedWithServer,
+  } = useContext(DataContext);
   const { path } = useContext(NavigationContext);
 
   return (
@@ -44,14 +46,7 @@ const NoteBook = () => {
         )}
         {editMode ? <PageEdit /> : <NoteList />}
       </div>
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "flex-start",
-          gap: "1rem",
-          paddingTop: "1rem",
-        }}
-      >
+      <div className={styles.actionButtons}>
         <ToggleButton
           isOn={darkMode}
           leftButton={<img src="/images/sun.svg" />}
@@ -59,8 +54,17 @@ const NoteBook = () => {
           onClick={toggleDarkMode}
         ></ToggleButton>
         <MiniLogin />
+        <Button
+          onClick={() => {}}
+          behaviour={
+            updatedWithServer ? behaviourEnum.POSITIVE : behaviourEnum.NEGATIVE
+          }
+        >
+          <img
+            src={`/images/${updatedWithServer ? "synced" : "unsynced"}.svg`}
+          />
+        </Button>
       </div>
-      {gmMode && <DataActions />}
     </div>
   );
 };

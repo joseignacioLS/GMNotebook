@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import styles from "./createform.module.scss";
 import Button from "@/components/Button/Button";
 import { getRequest, postRequest } from "@/utils/api";
@@ -74,6 +74,12 @@ function CreateForm({ name }: { name: string }) {
       }, 1000);
     }
   };
+
+  useEffect(() => {
+    const element = document.querySelector("#input-create-password") as any;
+    element?.focus();
+  }, []);
+
   if (loading) {
     return (
       <div>
@@ -95,6 +101,7 @@ function CreateForm({ name }: { name: string }) {
           }}
         />
         <input
+          id={"input-create-password"}
           type="password"
           placeholder="Password"
           value={input.password.value}

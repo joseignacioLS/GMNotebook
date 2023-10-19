@@ -30,6 +30,14 @@
   }
 }
 
+.actionButtons {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  gap: 1rem;
+  padding-top: 1rem;
+  padding-right: 1rem;
+}
+
 @media (max-width: 800px) {
   .notebook {
     grid-template-columns: 1fr;

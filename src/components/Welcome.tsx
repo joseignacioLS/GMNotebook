@@ -24,14 +24,17 @@ const Welcome = () => {
     e.preventDefault();
 
     if (input === "") return;
+
     setLoading(true);
+
     const gameExists = await checkGame();
-    setLoading(false);
     if (gameExists) {
       return router.push(`/${input}`);
     }
-    // open the other modal
+
     setContent(<CreateForm name={input} />);
+
+    setLoading(false);
   };
 
   if (loading) {
