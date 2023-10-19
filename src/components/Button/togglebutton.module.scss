@@ -3,7 +3,6 @@
   grid-template-columns: 1fr auto 1fr;
   gap: 0.5rem;
   align-items: center;
-  cursor: pointer;
 
   user-select: none;
 
@@ -31,7 +30,7 @@
       align-items: center;
 
       overflow: hidden;
-
+      cursor: pointer;
 
       * {
         max-width: 100%;

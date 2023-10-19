@@ -51,7 +51,7 @@ const NoteBook = () => {
           display: "flex",
           justifyContent: "flex-start",
           gap: "1rem",
-          paddingTop: "1rem"
+          paddingTop: "1rem",
         }}
       >
         <ToggleButton
@@ -61,7 +61,10 @@ const NoteBook = () => {
           onClick={toggleDarkMode}
         ></ToggleButton>
 
-        <Button
+        <ToggleButton
+          isOn={gmMode}
+          leftButton={<img src="/images/locked.svg" />}
+          rightButton={<img src="/images/unlocked.svg" />}
           onClick={() => {
             if (gmMode) {
               setGmMode(false);
@@ -70,9 +73,7 @@ const NoteBook = () => {
               setContent(<LoginForm />);
             }
           }}
-        >
-          {gmMode ? "GM" : "NoGm"}
-        </Button>
+        ></ToggleButton>
       </div>
       {gmMode && <DataActions />}
     </div>
