@@ -19,10 +19,9 @@ const MiniLogin = () => {
     if (!expanded) {
       return setExpanded(true);
     }
-    alert(gameName)
-    alert(password)
+
     const response: boolean = await loginToServer(gameName, password);
-    alert(response)
+
     if (response) {
       setGmMode(true);
       setExpanded(false);
