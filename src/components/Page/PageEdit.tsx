@@ -12,11 +12,13 @@ const PageEdit = ({}) => {
     text: string;
     display: string;
     showInTree: boolean;
+    showToPlayers: boolean;
   }>({
     text: data[selectedNote]?.text || "",
     title: data[selectedNote]?.title || "",
     display: data[selectedNote]?.display || "",
     showInTree: data[selectedNote]?.showInTree || false,
+    showToPlayers: data[selectedNote]?.showToPlayers || false,
   });
 
   const handleInput = (key: string, value: any) => {
@@ -68,6 +70,7 @@ const PageEdit = ({}) => {
     input.display,
     input.title,
     input.showInTree,
+    input.showToPlayers,
   ]);
 
   const handleCursorChange = (e: any) => {
@@ -113,6 +116,7 @@ const PageEdit = ({}) => {
       title: data[selectedNote]?.title || "",
       display: data[selectedNote]?.display || "",
       showInTree: data[selectedNote]?.showInTree || false,
+      showToPlayers: data[selectedNote]?.showToPlayers || false,
     });
   }, [data, selectedNote]);
 
@@ -146,6 +150,18 @@ const PageEdit = ({}) => {
           type="checkbox"
           checked={input.showInTree}
           onChange={(e) => handleInput("showInTree", e.currentTarget.checked)}
+        ></input>
+      </label>
+      <label>
+        <span data-help={"Decide if this note is visible to players"}>
+          Visible to players?
+        </span>
+        <input
+          type="checkbox"
+          checked={input.showToPlayers}
+          onChange={(e) =>
+            handleInput("showToPlayers", e.currentTarget.checked)
+          }
         ></input>
       </label>
       <textarea

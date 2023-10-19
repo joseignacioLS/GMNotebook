@@ -24,7 +24,9 @@ const Reference = ({ reference, naked = false }: propsI) => {
       onClick={() => {
         if (naked) return;
         if (selectedNote === reference.key) {
-          navigateTo(reference.key);
+          if (data[reference.key].showToPlayers) {
+            navigateTo(reference.key);
+          }
         } else {
           updateSelectedNote(reference.key || "");
         }

@@ -4,6 +4,7 @@ export interface itemI {
   key: string;
   display: string;
   showInTree: boolean;
+  showToPlayers?: boolean;
 }
 
 export interface textPieceI {
