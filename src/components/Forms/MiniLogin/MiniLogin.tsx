@@ -1,4 +1,4 @@
-import React, { useContext, useRef, useState } from "react";
+import React, { useContext, useState } from "react";
 import styles from "./minilogin.module.scss";
 import Button, { behaviourEnum } from "@/components/Button/Button";
 import { loginToServer } from "@/utils/login";
@@ -14,20 +14,21 @@ const MiniLogin = () => {
     e.preventDefault();
 
     if (gmMode) {
-      setGmMode(false);
-    } else {
-      if (!expanded) {
-        return setExpanded(true);
-      }
-      if (await loginToServer(gameName, password)) {
-        setGmMode(true);
-        setExpanded((v) => !v);
-      } else {
-        setError(true);
-        setTimeout(() => setError(false), 500);
-      }
-      setPassword("");
+      return setGmMode(false);
     }
+    if (!expanded) {
+      return setExpanded(true);
+    }
+    const response: boolean = await loginToServer(gameName, password);
+    alert(response)
+    if (response) {
+      setGmMode(true);
+      setExpanded(false);
+    } else {
+      setError(true);
+      setTimeout(() => setError(false), 500);
+    }
+    setPassword("");
   };
 
   const handleInput = (value: string) => {
