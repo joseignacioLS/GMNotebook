@@ -57,29 +57,41 @@ const NoteBook = () => {
           onClick={toggleDarkMode}
         ></ToggleButton>
         <MiniLogin />
-        <Button onClick={() => {}}>
-          <input
-            data-tip={"Upload"}
-            type="file"
-            id="file"
-            onChange={() => {
-              loadFile("#file", updateData);
-            }}
-          />
-        </Button>
-        <Button onClick={() => saveToFile(data["RootPage"].title, data)}>
-          <img src="/images/download.svg" />
-        </Button>
-        <Button
-          onClick={() => {}}
-          behaviour={
-            updatedWithServer ? behaviourEnum.POSITIVE : behaviourEnum.NEGATIVE
-          }
+        {gmMode && (
+          <Button onClick={() => {}}>
+            <input
+              data-tip={"Upload"}
+              type="file"
+              id="file"
+              onChange={() => {
+                loadFile("#file", updateData);
+              }}
+            />
+          </Button>
+        )}
+        {gmMode && (
+          <Button onClick={() => saveToFile(data["RootPage"].title, data)}>
+            <img src="/images/download.svg" />
+          </Button>
+        )}
+        <div
+          style={{
+            gridColumn: "5/6",
+          }}
         >
-          <img
-            src={`/images/${updatedWithServer ? "synced" : "unsynced"}.svg`}
-          />
-        </Button>
+          <Button
+            onClick={() => {}}
+            behaviour={
+              updatedWithServer
+                ? behaviourEnum.POSITIVE
+                : behaviourEnum.NEGATIVE
+            }
+          >
+            <img
+              src={`/images/${updatedWithServer ? "synced" : "unsynced"}.svg`}
+            />
+          </Button>
+        </div>
       </div>
     </div>
   );

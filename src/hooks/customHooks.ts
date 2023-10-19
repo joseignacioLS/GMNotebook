@@ -1,10 +1,6 @@
 import { useEffect, useRef } from "react";
 
-export const useUpdate = (
-  callback: () => void,
-  dependencies: any[],
-  cleanUp: () => void
-) => {
+export const useUpdate = (callback: () => void, dependencies: any[]) => {
   const isMounted = useRef(false);
   useEffect(() => {
     isMounted.current = false;
@@ -16,6 +12,5 @@ export const useUpdate = (
     } else {
       isMounted.current = true;
     }
-    return cleanUp;
   }, dependencies);
 };
