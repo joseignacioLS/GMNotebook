@@ -13,13 +13,14 @@ import { DataContext } from "@/context/data";
 import ToggleButton from "./Button/ToggleButton";
 import { modalContext } from "@/context/modal";
 import LoginForm from "./Forms/LoginForm/LoginForm";
+import { darkModeContext } from "@/context/darkmode";
 
 const NoteBook = () => {
+  const { darkMode, toggleDarkMode } = useContext(darkModeContext);
   const { gmMode, updateEditMode, editMode, updateSelectedNote, setGmMode } =
     useContext(DataContext);
   const { setContent } = useContext(modalContext);
   const { path } = useContext(NavigationContext);
-  const [darkMode, setDarkMode] = useState<boolean>(true);
 
   return (
     <div className={styles.notebook}>
@@ -57,7 +58,7 @@ const NoteBook = () => {
           isOn={darkMode}
           leftButton={<img src="/images/sun.svg" />}
           rightButton={<img src="/images/moon.svg" />}
-          onClick={() => setDarkMode((v) => !v)}
+          onClick={toggleDarkMode}
         ></ToggleButton>
 
         <Button

@@ -1,10 +1,11 @@
 import ToggleButton from "@/components/Button/ToggleButton";
 import Modal from "@/components/Modal/Modal";
 import Welcome from "@/components/Welcome";
-import { useState } from "react";
+import { darkModeContext } from "@/context/darkmode";
+import { useContext, useState } from "react";
 
 export default function Home() {
-  const [darkMode, setDarkMode] = useState<boolean>(true);
+  const { darkMode, toggleDarkMode } = useContext(darkModeContext);
 
   return (
     <main
@@ -20,7 +21,7 @@ export default function Home() {
           right: "1rem",
           zIndex: "10",
         }}
-        onClick={() => setDarkMode((v) => !v)}
+        onClick={toggleDarkMode}
       >
         <ToggleButton
           isOn={darkMode}
