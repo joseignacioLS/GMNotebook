@@ -46,16 +46,6 @@ const NoteCard = ({ itemKey }: propsI) => {
       } ${styles.visibleNote}`}
       style={{ backgroundColor: generateColor(key) }}
     >
-      <Button
-        addClass={styles.linkVisit}
-        naked={true}
-        onClick={() => {
-          updateSelectedNote(key);
-          navigateTo(key || "");
-        }}
-      >
-        <img src="/images/book.svg" />
-      </Button>
       {expandable && (
         <Button
           addClass={styles.expand}
@@ -68,7 +58,14 @@ const NoteCard = ({ itemKey }: propsI) => {
           <img src={`/images/${isExpanded ? "minus" : "plus"}.svg`} />
         </Button>
       )}
-      <h2>{title}</h2>
+      <h2
+        onClick={() => {
+          updateSelectedNote(key);
+          navigateTo(key || "");
+        }}
+      >
+        {title}
+      </h2>
       {(!expandable || isExpanded) && displayText}
       {expandable && !isExpanded && displayShortText}
     </div>
