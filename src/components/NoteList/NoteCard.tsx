@@ -37,14 +37,18 @@ const NoteCard = ({ itemKey }: propsI) => {
   );
 
   if (!gmMode && !data[key]?.showToPlayers) return <></>;
+  const color = generateColor(key);
+  const isSelected = itemKey.split("_")[0] === selectedNote;
 
   return (
     <div
       id={`note-${key.split("_")[0]}`}
-      className={`${styles.note} ${
-        itemKey === selectedNote && styles.selected
-      } ${styles.visibleNote}`}
-      style={{ backgroundColor: generateColor(key) }}
+      className={`${styles.note} ${styles.visibleNote}`}
+      style={{
+        backgroundColor: `color-mix(in srgb, ${color} 40%, ${
+          isSelected ? "#ff0000ff" : color
+        })`,
+      }}
     >
       {expandable && (
         <Button

@@ -142,14 +142,7 @@ export const DataProvider = ({ children }: { children: ReactElement }) => {
 
   const updateSelectedNote = (key: string): void => {
     setSelectedNote(key);
-    setTimeout(() => {
-      document.querySelector(`#note-${key}`)?.scrollIntoView();
-      // add animation to card
-      document.querySelector(`#note-${key}`)?.classList.add("flash");
-      setTimeout(() => {
-        document.querySelector(`#note-${key}`)?.classList.remove("flash");
-      }, 600);
-    }, 0);
+    document.querySelector(`#note-${key}`)?.scrollIntoView();
   };
 
   useEffect(() => {

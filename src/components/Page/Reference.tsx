@@ -14,13 +14,16 @@ const Reference = ({ reference, naked = false }: propsI) => {
   const { selectedNote, updateSelectedNote, data, gmMode } =
     useContext(DataContext);
   const { navigateTo } = useContext(NavigationContext);
-
+  const color = generateColor(reference.key);
   return (
     <span
       className={`${styles.reference} reference${reference.id}`}
       style={{
-        backgroundColor: naked ? "rgba(0,0,0,.5)" : generateColor(reference.key),
-        outline: selectedNote === reference.key ? "3px solid red" : "0",
+        backgroundColor: naked
+          ? "rgba(0,0,0,.5)"
+          : `color-mix(in srgb, ${color} 40%, ${
+              selectedNote === reference.key ? "#ff0000ff" : color
+            }`,
       }}
       onMouseOver={() => {
         if (naked) return;

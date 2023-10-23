@@ -13,12 +13,13 @@
   user-select: none;
 
   transition: margin 0.2s, padding 0.2s;
-  h2{
+
+  h2 {
     display: inline-block;
     cursor: pointer;
   }
 
-  > p > img {
+  >p>img {
     width: auto;
     max-height: 400px;
     max-width: 100%;
@@ -30,6 +31,7 @@
     margin-bottom: 1rem;
     height: auto;
   }
+
 }
 
 @media (max-width: 800px) {
