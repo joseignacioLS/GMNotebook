@@ -13,6 +13,7 @@ const LoginForm = () => {
   const handleSubmit = async (e: any) => {
     e.preventDefault();
     if (await loginToServer(gameName, input)) {
+      
       setGmMode(true);
       closeModal();
     }

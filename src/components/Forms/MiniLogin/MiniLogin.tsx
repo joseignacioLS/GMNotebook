@@ -9,12 +9,15 @@ const MiniLogin = () => {
   const [password, setPassword] = useState<string>("");
   const [error, setError] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
-  const { setGmMode, gameName, gmMode, updateEditMode } =
+  const { setGmMode, gameName, gmMode, updateEditMode, setCredentials } =
     useContext(DataContext);
 
   const turnOffGmMode = () => {
     updateEditMode(false);
     setGmMode(false);
+    setCredentials((v: any) => {
+      return { ...v, password: "" };
+    });
   };
 
   const expandInputAndFocus = () => {
@@ -31,6 +34,9 @@ const MiniLogin = () => {
     if (response) {
       setGmMode(true);
       setExpanded(false);
+      setCredentials((v: any) => {
+        return { ...v, password };
+      });
     } else {
       setError(true);
       setTimeout(() => setError(false), 500);

@@ -28,7 +28,7 @@ interface contextOutputI {
   gmMode: boolean;
   setGmMode: any;
   gameName: string;
-  setGameName: (value: string) => void;
+  setCredentials: (value: any) => void;
   updatedWithServer: boolean;
 }
 
@@ -47,12 +47,15 @@ export const DataContext = createContext<contextOutputI>({
   gmMode: false,
   setGmMode: () => {},
   gameName: "",
-  setGameName: (value: string) => {},
+  setCredentials: (value: any) => {},
   updatedWithServer: false,
 });
 
 export const DataProvider = ({ children }: { children: ReactElement }) => {
-  const [gameName, setGameName] = useState<string>("");
+  const [credentials, setCredentials] = useState<{
+    gameName: string;
+    password: string;
+  }>({ gameName: "", password: "" });
   const [data, setData] = useState<dataI>(placeholder);
   const [tree, setTree] = useState<leafI[]>([]);
   const [editMode, setEditMode] = useState<boolean>(false);
@@ -78,9 +81,12 @@ export const DataProvider = ({ children }: { children: ReactElement }) => {
 
   const saveToServer = () => {
     clearTimeout(serverTimeout);
-    if (gameName === "") return;
+    if (credentials.gameName === "") return;
     const to = setTimeout(async () => {
-      const response = await postRequest(`${gameName}`, { data: data });
+      const response = await postRequest(`${credentials.gameName}`, {
+        data: data,
+        password: credentials.password,
+      });
       if (response.status === 200) {
         setUpdatedWithServer(true);
       } else {
@@ -183,8 +189,8 @@ export const DataProvider = ({ children }: { children: ReactElement }) => {
         updateSelectedNote,
         gmMode,
         setGmMode,
-        gameName,
-        setGameName,
+        gameName: credentials.gameName,
+        setCredentials,
         updatedWithServer,
       }}
     >
