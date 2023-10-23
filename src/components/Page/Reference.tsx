@@ -29,6 +29,9 @@ const Reference = ({ reference, naked = false }: propsI) => {
         if (naked) return;
         updateSelectedNote(reference.key || "");
       }}
+      onMouseLeave={() => {
+        updateSelectedNote("");
+      }}
       onClick={() => {
         if (data[reference.key].showToPlayers || gmMode) {
           updateSelectedNote(reference.key || "");
