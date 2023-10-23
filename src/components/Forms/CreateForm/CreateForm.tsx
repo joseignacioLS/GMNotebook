@@ -6,6 +6,7 @@ import { modalContext } from "@/context/modal";
 import { useRouter } from "next/router";
 import { loginRegex } from "@/utils/constans";
 import Spinner from "@/components/Spinner/Spinner";
+import { DataContext } from "@/context/data";
 
 interface Iinput {
   name: { value: string; touched: boolean; valid: boolean };
@@ -25,6 +26,7 @@ function CreateForm({ name }: { name: string }) {
   const [warning, setWarning] = useState<string>("");
 
   const { closeModal } = useContext(modalContext);
+  const { setCredentials } = useContext(DataContext);
 
   const router = useRouter();
 
@@ -69,6 +71,9 @@ function CreateForm({ name }: { name: string }) {
     });
     if (response !== null) {
       setTimeout(() => {
+        setCredentials((v: any) => {
+          return { ...v, password: input.password.value };
+        });
         router.push(`/${input.name.value}`);
         closeModal();
       }, 1000);
