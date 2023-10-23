@@ -22,14 +22,14 @@ const Reference = ({ reference, naked = false }: propsI) => {
         backgroundColor: naked ? "transparent" : generateColor(reference.key),
         outline: selectedNote === reference.key ? "3px solid red" : "0",
       }}
-      onClick={() => {
+      onMouseOver={() => {
         if (naked) return;
-        if (selectedNote === reference.key) {
-          if (data[reference.key].showToPlayers || gmMode) {
-            navigateTo(reference.key);
-          }
-        } else {
+        updateSelectedNote(reference.key || "");
+      }}
+      onClick={() => {
+        if (data[reference.key].showToPlayers || gmMode) {
           updateSelectedNote(reference.key || "");
+          navigateTo(reference.key);
         }
       }}
     >
