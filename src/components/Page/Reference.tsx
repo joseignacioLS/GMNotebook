@@ -19,7 +19,7 @@ const Reference = ({ reference, naked = false }: propsI) => {
     <span
       className={`${styles.reference} reference${reference.id}`}
       style={{
-        backgroundColor: naked ? "transparent" : generateColor(reference.key),
+        backgroundColor: naked ? "rgba(0,0,0,.5)" : generateColor(reference.key),
         outline: selectedNote === reference.key ? "3px solid red" : "0",
       }}
       onMouseOver={() => {
