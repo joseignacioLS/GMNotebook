@@ -26,7 +26,7 @@ const Reference = ({ reference, naked = false }: propsI) => {
             }`,
       }}
       onMouseOver={() => {
-        if (naked) return;
+        if (naked || editMode) return;
         updateSelectedNote(reference.key || "");
       }}
       onMouseLeave={() => {
@@ -35,9 +35,14 @@ const Reference = ({ reference, naked = false }: propsI) => {
         }
       }}
       onClick={() => {
+        if (editMode) {
+          updateSelectedNote(reference.key || "");
+        }
         if (data[reference.key].showToPlayers || gmMode) {
           updateSelectedNote(reference.key || "");
-          router.push(`/${gameName}/${reference.key}`);
+          if (selectedNote === reference.key) {
+            router.push(`/${gameName}/${reference.key}`);
+          }
         }
       }}
     >

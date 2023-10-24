@@ -18,25 +18,33 @@ export default function Home() {
     setCurrentPage,
     updateSelectedNote,
     updateEditMode,
+    gmMode,
+    data,
   } = useContext(DataContext);
 
   const getDataFromServer = async () => {
     const game = searchParams.get("game");
-    if (!game) return;
-    const data = await getRequest(`${game}`);
-    if (data === null) {
-      router.push("/");
-    } else {
-      updateEditMode(false);
-      updateData(JSON.parse(data), false);
-
-      setCredentials((v: any) => {
-        return { ...v, gameName: game };
-      });
+    if (!game || !data) return;
+    if (game !== gameName) {
+      const data = await getRequest(`${game}`);
+      if (data === null) {
+        router.push("/");
+      } else {
+        updateEditMode(false);
+        updateData(JSON.parse(data), false);
+        setCredentials((v: any) => {
+          return { ...v, gameName: game };
+        });
+      }
     }
     const item = searchParams.get("item") || "RootPage";
-    setCurrentPage(item);
-    updateSelectedNote(item);
+    if (!gmMode && !data[item]?.showToPlayers) {
+      router.push(`/${game}/RootPage`);
+    } else {
+      setCurrentPage(item);
+      updateSelectedNote(item);
+    }
+    updateEditMode(false);
   };
 
   useEffect(() => {

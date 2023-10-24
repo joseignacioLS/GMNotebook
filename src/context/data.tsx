@@ -57,7 +57,7 @@ export const DataProvider = ({ children }: { children: ReactElement }) => {
   const [selectedNote, setSelectedNote] = useState<string>("");
   const [gmMode, setGmMode] = useState<boolean>(false);
   const router = useRouter();
-  const [updatedWithServer, setUpdatedWithServer] = useState<boolean>(false);
+  const [updatedWithServer, setUpdatedWithServer] = useState<boolean>(true);
   const [serverTimeout, setServerTimeout] = useState<
     NodeJS.Timeout | undefined
   >(undefined);
@@ -78,7 +78,7 @@ export const DataProvider = ({ children }: { children: ReactElement }) => {
     }, 0);
   };
 
-  const saveToServer = () => {
+  const saveToServer = (delay = 10000) => {
     clearTimeout(serverTimeout);
     if (credentials.gameName === "") return;
     const to = setTimeout(async () => {
@@ -92,7 +92,7 @@ export const DataProvider = ({ children }: { children: ReactElement }) => {
         setUpdatedWithServer(false);
       }
       setServerTimeout(undefined);
-    }, 3000);
+    }, delay);
     setServerTimeout(to);
   };
 
@@ -127,6 +127,15 @@ export const DataProvider = ({ children }: { children: ReactElement }) => {
     updateData({ ...placeholder }, true);
   };
 
+  const updateGmMode = (value: boolean): void => {
+    if (!value) {
+      if (!data[currentPage].showToPlayers) {
+        resetView();
+      }
+    }
+    setGmMode(value);
+  };
+
   const updateEditMode = (value: boolean): void => {
     setEditMode(value);
   };
@@ -143,6 +152,23 @@ export const DataProvider = ({ children }: { children: ReactElement }) => {
     };
   }, [data]);
 
+  useEffect(() => {
+    if (credentials.password !== "") {
+      saveToServer(100);
+    }
+    return () => {
+      clearTimeout(serverTimeout);
+    };
+  }, [currentPage]);
+
+  useEffect(() => {
+    if (editMode) return;
+    saveToServer(100);
+    return () => {
+      clearTimeout(serverTimeout);
+    };
+  }, [editMode]);
+
   return (
     <DataContext.Provider
       value={{
@@ -157,7 +183,7 @@ export const DataProvider = ({ children }: { children: ReactElement }) => {
         setTree,
         updateSelectedNote,
         gmMode,
-        setGmMode,
+        setGmMode: updateGmMode,
         gameName: credentials.gameName,
         setCredentials,
         updatedWithServer,
