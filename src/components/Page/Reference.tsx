@@ -36,13 +36,13 @@ const Reference = ({ reference, naked = false }: propsI) => {
       }}
       onClick={() => {
         if (editMode) {
-          updateSelectedNote(reference.key || "");
-        }
-        if (data[reference.key].showToPlayers || gmMode) {
-          updateSelectedNote(reference.key || "");
-          if (selectedNote === reference.key) {
+          if (reference.key === selectedNote) {
             router.push(`/${gameName}/${reference.key}`);
           }
+          updateSelectedNote(reference.key || "");
+        } else if (data[reference.key].showToPlayers || gmMode) {
+          updateSelectedNote(reference.key || "");
+          router.push(`/${gameName}/${reference.key}`);
         }
       }}
     >

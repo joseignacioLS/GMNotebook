@@ -64,6 +64,12 @@ export const processLine = (
         {processLine(line.slice(2), index, plain, true, gmOnly)}
       </p>
     );
+  } else if (line.match(/^\"\"/)) {
+    return (
+      <p key={line} id={`p-${index}`} className={`quote`}>
+        {processLine(line.slice(2), index, plain, true, gmOnly)}
+      </p>
+    );
   }
   const specialMatches = line.match(/(note:|img:)/g);
   const result: lineProcessI | undefined = specialMatches?.reduce(

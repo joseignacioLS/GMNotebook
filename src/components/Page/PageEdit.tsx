@@ -3,6 +3,7 @@ import styles from "./pageedit.module.scss";
 import { DataContext } from "@/context/data";
 import { extractReferences } from "@/utils/text";
 import { useUpdate } from "@/hooks/customHooks";
+import Button from "../Button/Button";
 
 const PageEdit = ({}) => {
   const { item, data, updateData, editMode, selectedNote } =
@@ -20,8 +21,6 @@ const PageEdit = ({}) => {
     showInTree: data[selectedNote]?.showInTree || false,
     showToPlayers: data[selectedNote]?.showToPlayers || false,
   });
-
-  
 
   const handleInput = (key: string, value: any) => {
     setInput((oldValue) => {
@@ -172,6 +171,53 @@ const PageEdit = ({}) => {
         value={input.text}
         onChange={(e) => handleInput("text", e.currentTarget.value)}
       ></textarea>
+      <div
+        style={{
+          position: "absolute",
+          right: "1rem",
+          bottom: "1rem",
+          display: "flex",
+          flexDirection: "column",
+          gap: ".5rem",
+        }}
+      >
+        <Button
+          onClick={(e) => {
+            setInput((v) => {
+              return {
+                ...v,
+                text: `# Description\n\n# Stats\nHP:\nAC:\nSpeed:\nProf.Bonus:\n\n# Ataque\n## Melee\n\n## Ranged\n\n# Feats`,
+              };
+            });
+          }}
+        >
+          <img src={"/images/player.svg"} />
+        </Button>
+        <Button
+          onClick={(e) => {
+            setInput((v) => {
+              return {
+                ...v,
+                text: `# Descripcion\n\n# Explicacion\n\n# Rumores\n\n# Tesoro`,
+              };
+            });
+          }}
+        >
+          <img src={"/images/quest.svg"} />
+        </Button>
+        <Button
+          onClick={(e) => {
+            setInput((v) => {
+              return {
+                ...v,
+                text: ``,
+              };
+            });
+          }}
+        >
+          <img src={"/images/trash.svg"} />
+        </Button>
+      </div>
     </div>
   );
 };
