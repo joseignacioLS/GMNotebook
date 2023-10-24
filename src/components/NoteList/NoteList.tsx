@@ -54,6 +54,10 @@ const NoteList = ({}) => {
     };
   }, [item.text]);
 
+  useEffect(() => {
+    document.querySelector("#notes")?.scrollTo({ top: 0 });
+  }, [item.key]);
+
   return (
     <div className={styles.noteListContainer} id="notes">
       {references.map((reference: string) => {

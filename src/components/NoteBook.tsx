@@ -5,7 +5,6 @@ import NoteList from "./NoteList/NoteList";
 import styles from "./notebook.module.scss";
 import Button, { behaviourEnum } from "./Button/Button";
 import PageEdit from "./Page/PageEdit";
-import { NavigationContext } from "@/context/navigation";
 import { DataContext } from "@/context/data";
 import ToggleButton from "./Button/ToggleButton";
 import { darkModeContext } from "@/context/darkmode";
@@ -23,7 +22,7 @@ const NoteBook = () => {
     updateSelectedNote,
     updatedWithServer,
   } = useContext(DataContext);
-  const { path } = useContext(NavigationContext);
+  const { currentPage } = useContext(DataContext);
 
   return (
     <div className={styles.notebook}>
@@ -35,7 +34,7 @@ const NoteBook = () => {
             addClass={styles.toggleColumn}
             onClick={() => {
               if (editMode) {
-                updateSelectedNote(path.at(-1));
+                updateSelectedNote(currentPage);
               }
               updateEditMode((v: boolean) => !v);
             }}

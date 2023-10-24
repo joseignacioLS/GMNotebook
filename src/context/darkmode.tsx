@@ -1,4 +1,5 @@
-import { ReactElement, createContext, useState } from "react";
+import { retrieveLocalStorage, saveToLocalStorage } from "@/utils/localStorage";
+import { ReactElement, createContext, useEffect, useState } from "react";
 
 interface contextOutputI {
   darkMode: boolean;
@@ -13,8 +14,17 @@ export const darkModeContext = createContext<contextOutputI>({
 export const DarkModeProvider = ({ children }: { children: ReactElement }) => {
   const [darkMode, setDarkMode] = useState<boolean>(true);
   const toggleDarkMode = () => {
-    setDarkMode((v) => !v);
+    setDarkMode((v) => {
+      const newValue = !v;
+      saveToLocalStorage(newValue, "darkMode");
+      return newValue;
+    });
   };
+
+  useEffect(() => {
+    const retrieved = retrieveLocalStorage("darkMode") === "true";
+    setDarkMode(retrieved);
+  }, []);
   return (
     <darkModeContext.Provider value={{ darkMode, toggleDarkMode }}>
       {children}
