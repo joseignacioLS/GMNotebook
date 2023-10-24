@@ -198,7 +198,19 @@ const PageEdit = ({}) => {
             setInput((v) => {
               return {
                 ...v,
-                text: `# Descripcion\n\n# Explicacion\n\n# Rumores\n\n# Tesoro`,
+                text: `# Mapa\n\n# Descripción\n\n# Fases\n\n# Tesoro`,
+              };
+            });
+          }}
+        >
+          <img src={"/images/map.svg"} />
+        </Button>
+        <Button
+          onClick={(e) => {
+            setInput((v) => {
+              return {
+                ...v,
+                text: `# Descripción\n\n# Explicación\n\n# Rumores\n\n# Tesoro`,
               };
             });
           }}
