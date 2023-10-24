@@ -1,9 +1,9 @@
-import React, { ReactElement, useContext } from "react";
+import React, { useContext } from "react";
 import styles from "./reference.module.scss";
 import { referenceI } from "@/context/constants";
 import { DataContext } from "@/context/data";
-import { NavigationContext } from "@/context/navigation";
 import { generateColor } from "@/utils/color";
+import { useRouter } from "next/router";
 
 interface propsI {
   reference: referenceI;
@@ -11,9 +11,9 @@ interface propsI {
 }
 
 const Reference = ({ reference, naked = false }: propsI) => {
-  const { selectedNote, updateSelectedNote, data, gmMode } =
+  const { selectedNote, updateSelectedNote, data, gmMode, gameName, editMode } =
     useContext(DataContext);
-  const { navigateTo } = useContext(NavigationContext);
+  const router = useRouter();
   const color = generateColor(reference.key);
   return (
     <span
@@ -30,12 +30,14 @@ const Reference = ({ reference, naked = false }: propsI) => {
         updateSelectedNote(reference.key || "");
       }}
       onMouseLeave={() => {
-        updateSelectedNote("");
+        if (!editMode) {
+          updateSelectedNote("");
+        }
       }}
       onClick={() => {
         if (data[reference.key].showToPlayers || gmMode) {
           updateSelectedNote(reference.key || "");
-          navigateTo(reference.key);
+          router.push(`/${gameName}/${reference.key}`);
         }
       }}
     >

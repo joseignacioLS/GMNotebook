@@ -1,20 +1,20 @@
 import { DataContext } from "@/context/data";
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useState } from "react";
 
 import styles from "./notecard.module.scss";
-import { NavigationContext } from "@/context/navigation";
 import Button from "../Button/Button";
 import { processText } from "@/utils/text";
 import { generateColor } from "@/utils/color";
+import { useRouter } from "next/router";
 
 interface propsI {
   itemKey: string;
 }
 
 const NoteCard = ({ itemKey }: propsI) => {
-  const { data, selectedNote, updateSelectedNote, gmMode } =
+  const { data, selectedNote, updateSelectedNote, gmMode, gameName } =
     useContext(DataContext);
-  const { navigateTo } = useContext(NavigationContext);
+  const router = useRouter();
 
   const [isExpanded, setIsExpanded] = useState<boolean>(false);
 
@@ -65,7 +65,7 @@ const NoteCard = ({ itemKey }: propsI) => {
       <h2
         onClick={() => {
           updateSelectedNote(key);
-          navigateTo(key || "");
+          router.push(`/${gameName}/${key || "RootPage"}`);
         }}
       >
         {title}

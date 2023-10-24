@@ -21,6 +21,8 @@ const PageEdit = ({}) => {
     showToPlayers: data[selectedNote]?.showToPlayers || false,
   });
 
+  
+
   const handleInput = (key: string, value: any) => {
     setInput((oldValue) => {
       return { ...oldValue, [key]: value };

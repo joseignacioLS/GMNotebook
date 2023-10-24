@@ -3,14 +3,14 @@ import styles from "./tree.module.scss";
 import { DataContext } from "@/context/data";
 import { leafI } from "@/context/constants";
 import { generateColor } from "@/utils/color";
-import { NavigationContext } from "@/context/navigation";
 import { modalContext } from "@/context/modal";
 import { relaxTree } from "@/utils/tree";
+import { useRouter } from "next/router";
 
 const Tree = () => {
   const { data, tree, setTree, updateSelectedNote } = useContext(DataContext);
-  const { navigateTo } = useContext(NavigationContext);
   const { closeModal } = useContext(modalContext);
+  const router = useRouter();
 
   const relaxTreeMore = (): void => {
     setTree((oldValue: leafI[]) => relaxTree(oldValue));
@@ -64,7 +64,7 @@ const Tree = () => {
             onClick={() => {
               closeModal();
               updateSelectedNote(leaf.key);
-              navigateTo(leaf.key);
+              //router.push(leaf.key);
             }}
           >
             {data[leaf.key]?.title || "error"}
