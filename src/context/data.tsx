@@ -13,7 +13,6 @@ interface contextOutputI {
   updateData: (value: dataI, reset: boolean) => void;
   resetData: () => void;
   selectedNote: string;
-  setSelectedNote: any;
   tree: leafI[];
   setTree: any;
   updateSelectedNote: any;
@@ -29,22 +28,21 @@ interface contextOutputI {
 export const DataContext = createContext<contextOutputI>({
   data: placeholder,
   item: placeholder["RootPage"],
-  editMode: false,
-  updateEditMode: () => {},
   updateData: (value: dataI, reset: boolean) => {},
   resetData: () => {},
-  selectedNote: "",
-  setSelectedNote: () => {},
   tree: [],
   setTree: () => {},
-  updateSelectedNote: () => {},
+  editMode: false,
+  updateEditMode: () => {},
   gmMode: false,
   setGmMode: () => {},
+  selectedNote: "",
+  updateSelectedNote: () => {},
   gameName: "",
   setCredentials: (value: any) => {},
-  updatedWithServer: false,
   currentPage: "",
   setCurrentPage: (value: any) => {},
+  updatedWithServer: false,
 });
 
 export const DataProvider = ({ children }: { children: ReactElement }) => {
@@ -134,7 +132,7 @@ export const DataProvider = ({ children }: { children: ReactElement }) => {
   };
 
   const updateSelectedNote = (key: string): void => {
-    setSelectedNote(key || "RootPage");
+    setSelectedNote(key || currentPage);
     document.querySelector(`#note-${key}`)?.scrollIntoView();
   };
 
@@ -155,7 +153,6 @@ export const DataProvider = ({ children }: { children: ReactElement }) => {
         updateData,
         resetData,
         selectedNote,
-        setSelectedNote,
         tree,
         setTree,
         updateSelectedNote,

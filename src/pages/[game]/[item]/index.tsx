@@ -16,7 +16,7 @@ export default function Home() {
     updateData,
     setCredentials,
     setCurrentPage,
-    setSelectedNote,
+    updateSelectedNote,
     updateEditMode,
   } = useContext(DataContext);
 
@@ -36,7 +36,7 @@ export default function Home() {
     }
     const item = searchParams.get("item") || "RootPage";
     setCurrentPage(item);
-    setSelectedNote(item);
+    updateSelectedNote(item);
   };
 
   useEffect(() => {
