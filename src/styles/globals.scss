@@ -91,9 +91,21 @@ img {
   opacity: 0.5;
 }
 
+// QUOTES 
+
+p:not(.quote)+.quote {
+  border-radius: 1rem 1rem 0 0;
+  &:not(:has(+ .quote)) {
+    border-radius: 1rem 1rem 1rem 1rem;
+  }
+}
+
 .quote {
   margin: 0 1rem;
   padding: 0.5rem 1rem;
   background-color: rgba(125, 125, 125, 0.5);
-  border-radius: 1rem;
+
+  &:not(:has(+ .quote)) {
+    border-radius: 0 0 1rem 1rem;
+  }
 }
