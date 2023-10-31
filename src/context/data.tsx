@@ -2,7 +2,7 @@ import { extractReferences } from "@/utils/text";
 import { ReactElement, createContext, useEffect, useState } from "react";
 import { dataI, itemI, leafI, placeholder } from "./constants";
 import { generateDataTree } from "@/utils/tree";
-import { postRequest } from "@/utils/api";
+import { getRequest, postRequest } from "@/utils/api";
 import { useRouter } from "next/router";
 
 interface contextOutputI {
@@ -23,6 +23,7 @@ interface contextOutputI {
   updatedWithServer: boolean;
   currentPage: string;
   setCurrentPage: any;
+  retrieveDataFromServer: any;
 }
 
 export const DataContext = createContext<contextOutputI>({
@@ -43,6 +44,7 @@ export const DataContext = createContext<contextOutputI>({
   currentPage: "",
   setCurrentPage: (value: any) => {},
   updatedWithServer: false,
+  retrieveDataFromServer: () => {},
 });
 
 export const DataProvider = ({ children }: { children: ReactElement }) => {
@@ -145,6 +147,37 @@ export const DataProvider = ({ children }: { children: ReactElement }) => {
     document.querySelector(`#note-${key}`)?.scrollIntoView();
   };
 
+  const handleUpdateCurrentPage = (data: dataI, game: string, item: string) => {
+    if (data.RootPage.mock) return;
+    if (!gmMode && !data[item]?.showToPlayers) {
+      router.push(`/${game}/RootPage`);
+    } else {
+      setCurrentPage(item);
+      updateSelectedNote(item);
+    }
+  };
+
+  const handleUpdateGame = async (game: string, item: string) => {
+    const newData = await getRequest(`${game}`);
+    if (newData === null) {
+      return router.push("/");
+    }
+    const parsedData = JSON.parse(newData);
+    updateData(parsedData, false);
+    setCredentials((v: any) => {
+      return { ...v, gameName: game };
+    });
+    setTimeout(() => handleUpdateCurrentPage(parsedData, game, item), 0);
+  };
+
+  const retrieveDataFromServer = async (game: string, item: string) => {
+    if (!game || !data) return;
+    if (game === credentials.gameName) {
+      return handleUpdateCurrentPage(data, game, item);
+    }
+    handleUpdateGame(game, item);
+  };
+
   useEffect(() => {
     saveToServer();
     return () => {
@@ -189,6 +222,7 @@ export const DataProvider = ({ children }: { children: ReactElement }) => {
         updatedWithServer,
         currentPage,
         setCurrentPage,
+        retrieveDataFromServer,
       }}
     >
       {children}

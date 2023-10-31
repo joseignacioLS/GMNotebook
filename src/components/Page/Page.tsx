@@ -1,5 +1,4 @@
 import styles from "./page.module.scss";
-import PageEdit from "./PageEdit";
 import PageDisplay from "./PageDisplay";
 
 const Page = ({}) => {
