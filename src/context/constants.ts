@@ -5,6 +5,7 @@ export interface itemI {
   display: string;
   showInTree: boolean;
   showToPlayers?: boolean;
+  mock?: boolean;
 }
 
 export interface textPieceI {
@@ -42,6 +43,7 @@ export const placeholder: dataI = {
     text: "Loading your data, please",
     showInTree: false,
     showToPlayers: true,
+    mock: true,
   },
 };
 

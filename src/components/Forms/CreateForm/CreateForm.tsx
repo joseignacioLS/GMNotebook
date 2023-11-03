@@ -61,7 +61,7 @@ function CreateForm({ name }: { name: string }) {
       data: {
         RootPage: {
           title: "Main Page",
-          key: input.name.value,
+          key: "RootPage",
           text: "Description",
           display: "rootpage",
           showInTree: true,
