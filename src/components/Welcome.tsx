@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import styles from "./welcome.module.scss";
 import { useRouter } from "next/router";
 import Button, { behaviourEnum } from "./Button/Button";
@@ -10,6 +10,7 @@ import Spinner from "./Spinner/Spinner";
 const Welcome = () => {
   const router = useRouter();
   const [input, setInput] = useState<string>("");
+  const inputRef = useRef(null);
 
   const { setContent } = useContext(modalContext);
 
@@ -37,6 +38,12 @@ const Welcome = () => {
     setLoading(false);
   };
 
+  useEffect(() => {
+    const item = inputRef?.current as any;
+    if (!item) return;
+    item.focus();
+  }, [inputRef]);
+
   if (loading) {
     return (
       <div className={styles.wrapper}>
@@ -49,6 +56,7 @@ const Welcome = () => {
       <form className={styles.welcome} onSubmit={handleClick}>
         <h1>Welcome to the GMNotebook</h1>
         <input
+          ref={inputRef}
           type="text"
           placeholder="Write your game name"
           value={input}
