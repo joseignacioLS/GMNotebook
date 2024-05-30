@@ -1,3 +1,5 @@
+"use client";
+
 import { ReactElement, createContext, useState } from "react";
 
 interface contextOutputI {

@@ -69,15 +69,27 @@ const PageEdit = ({}) => {
   const handleCursorChange = (e: any) => {
     const cursorPosition = e.currentTarget?.selectionStart;
     const text = e.currentTarget.value;
-    const paragraphLength = text
+
+    const pIndex = getSelectedParagraphIndex(cursorPosition, text);
+    removeSelectedParagraph(pIndex);
+  };
+
+  const getParagraphLength = (text: string): number[] => {
+    return text
       .split("\n")
       .map((v: string) => v.length)
       .reduce((acc: number[], curr: number) => {
         if (acc.length === 0) return [curr];
         return [...acc, curr + 1 + acc[acc.length - 1]];
       }, []);
-    let pIndex = 0;
+  };
 
+  const getSelectedParagraphIndex = (
+    cursorPosition: number,
+    text: string
+  ): number => {
+    const paragraphLength = getParagraphLength(text);
+    let pIndex = 0;
     for (let i = 1; i < paragraphLength.length; i++) {
       if (
         paragraphLength[i - 1] < cursorPosition &&
@@ -86,13 +98,17 @@ const PageEdit = ({}) => {
         pIndex = i;
       }
     }
+    return pIndex;
+  };
 
+  const removeSelectedParagraph = (selectedIndex: number = -1) => {
     const allParagraphs = Array.from(document.querySelectorAll("#text > p"));
     let index = 0;
     for (let p of allParagraphs) {
       p?.classList.remove("edit-p");
       if (
-        index === pIndex &&
+        editMode &&
+        index === selectedIndex &&
         p.innerHTML !== "" &&
         item.title === input.title
       ) {
@@ -112,6 +128,9 @@ const PageEdit = ({}) => {
     });
   }, [data, selectedNote]);
 
+  useEffect(() => {
+    return removeSelectedParagraph;
+  }, []);
   return (
     <div className={`${styles.pageEdit} ${!editMode && styles.height0}`}>
       <label>

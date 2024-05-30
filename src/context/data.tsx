@@ -1,3 +1,5 @@
+"use client";
+
 import { retrieveLocalStorage, saveToLocalStorage } from "@/utils/localStorage";
 import { extractReferences, removeReferences } from "@/utils/text";
 import {
