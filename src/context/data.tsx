@@ -12,6 +12,8 @@ import {
 import { dataI, itemI, leafI, tutorial } from "./constants";
 import { NavigationContext } from "./navigation";
 import { generateDataTree } from "@/utils/tree";
+import { saveToFileHandle } from "@/utils/file";
+import { FileHandle } from "fs/promises";
 
 interface contextOutputI {
   data: dataI;
@@ -26,6 +28,7 @@ interface contextOutputI {
   updateSelectedNote: any;
   editMode: boolean;
   setEditMode: any;
+  setFileHandle: any;
 }
 
 export const DataContext = createContext<contextOutputI>({
@@ -41,6 +44,7 @@ export const DataContext = createContext<contextOutputI>({
   setTree: () => {},
   updateSelectedNote: () => {},
   setEditMode: () => {},
+  setFileHandle: () => {},
 });
 
 export const DataProvider = ({ children }: { children: ReactElement }) => {
@@ -48,16 +52,20 @@ export const DataProvider = ({ children }: { children: ReactElement }) => {
   const [tree, setTree] = useState<leafI[]>([]);
   const [selectedNote, setSelectedNote] = useState<string>("RootPage");
   const [editMode, setEditMode] = useState<boolean>(false);
+  const [fileHandle, setFileHandle] = useState<FileSystemFileHandle | null>(
+    null
+  );
 
   const { path, resetPath, getCurrentPage } = useContext(NavigationContext);
 
   const updateData = (value: dataI, resetEntry: boolean = true): void => {
     const cleanData = cleanUpData(value);
-    setTimeout(() => {
+    setTimeout(async () => {
       setData(JSON.parse(JSON.stringify(cleanData)));
       setTree(generateDataTree(cleanData));
       if (resetEntry) resetPath();
       saveToLocalStorage(cleanData);
+      if (fileHandle) saveToFileHandle(fileHandle, cleanData);
     }, 0);
   };
 
@@ -164,6 +172,7 @@ export const DataProvider = ({ children }: { children: ReactElement }) => {
         setTree,
         updateSelectedNote,
         setEditMode,
+        setFileHandle,
       }}
     >
       {children}

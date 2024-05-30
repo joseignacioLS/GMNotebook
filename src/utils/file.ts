@@ -36,3 +36,26 @@ export const loadFile = (inputSelector: string, callback: any): void => {
   };
   reader.readAsText(file);
 };
+
+export async function getFileHandle(): Promise<FileSystemFileHandle> {
+  const [fileHandle]: FileSystemFileHandle[] = await window.showOpenFilePicker({
+    types: [
+      {
+        description: "JSON Files",
+        accept: {
+          "application/json": [".json"],
+        },
+      },
+    ],
+  });
+  return fileHandle;
+}
+
+export async function saveToFileHandle(
+  fileHandle: FileSystemFileHandle,
+  content: any
+): Promise<void> {
+  const writable = await fileHandle?.createWritable();
+  await writable?.write(JSON.stringify(content));
+  await writable?.close();
+}
