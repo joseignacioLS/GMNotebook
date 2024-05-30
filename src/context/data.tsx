@@ -52,7 +52,7 @@ export const DataProvider = ({ children }: { children: ReactElement }) => {
   const updateData = (value: dataI, resetEntry: boolean = true): void => {
     const cleanData = cleanUpData(value);
     setTimeout(() => {
-      setData(cleanData);
+      setData(JSON.parse(JSON.stringify(cleanData)));
       setTree(generateDataTree(cleanData));
       if (resetEntry) resetPath();
       saveToLocalStorage(cleanData);

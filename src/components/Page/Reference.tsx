@@ -1,4 +1,4 @@
-import React, { ReactElement, useContext } from "react";
+import React, { useContext } from "react";
 import styles from "./reference.module.scss";
 import { referenceI } from "@/context/constants";
 import { DataContext } from "@/context/data";

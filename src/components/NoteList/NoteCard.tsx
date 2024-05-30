@@ -1,9 +1,8 @@
 import { DataContext } from "@/context/data";
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext } from "react";
 
 import styles from "./notecard.module.scss";
 import { NavigationContext } from "@/context/navigation";
-import Button from "../Button/Button";
 import { processText } from "@/utils/text";
 import { generateColor } from "@/utils/color";
 

@@ -3,8 +3,7 @@
 import Modal from "@/components/Modal/Modal";
 import NoteBook from "../components/NoteBook";
 import ToggleButton from "@/components/Button/ToggleButton";
-import { useContext, useEffect, useState } from "react";
-import { DataContext } from "@/context/data";
+import { useState } from "react";
 
 export default function Home() {
   const [darkMode, setDarkMode] = useState<boolean>(true);

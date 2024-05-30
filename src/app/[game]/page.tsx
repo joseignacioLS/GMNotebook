@@ -6,16 +6,17 @@ import { useContext, useEffect, useState } from "react";
 import NoteBook from "@/components/NoteBook";
 import { games } from "@/data/games";
 import { DataContext } from "@/context/data";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useRouter } from "next/navigation";
 
-export default function Home() {
+export default function Home({ params }: { params: any }) {
   const { updateData } = useContext(DataContext);
   const [darkMode, setDarkMode] = useState<boolean>(true);
   const router = useRouter();
+  console.log(params);
 
   useEffect(() => {
-    const searchParams = useSearchParams();
-    const game = searchParams.get("game") as string;
+    const { game } = params;
+    console.log(game);
     if (games[game] !== undefined) {
       updateData(games[game], true);
     } else if (game !== undefined) {
