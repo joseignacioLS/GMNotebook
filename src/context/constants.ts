@@ -71,14 +71,14 @@ export const tutorial: dataI = {
   },
   images: {
     title: "Images",
-    text: "Add images\nUse the img: keyword and an url to add and image, just like this:\nimg:https://media.istockphoto.com/id/1481658464/es/foto/imagen-en-primer-plano-de-un-d-20-rojo-sobre-una-superficie-reflectante.jpg?s=2048x2048&w=is&k=20&c=vgROQZ",
+    text: "Add images\nUse the img: keyword and an url to add and image, just like this:\nimg:https://www.google.com/images/branding/googlelogo/1x/googlelogo_light_color_272x92dp.png",
     display: "images",
     key: "images",
     showInTree: false,
   },
   titlesSubtitles: {
     title: "Titles and subtitles",
-    text: "title:This is a title\nsubtitle:This is a subtitle\n\n",
+    text: "# This is a title\n## This is a subtitle\n\n",
     display: "titles and subtitles",
     key: "titlesSubtitles",
     showInTree: false,

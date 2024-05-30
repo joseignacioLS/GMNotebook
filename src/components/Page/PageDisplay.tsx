@@ -6,12 +6,12 @@ import Button from "../Button/Button";
 import { processText } from "@/utils/text";
 
 const PageDisplay = () => {
-  const { item, updateSelectedNote, gmMode } = useContext(DataContext);
+  const { item, updateSelectedNote, editMode } = useContext(DataContext);
   const { path, navBack } = useContext(NavigationContext);
 
   const [displayText, setDisplayText] = useState<ReactElement[]>([]);
   useEffect(() => {
-    const newDisplay = processText(item.text, false, gmMode);
+    const newDisplay = processText(item.text, false, editMode);
     setDisplayText(newDisplay);
   }, [item.text]);
 

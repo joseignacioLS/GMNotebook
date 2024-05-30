@@ -14,7 +14,6 @@ import { generateDataTree } from "@/utils/tree";
 interface contextOutputI {
   data: dataI;
   item: itemI;
-  editMode: boolean;
   updateEditMode: any;
   updateData: (value: dataI, reset: boolean) => void;
   resetData: () => void;
@@ -23,8 +22,8 @@ interface contextOutputI {
   tree: leafI[];
   setTree: any;
   updateSelectedNote: any;
-  gmMode: boolean;
-  setGmMode: any;
+  editMode: boolean;
+  setEditMode: any;
 }
 
 export const DataContext = createContext<contextOutputI>({
@@ -39,16 +38,14 @@ export const DataContext = createContext<contextOutputI>({
   tree: [],
   setTree: () => {},
   updateSelectedNote: () => {},
-  gmMode: false,
-  setGmMode: () => {},
+  setEditMode: () => {},
 });
 
 export const DataProvider = ({ children }: { children: ReactElement }) => {
   const [data, setData] = useState<dataI>(tutorial);
   const [tree, setTree] = useState<leafI[]>([]);
-  const [editMode, setEditMode] = useState<boolean>(false);
   const [selectedNote, setSelectedNote] = useState<string>("RootPage");
-  const [gmMode, setGmMode] = useState<boolean>(false);
+  const [editMode, setEditMode] = useState<boolean>(false);
 
   const { path, resetPath, getCurrentPage } = useContext(NavigationContext);
 
@@ -58,7 +55,7 @@ export const DataProvider = ({ children }: { children: ReactElement }) => {
       setData(cleanData);
       setTree(generateDataTree(cleanData));
       if (resetEntry) resetPath();
-      gmMode && saveToLocalStorage(cleanData);
+      saveToLocalStorage(cleanData);
     }, 0);
   };
 
@@ -133,7 +130,6 @@ export const DataProvider = ({ children }: { children: ReactElement }) => {
   }, [path, data]);
 
   useEffect(() => {
-    if (!gmMode) return;
     const retrieved = retrieveLocalStorage();
     try {
       const parsed = JSON.parse(retrieved);
@@ -145,7 +141,7 @@ export const DataProvider = ({ children }: { children: ReactElement }) => {
     } catch (err) {
       console.log(err);
     }
-  }, [gmMode]);
+  }, []);
 
   useEffect(() => {
     setTimeout(() => updateEditMode(false), 0);
@@ -165,8 +161,7 @@ export const DataProvider = ({ children }: { children: ReactElement }) => {
         tree,
         setTree,
         updateSelectedNote,
-        gmMode,
-        setGmMode,
+        setEditMode,
       }}
     >
       {children}

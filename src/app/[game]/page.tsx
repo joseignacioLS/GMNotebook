@@ -1,16 +1,28 @@
+"use client";
+
 import Modal from "@/components/Modal/Modal";
-import NoteBook from "../components/NoteBook";
 import ToggleButton from "@/components/Button/ToggleButton";
 import { useContext, useEffect, useState } from "react";
+import NoteBook from "@/components/NoteBook";
+import { games } from "@/data/games";
 import { DataContext } from "@/context/data";
+import { useRouter, useSearchParams } from "next/navigation";
 
 export default function Home() {
+  const { updateData } = useContext(DataContext);
   const [darkMode, setDarkMode] = useState<boolean>(true);
-  const { setGmMode } = useContext(DataContext);
+  const router = useRouter();
 
   useEffect(() => {
-    setGmMode(true);
-  }, []);
+    const searchParams = useSearchParams();
+    const game = searchParams.get("game") as string;
+    if (games[game] !== undefined) {
+      updateData(games[game], true);
+    } else if (game !== undefined) {
+      router.push("/");
+    }
+  }, [games, router]);
+
   return (
     <main
       style={{

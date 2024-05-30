@@ -1,7 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
 import styles from "./pageedit.module.scss";
 import { DataContext } from "@/context/data";
-import Button from "../Button/Button";
 import { extractReferences } from "@/utils/text";
 
 const PageEdit = ({}) => {

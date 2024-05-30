@@ -24,12 +24,12 @@ interface lineProcessI {
 export const processText = (
   text: string,
   plain: boolean = false,
-  gmMode: boolean = true
+  editMode: boolean = true
 ) => {
   const lines = text.split("\n");
   return lines
     .filter((l) => {
-      return gmMode || l[0] !== "*";
+      return editMode || l[0] !== "*";
     })
     .map((l, i) => {
       const line = l[0] === "*" ? l.slice(1) : l;
