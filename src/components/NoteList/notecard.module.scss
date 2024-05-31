@@ -1,18 +1,21 @@
+@import "../../styles/variables";
+
 .note {
   position: relative;
-  color: white;
+  color: $palette_grey_4;
   padding: 0;
-  border-radius: 0.5rem;
+  border-radius: $border_radius_m;
   overflow: hidden;
   height: 0;
-  padding: 0 1rem;
+  padding: 0 $gap_l;
 
-  font-size: 2rem;
+  font-size: $font_size_xl;
   line-height: 2.5ch;
 
   user-select: none;
 
   transition: margin 0.2s, padding 0.2s;
+
   h2 {
     cursor: pointer;
   }
@@ -21,40 +24,40 @@
     width: auto;
     max-height: 400px;
     max-width: 100%;
-    border-radius: 1rem;
+    border-radius: $border_radius_l;
   }
 
   &.visibleNote {
-    padding: 1rem;
-    margin-bottom: 1rem;
+    padding: $gap_l;
+    margin-bottom: $gap_l;
     height: auto;
   }
 }
 
-@media (max-width: 800px) {
+@media (max-width: $media_phone) {
   .note {
-    font-size: 1.5rem;
+    font-size: $font_size_l;
   }
 }
 
 .linkVisit {
   position: absolute;
-  top: 0.25rem;
-  right: 0.25rem;
+  top: $gap_s;
+  right: $gap_s;
   cursor: pointer;
-  text-shadow: 0px 0px 10px black;
+  text-shadow: 0px 0px 10px $palette_grey_0;
 }
 
 .expand {
   position: absolute;
-  right: 0.25rem;
+  right: $gap_s;
   cursor: pointer;
 
-  text-shadow: 0px 0px 10px black;
+  text-shadow: 0px 0px $gap_s $palette_grey_0;
 }
 
 .hidden {
   height: 0;
-  padding: 0 0.5rem;
-  margin: 0 0.5rem;
+  padding: 0 $gap_m;
+  margin: 0 $gap_m;
 }

@@ -25,12 +25,7 @@ export default function Home({ params }: { params: any }) {
   }, [games, router]);
 
   return (
-    <main
-      style={{
-        background: darkMode ? "black" : "white",
-        color: darkMode ? "white" : "black",
-      }}
-    >
+    <main className={darkMode ? "dark" : "white"}>
       <div
         style={{
           position: "fixed",

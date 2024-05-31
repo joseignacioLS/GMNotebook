@@ -55,7 +55,11 @@ export async function saveToFileHandle(
   fileHandle: FileSystemFileHandle,
   content: any
 ): Promise<void> {
-  const writable = await fileHandle?.createWritable();
-  await writable?.write(JSON.stringify(content));
-  await writable?.close();
+  try {
+    const writable = await fileHandle?.createWritable();
+    await writable?.write(JSON.stringify(content));
+    await writable?.close();
+  } catch (err) {
+    console.log(err);
+  }
 }

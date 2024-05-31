@@ -1,0 +1,30 @@
+$_gap_base: .5rem;
+$_font_size_base: 1rem;
+
+$palette_grey_0: rgb(16, 16, 16);
+$palette_grey_1: rgba(64, 64, 64);
+$palette_grey_2: rgba(128, 128, 128);
+$palette_grey_3: rgb(192, 192, 192);
+$palette_grey_4: rgb(240, 240, 240);
+
+$palette_green_1: rgb(68, 150, 122);
+$palette_green_2: rgb(127, 255, 212);
+
+$palette_alert: rgb(255, 69, 0);
+
+$gap_s: calc($_gap_base / 2);
+$gap_m: $_gap_base;
+$gap_l: calc($_gap_base * 2);
+$gap_xl: calc($_gap_base * 4);
+$gap_xxl: calc($_gap_base * 8);
+
+$border_radius_m: .5rem;
+$border_radius_l: 1rem;
+$border_radius_total: 1000px;
+
+$font_size_s: calc($_font_size_base * .75);
+$font_size_m: $_font_size_base;
+$font_size_l: calc($_font_size_base * 1.5);
+$font_size_xl: calc($_font_size_base * 2);
+
+$media_phone: 800px;

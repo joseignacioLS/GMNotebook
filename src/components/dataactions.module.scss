@@ -1,3 +1,5 @@
+@import "../styles/variables";
+
 .dataActions {
   position: absolute;
   right: 0;
@@ -5,18 +7,18 @@
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
-  gap: 1rem;
+  gap: $gap_m;
   width: 3rem;
 
-  background-color: white;
-  padding: 0.5rem;
-  border-radius: 1000px;
+  background-color: $palette_grey_4;
+  padding: $gap_m;
+  border-radius: $border_radius_total;
   overflow: hidden;
 
   max-height: 3rem;
   transition: max-height 0.3s;
 
-  box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.2);
+  box-shadow: 5px 5px 5px rgba($palette_grey_0, 0.2);
 
   &:hover {
     max-height: 12rem;
@@ -28,7 +30,7 @@
     flex-shrink: 0;
     width: 2rem;
     height: 2rem;
-    font-size: 1rem;
+    font-size: $font_size_m;
     border: 0;
     cursor: pointer;
     background-color: transparent;
@@ -50,7 +52,7 @@
   }
 }
 
-@media (max-width: 800px) {
+@media (max-width: $media_phone) {
   .dataActions {
     flex-direction: row;
     width: 12rem;

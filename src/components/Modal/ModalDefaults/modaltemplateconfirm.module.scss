@@ -1,7 +1,9 @@
+@import "../../../styles/variables";
+
 .wrapper {
   display: flex;
   flex-direction: column;
-  gap: 1rem;
+  gap: $gap_l;
   align-items: center;
   width: 25rem;
   text-align: center;

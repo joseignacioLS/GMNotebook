@@ -1,8 +1,10 @@
+@import "../../styles/variables";
+
 .reference {
   user-select: none;
-  color: white;
-  padding: 0 0.5rem;
-  border-radius: 0.5rem;
+  color: $palette_grey_4;
+  padding: 0 $gap_m;
+  border-radius: $border_radius_m;
   white-space: nowrap;
   cursor: pointer;
 }

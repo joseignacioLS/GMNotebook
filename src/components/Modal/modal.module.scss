@@ -1,3 +1,5 @@
+@import "../../styles/variables";
+
 .modalContainer {
   position: fixed;
   top: 0;
@@ -13,15 +15,15 @@
 
 .modal {
   position: relative;
-  padding: 2.5rem;
-  border-radius: 1rem;
-  background-color: white;
-  color: black;
+  padding: $gap_xl;
+  border-radius: $border_radius_l;
+  background-color: $palette_grey_4;
+  color: $palette_grey_0;
 
   .closeButton {
     position: absolute;
-    right: 0.5rem;
-    top: 0.5rem;
+    right: $gap_m;
+    top: $gap_m;
     z-index: 100;
   }
 }

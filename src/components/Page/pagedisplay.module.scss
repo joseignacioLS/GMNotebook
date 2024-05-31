@@ -1,3 +1,5 @@
+@import "../../styles/variables";
+
 .pageDisplay {
   position: relative;
   line-height: 2.5ch;
@@ -11,11 +13,11 @@
     align-items: center;
     justify-content: flex-start;
     flex-shrink: 0;
-    padding: 0 0.5rem;
-    gap: 0.5rem;
+    padding: 0 $gap_m;
+    gap: $gap_m;
 
-    background-color: rgb(139, 207, 228);
-    border-radius: 1000px;
+    background-color: $palette_green_1;
+    border-radius: $border_radius_total;
 
     span {
       cursor: pointer;
@@ -34,7 +36,7 @@
   }
 
   .text {
-    padding: 1rem 0;
+    padding: $gap_l 0;
     height: 100%;
     overflow-y: auto;
     overflow-x: hidden;

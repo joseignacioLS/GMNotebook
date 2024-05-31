@@ -1,7 +1,9 @@
+@import "../../styles/variables";
+
 .pageContainer {
   position: relative;
   grid-area: text;
-  font-size: 1.5rem;
+  font-size: $font_size_l;
   height: 100%;
   overflow: hidden;
 }

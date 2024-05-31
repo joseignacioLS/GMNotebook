@@ -1,8 +1,10 @@
+@import "../../styles/variables";
+
 .button {
   background-color: transparent;
   cursor: pointer;
   height: 2rem;
-  border-radius: 0.5rem;
+  border-radius: $border_radius_total;
   border: 0;
   flex-shrink: 0;
   color: inherit;
@@ -12,6 +14,7 @@
     height: 100%;
     object-fit: contain;
   }
+
   &:disabled {
     opacity: 0.25;
     cursor: default;

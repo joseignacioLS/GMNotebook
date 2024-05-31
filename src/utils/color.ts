@@ -1,12 +1,24 @@
+const stringToNumber = (input: string): number => {
+  return input.split("").reduce((acc: number, curr: string) => {
+    return acc + curr.charCodeAt(0)
+  }, 0)
+}
+
+const rng = (seed: number): number => {
+  const x = Math.sin(seed++) * 1000
+  return x - Math.floor(x)
+}
+
+const generateChannel = (seed: string, seedF: number = 1, f: number = 2, n: number = 10) => {
+  const channelValue = rng(stringToNumber(seed) * seedF) * 255;
+  const finalValue = Math.floor(channelValue / f + n);
+  const HEX = Math.max(0, Math.min(255, finalValue)).toString(16);
+  return HEX + (HEX.length === 1 ? "0" : "");
+}
+
 export const generateColor = (seed: string): string => {
-  let numberSeed = seed.split("").reduce((acc: number, chr: string) => {
-    return acc * Math.pow(chr.charCodeAt(0), 3);
-  }, 1);
-  if (numberSeed > 999999) {
-    numberSeed -= 999999;
-  }
-  const r = Math.floor(64 + +(numberSeed + "").slice(0, 2)).toString(16);
-  const g = Math.floor(64 + +(numberSeed + "").slice(2, 4)).toString(16);
-  const b = Math.floor(64 + +(numberSeed + "").slice(4, 6)).toString(16);
+  const r = generateChannel(seed, 1, 2, 10);
+  const g = generateChannel(seed, 1.3, 2);
+  const b = generateChannel(seed, 1 / 1.3, 2);
   return `#${r}${g}${b}`;
 };
