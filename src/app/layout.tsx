@@ -1,9 +1,12 @@
 import { DataProvider } from "@/context/data";
 import { ModalProvider } from "@/context/modal";
 import { NavigationProvider } from "@/context/navigation";
-import Head from "next/head";
 
 import "../styles/globals.scss";
+
+export const metadata = {
+  title: "GM Notebook",
+};
 
 export default function RootLayout({
   children,
@@ -12,9 +15,6 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <Head>
-        <title>GM Notebook</title>
-      </Head>
       <ModalProvider>
         <NavigationProvider>
           <DataProvider>
