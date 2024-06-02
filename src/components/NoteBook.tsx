@@ -3,7 +3,6 @@ import Page from "./Page/Page";
 import NoteList from "./NoteList/NoteList";
 
 import styles from "./notebook.module.scss";
-import DataActions from "./DataActions";
 import Button from "./Button/Button";
 import PageEdit from "./Page/PageEdit";
 import { NavigationContext } from "@/context/navigation";
@@ -37,7 +36,6 @@ const NoteBook = () => {
         </Button>
         {editMode ? <PageEdit /> : <NoteList />}
       </div>
-      <DataActions />
     </div>
   );
 };

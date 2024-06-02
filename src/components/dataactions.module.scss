@@ -1,9 +1,9 @@
 @import "../styles/variables";
 
 .dataActions {
-  position: absolute;
-  right: 0;
-  bottom: 0;
+  position: fixed;
+  right: $gap_m;
+  bottom: $gap_m;
 
   padding: $gap_m;
 
