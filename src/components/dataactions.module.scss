@@ -4,24 +4,29 @@
   position: absolute;
   right: 0;
   bottom: 0;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-end;
-  gap: $gap_m;
-  width: 3rem;
+
+  padding: $gap_m;
+
+  display: grid;
+  grid-template-rows: 2rem;
+  align-items: end;
 
   background-color: $palette_grey_4;
-  padding: $gap_m;
   border-radius: $border_radius_total;
-  overflow: hidden;
 
-  max-height: 3rem;
-  transition: max-height 0.3s;
+  transition: grid-template-rows 0.3s;
 
-  box-shadow: 5px 5px 5px rgba($palette_grey_0, 0.2);
+  >div {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    gap: $gap_m;
+    overflow: hidden;
+    height: 100%;
+  }
 
   &:hover {
-    max-height: 12rem;
+    grid-template-rows: 9.5rem;
   }
 
   input,
@@ -49,12 +54,5 @@
     background-image: url("/images/upload.svg");
     background-position: center;
     background-size: 100%;
-  }
-}
-
-@media (max-width: $media_phone) {
-  .dataActions {
-    flex-direction: row;
-    width: 12rem;
   }
 }

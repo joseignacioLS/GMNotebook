@@ -1,7 +1,6 @@
 "use client";
 
-import { retrieveLocalStorage, saveToLocalStorage } from "@/utils/localStorage";
-import { extractReferences, removeReferences } from "@/utils/text";
+import { extractReferences } from "@/utils/text";
 import {
   ReactElement,
   createContext,
@@ -13,7 +12,6 @@ import { dataI, itemI, leafI, tutorial } from "./constants";
 import { NavigationContext } from "./navigation";
 import { generateDataTree } from "@/utils/tree";
 import { saveToFileHandle } from "@/utils/file";
-import { FileHandle } from "fs/promises";
 
 interface contextOutputI {
   data: dataI;
@@ -64,7 +62,7 @@ export const DataProvider = ({ children }: { children: ReactElement }) => {
       setData(JSON.parse(JSON.stringify(cleanData)));
       setTree(generateDataTree(cleanData));
       if (resetEntry) resetPath();
-      saveToLocalStorage(cleanData);
+      // saveToLocalStorage(cleanData);
       if (fileHandle) saveToFileHandle(fileHandle, cleanData);
     }, 0);
   };
@@ -139,19 +137,19 @@ export const DataProvider = ({ children }: { children: ReactElement }) => {
     }
   }, [path, data]);
 
-  useEffect(() => {
-    const retrieved = retrieveLocalStorage();
-    try {
-      const parsed = JSON.parse(retrieved);
-      Object.keys(parsed).forEach((key: string) => {
-        if (parsed[key].showInTree === undefined)
-          parsed[key].showInTree === false;
-      });
-      updateData(parsed as dataI);
-    } catch (err) {
-      console.log(err);
-    }
-  }, []);
+  // useEffect(() => {
+  //   const retrieved = retrieveLocalStorage();
+  //   try {
+  //     const parsed = JSON.parse(retrieved);
+  //     Object.keys(parsed).forEach((key: string) => {
+  //       if (parsed[key].showInTree === undefined)
+  //         parsed[key].showInTree === false;
+  //     });
+  //     updateData(parsed as dataI);
+  //   } catch (err) {
+  //     console.log(err);
+  //   }
+  // }, []);
 
   useEffect(() => {
     setTimeout(() => updateEditMode(false), 0);

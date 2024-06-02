@@ -11,7 +11,7 @@ export interface textPieceI {
   type: string;
 }
 
-export interface referenceI extends textPieceI {
+export interface IReference extends textPieceI {
   key: string;
   visible: boolean;
   id: string;

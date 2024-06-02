@@ -3,8 +3,8 @@ import React, { useContext } from "react";
 
 import styles from "./notecard.module.scss";
 import { NavigationContext } from "@/context/navigation";
-import { processText } from "@/utils/text";
 import { generateColor } from "@/utils/color";
+import { useProcessText } from "@/hooks/useProcessText";
 
 interface propsI {
   itemKey: string;
@@ -20,12 +20,11 @@ const NoteCard = ({ itemKey }: propsI) => {
   const title = data[key]?.title || "";
   const text = data[key]?.text || "";
 
-  const displayShortText = processText(
+  const displayShortText = useProcessText(
     text.split(" ").length > 25
       ? text.split(" ").slice(0, 25).join(" ") + " ..."
       : text,
-    true,
-    editMode
+    true
   );
 
   return (

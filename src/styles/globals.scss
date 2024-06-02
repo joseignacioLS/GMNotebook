@@ -25,10 +25,18 @@ main {
 
 h1,
 h2 {
+  color: $palette_grey_4;
   margin-bottom: $gap_l;
 
   &::-webkit-scrollbar {
     display: none;
+  }
+}
+
+.dark {
+  h1,
+  h2 {
+    color: $palette_grey_0;
   }
 }
 

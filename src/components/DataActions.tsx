@@ -1,6 +1,6 @@
-import React, { useContext, useState } from "react";
+import React, { useContext } from "react";
 import styles from "./dataactions.module.scss";
-import { getFileHandle, loadFile, saveToFile } from "@/utils/file";
+import { getFileHandle, saveToFile } from "@/utils/file";
 import { DataContext } from "@/context/data";
 import { modalContext } from "@/context/modal";
 import Tree from "./Tree";
@@ -43,27 +43,28 @@ const DataActions = () => {
   };
   return (
     <div className={styles.dataActions}>
-      <Button naked={true} onClick={openModalReset}>
-        <img src="/images/reset.svg" />
-      </Button>
-      <Button naked={true} onClick={() => setContent(<Tree />)}>
-        <img src="/images/tree.svg" />
-      </Button>
-      <input
-        data-tip={"Upload"}
-        type="file"
-        id="file"
-        onClick={(e: any) => {
-          handleLoad(e);
-          // loadFile("#file", updateData);
-        }}
-      />
-      <Button
-        naked={true}
-        onClick={() => saveToFile(data["RootPage"].title, data)}
-      >
-        <img src="/images/download.svg" />
-      </Button>
+      <div className={styles.helper}>
+        <Button naked={true} onClick={openModalReset}>
+          <img src="/images/reset.svg" />
+        </Button>
+        <Button naked={true} onClick={() => setContent(<Tree />)}>
+          <img src="/images/tree.svg" />
+        </Button>
+        <input
+          data-tip={"Upload"}
+          type="file"
+          id="file"
+          onClick={(e: any) => {
+            handleLoad(e);
+          }}
+        />
+        <Button
+          naked={true}
+          onClick={() => saveToFile(data["RootPage"].title, data)}
+        >
+          <img src="/images/download.svg" />
+        </Button>
+      </div>
     </div>
   );
 };

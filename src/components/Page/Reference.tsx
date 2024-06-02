@@ -1,12 +1,12 @@
 import React, { useContext } from "react";
 import styles from "./reference.module.scss";
-import { referenceI } from "@/context/constants";
+import { IReference } from "@/context/constants";
 import { DataContext } from "@/context/data";
 import { NavigationContext } from "@/context/navigation";
 import { generateColor } from "@/utils/color";
 
 interface propsI {
-  reference: referenceI;
+  reference: IReference;
   naked?: boolean;
 }
 

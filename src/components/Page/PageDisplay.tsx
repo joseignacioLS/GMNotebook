@@ -1,19 +1,15 @@
-import React, { ReactElement, useContext, useEffect, useState } from "react";
+import React, { useContext } from "react";
 import styles from "./pagedisplay.module.scss";
 import { NavigationContext } from "@/context/navigation";
 import { DataContext } from "@/context/data";
 import Button from "../Button/Button";
-import { processText } from "@/utils/text";
+import { useProcessText } from "@/hooks/useProcessText";
 
 const PageDisplay = () => {
-  const { item, updateSelectedNote, editMode } = useContext(DataContext);
+  const { item, updateSelectedNote } = useContext(DataContext);
   const { path, navBack } = useContext(NavigationContext);
 
-  const [displayText, setDisplayText] = useState<ReactElement[]>([]);
-  useEffect(() => {
-    const newDisplay = processText(item.text, false, editMode);
-    setDisplayText(newDisplay);
-  }, [item.text]);
+  const displayText = useProcessText(item.text, false);
 
   return (
     <div className={`${styles.pageDisplay}`}>
