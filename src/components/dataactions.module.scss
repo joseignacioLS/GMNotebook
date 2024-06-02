@@ -1,25 +1,32 @@
+@import "../styles/variables";
+
 .dataActions {
   position: absolute;
   right: 0;
   bottom: 0;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-end;
-  gap: 1rem;
-  width: 3rem;
 
-  background-color: white;
-  padding: 0.5rem;
-  border-radius: 1000px;
-  overflow: hidden;
+  padding: $gap_m;
 
-  max-height: 3rem;
-  transition: max-height 0.3s;
+  display: grid;
+  grid-template-rows: 2rem;
+  align-items: end;
 
-  box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.2);
+  background-color: $palette_grey_4;
+  border-radius: $border_radius_total;
+
+  transition: grid-template-rows 0.3s;
+
+  >div {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    gap: $gap_m;
+    overflow: hidden;
+    height: 100%;
+  }
 
   &:hover {
-    max-height: 12rem;
+    grid-template-rows: 9.5rem;
   }
 
   input,
@@ -28,7 +35,7 @@
     flex-shrink: 0;
     width: 2rem;
     height: 2rem;
-    font-size: 1rem;
+    font-size: $font_size_m;
     border: 0;
     cursor: pointer;
     background-color: transparent;
@@ -47,12 +54,5 @@
     background-image: url("/images/upload.svg");
     background-position: center;
     background-size: 100%;
-  }
-}
-
-@media (max-width: 800px) {
-  .dataActions {
-    flex-direction: row;
-    width: 12rem;
   }
 }

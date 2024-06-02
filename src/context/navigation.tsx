@@ -1,4 +1,6 @@
-import { ReactElement, createContext, useEffect, useState } from "react";
+"use client";
+
+import { ReactElement, createContext, useState } from "react";
 
 interface contextOutputI {
   path: string[];

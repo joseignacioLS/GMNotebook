@@ -1,23 +1,27 @@
 import { DataProvider } from "@/context/data";
 import { ModalProvider } from "@/context/modal";
 import { NavigationProvider } from "@/context/navigation";
-import "@/styles/globals.scss";
-import type { AppProps } from "next/app";
-import Head from "next/head";
 
-export default function App({ Component, pageProps }: AppProps) {
+import "../styles/globals.scss";
+
+export const metadata = {
+  title: "GM Notebook",
+};
+
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   return (
-    <>
-      <Head>
-        <title>GM Notebook</title>
-      </Head>
+    <html lang="en">
       <ModalProvider>
         <NavigationProvider>
           <DataProvider>
-            <Component {...pageProps} />
+            <body>{children}</body>
           </DataProvider>
         </NavigationProvider>
       </ModalProvider>
-    </>
+    </html>
   );
 }

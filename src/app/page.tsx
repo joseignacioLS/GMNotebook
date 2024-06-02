@@ -1,3 +1,5 @@
+"use client";
+
 import Modal from "@/components/Modal/Modal";
 import NoteBook from "../components/NoteBook";
 import ToggleButton from "@/components/Button/ToggleButton";
@@ -5,13 +7,9 @@ import { useState } from "react";
 
 export default function Home() {
   const [darkMode, setDarkMode] = useState<boolean>(true);
+
   return (
-    <main
-      style={{
-        background: darkMode ? "black" : "white",
-        color: darkMode ? "white" : "black",
-      }}
-    >
+    <main className={darkMode ? "dark" : "white"}>
       <div
         style={{
           position: "fixed",

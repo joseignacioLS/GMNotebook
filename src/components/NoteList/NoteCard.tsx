@@ -1,74 +1,49 @@
 import { DataContext } from "@/context/data";
-import React, { useContext, useState } from "react";
+import React, { useContext } from "react";
 
 import styles from "./notecard.module.scss";
 import { NavigationContext } from "@/context/navigation";
-import Button from "../Button/Button";
-import { generateDisplayText, splitTextIntoReferences } from "@/utils/text";
+import { generateColor } from "@/utils/color";
+import { useProcessText } from "@/hooks/useProcessText";
 
 interface propsI {
   itemKey: string;
-  color: string;
-  title: string;
-  text: string;
-  visible: boolean;
 }
 
-const NoteCard = ({ itemKey, color, title, text, visible }: propsI) => {
-  const { data, selectedNote, updateSelectedNote } = useContext(DataContext);
+const NoteCard = ({ itemKey }: propsI) => {
+  const { data, selectedNote, updateSelectedNote, editMode } =
+    useContext(DataContext);
   const { navigateTo } = useContext(NavigationContext);
 
-  const expandable = text.split(/[ \n]/g).length > 30;
-  const [isExpanded, setIsExpanded] = useState<boolean>(false);
+  const key = itemKey.split("_")[0];
 
-  const toggleExpand = () => {
-    setIsExpanded((v) => !v);
-  };
+  const title = data[key]?.title || "";
+  const text = data[key]?.text || "";
 
-  const displayText = generateDisplayText(
-    splitTextIntoReferences(text),
-    true,
-    data
-  );
-  const displayShortText = generateDisplayText(
-    splitTextIntoReferences(text.split(" ").slice(0, 25).join(" ") + " ..."),
-    true,
-    data
+  const displayShortText = useProcessText(
+    text.split(" ").length > 25
+      ? text.split(" ").slice(0, 25).join(" ") + " ..."
+      : text,
+    true
   );
 
   return (
     <div
-      id={"note-" + itemKey}
+      id={`note-${key.split("_")[0]}`}
       className={`${styles.note} ${
         itemKey === selectedNote && styles.selected
-      } ${visible && styles.visibleNote}`}
-      style={{ backgroundColor: color }}
+      } ${styles.visibleNote}`}
+      style={{ backgroundColor: generateColor(key) }}
     >
-      <Button
-        addClass={styles.linkVisit}
-        naked={true}
+      <h2
         onClick={() => {
-          updateSelectedNote(itemKey);
-          navigateTo(itemKey || "");
+          updateSelectedNote(key);
+          navigateTo(key || "");
         }}
       >
-        <img src="/images/book.svg" />
-      </Button>
-      {expandable && (
-        <Button
-          addClass={styles.expand}
-          naked={true}
-          onClick={(e) => {
-            e.stopPropagation();
-            toggleExpand();
-          }}
-        >
-          <img src={`/images/${isExpanded ? "minus" : "plus"}.svg`} />
-        </Button>
-      )}
-      <h2>{title}</h2>
-      {(!expandable || isExpanded) && displayText}
-      {expandable && !isExpanded && displayShortText}
+        {title}
+      </h2>
+      {displayShortText}
     </div>
   );
 };

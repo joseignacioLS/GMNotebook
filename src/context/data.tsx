@@ -1,9 +1,6 @@
-import { retrieveLocalStorage, saveToLocalStorage } from "@/utils/localStorage";
-import {
-  getTextReferences,
-  removeReferences,
-  splitTextIntoReferences,
-} from "@/utils/text";
+"use client";
+
+import { extractReferences } from "@/utils/text";
 import {
   ReactElement,
   createContext,
@@ -11,23 +8,15 @@ import {
   useEffect,
   useState,
 } from "react";
-import {
-  dataI,
-  itemI,
-  leafI,
-  referenceI,
-  textPieceI,
-  tutorial,
-} from "./constants";
+import { dataI, itemI, leafI, tutorial } from "./constants";
 import { NavigationContext } from "./navigation";
 import { generateDataTree } from "@/utils/tree";
+import { saveToFileHandle } from "@/utils/file";
 
 interface contextOutputI {
   data: dataI;
   item: itemI;
-  editMode: boolean;
   updateEditMode: any;
-  textPieces: textPieceI[];
   updateData: (value: dataI, reset: boolean) => void;
   resetData: () => void;
   selectedNote: string;
@@ -35,6 +24,9 @@ interface contextOutputI {
   tree: leafI[];
   setTree: any;
   updateSelectedNote: any;
+  editMode: boolean;
+  setEditMode: any;
+  setFileHandle: any;
 }
 
 export const DataContext = createContext<contextOutputI>({
@@ -42,7 +34,6 @@ export const DataContext = createContext<contextOutputI>({
   item: tutorial["RootPage"],
   editMode: false,
   updateEditMode: () => {},
-  textPieces: [],
   updateData: (value: dataI, reset: boolean) => {},
   resetData: () => {},
   selectedNote: "",
@@ -50,37 +41,29 @@ export const DataContext = createContext<contextOutputI>({
   tree: [],
   setTree: () => {},
   updateSelectedNote: () => {},
+  setEditMode: () => {},
+  setFileHandle: () => {},
 });
-
-const checkItemVisibility = (id: string) => {
-  const boundingRect = document
-    .querySelector(`#${id}`)
-    ?.getBoundingClientRect();
-  if (!boundingRect) return false;
-  const notesContainer = document.querySelector("#text") as any;
-  const titleSpace = 80;
-  return (
-    boundingRect.top >= titleSpace &&
-    boundingRect.top <= (notesContainer?.offsetHeight || 0) + titleSpace
-  );
-};
 
 export const DataProvider = ({ children }: { children: ReactElement }) => {
   const [data, setData] = useState<dataI>(tutorial);
   const [tree, setTree] = useState<leafI[]>([]);
-  const [editMode, setEditMode] = useState<boolean>(false);
-  const [textPieces, setTextPieces] = useState<textPieceI[]>([]);
   const [selectedNote, setSelectedNote] = useState<string>("RootPage");
+  const [editMode, setEditMode] = useState<boolean>(false);
+  const [fileHandle, setFileHandle] = useState<FileSystemFileHandle | null>(
+    null
+  );
 
   const { path, resetPath, getCurrentPage } = useContext(NavigationContext);
 
   const updateData = (value: dataI, resetEntry: boolean = true): void => {
-    value = cleanUpData(value);
-    setTimeout(() => {
-      setData(value);
-      setTree(generateDataTree(value));
+    const cleanData = cleanUpData(value);
+    setTimeout(async () => {
+      setData(JSON.parse(JSON.stringify(cleanData)));
+      setTree(generateDataTree(cleanData));
       if (resetEntry) resetPath();
-      saveToLocalStorage(value);
+      // saveToLocalStorage(cleanData);
+      if (fileHandle) saveToFileHandle(fileHandle, cleanData);
     }, 0);
   };
 
@@ -90,14 +73,15 @@ export const DataProvider = ({ children }: { children: ReactElement }) => {
 
     Object.keys(value).forEach((key: string) => {
       // get used references
-      getTextReferences(value[key].text).forEach((v) => {
-        if (!references.includes(v)) references.push(v);
+      extractReferences(value[key].text).forEach((v) => {
+        const key = v.split("_")[0];
+        if (!references.includes(key)) references.push(key);
       });
       // delete emtpy references
-      if (value[key].text === "" && key !== "RootPage") {
-        delete value[key];
-        deletedKeys.push(key);
-      }
+      // if (value[key].text === "" && key !== "RootPage") {
+      //   delete value[key];
+      //   deletedKeys.push(key);
+      // }
     });
 
     // remove ununused references
@@ -115,9 +99,9 @@ export const DataProvider = ({ children }: { children: ReactElement }) => {
     }
 
     // remove deleted keys from text
-    Object.keys(value).forEach((key: string) => {
-      value[key].text = removeReferences(value[key].text, deletedKeys);
-    });
+    // Object.keys(value).forEach((key: string) => {
+    //   value[key].text = removeReferences(value[key].text, deletedKeys);
+    // });
     return value;
   };
 
@@ -125,24 +109,8 @@ export const DataProvider = ({ children }: { children: ReactElement }) => {
     updateData({ ...tutorial }, true);
   };
 
-  const updateVisibleReferences = (): void => {
-    setTextPieces((oldValue: textPieceI[]) => {
-      return oldValue.map((ref: textPieceI) => {
-        if (ref.type !== "reference") return ref;
-        const refItem = ref as referenceI;
-        const visible = checkItemVisibility(refItem.id || "");
-        const newRef = {
-          ...ref,
-          visible,
-        } as textPieceI;
-        return newRef;
-      }) as textPieceI[];
-    });
-  };
-
   const updateEditMode = (value: boolean): void => {
     setEditMode(value);
-    updateVisibleReferences();
   };
 
   const updateSelectedNote = (key: string): void => {
@@ -167,37 +135,21 @@ export const DataProvider = ({ children }: { children: ReactElement }) => {
       resetPath();
       return;
     }
-    const referenceText = data[currentPage].text;
-    const references = getTextReferences(referenceText);
-    if (!references) return setTextPieces([]);
-    const refes = splitTextIntoReferences(referenceText);
-    setTextPieces(refes);
-    setTimeout(updateVisibleReferences, 100);
   }, [path, data]);
 
-  useEffect(() => {
-    const retrieved = retrieveLocalStorage();
-    try {
-      const parsed = JSON.parse(retrieved);
-      Object.keys(parsed).forEach((key: string) => {
-        if (parsed[key].showInTree === undefined)
-          parsed[key].showInTree === false;
-      });
-      updateData(parsed as dataI);
-    } catch (err) {
-      console.log(err);
-    }
-  }, []);
-
-  useEffect(() => {
-    document
-      .querySelector("#text")
-      ?.addEventListener("scroll", updateVisibleReferences);
-    return () =>
-      document
-        .querySelector("#text")
-        ?.removeEventListener("scroll", updateVisibleReferences);
-  }, [textPieces, updateVisibleReferences, editMode]);
+  // useEffect(() => {
+  //   const retrieved = retrieveLocalStorage();
+  //   try {
+  //     const parsed = JSON.parse(retrieved);
+  //     Object.keys(parsed).forEach((key: string) => {
+  //       if (parsed[key].showInTree === undefined)
+  //         parsed[key].showInTree === false;
+  //     });
+  //     updateData(parsed as dataI);
+  //   } catch (err) {
+  //     console.log(err);
+  //   }
+  // }, []);
 
   useEffect(() => {
     setTimeout(() => updateEditMode(false), 0);
@@ -208,7 +160,6 @@ export const DataProvider = ({ children }: { children: ReactElement }) => {
       value={{
         data,
         item: data[getCurrentPage()] || tutorial["RootPage"],
-        textPieces,
         editMode,
         updateEditMode,
         updateData,
@@ -218,6 +169,8 @@ export const DataProvider = ({ children }: { children: ReactElement }) => {
         tree,
         setTree,
         updateSelectedNote,
+        setEditMode,
+        setFileHandle,
       }}
     >
       {children}

@@ -1,11 +1,11 @@
 import React, { useContext, useEffect, useState } from "react";
 import styles from "./pageedit.module.scss";
 import { DataContext } from "@/context/data";
-import { getTextReferences } from "@/utils/text";
-import Button from "../Button/Button";
+import { extractReferences } from "@/utils/text";
 
 const PageEdit = ({}) => {
-  const { data, updateData, editMode, selectedNote } = useContext(DataContext);
+  const { item, data, updateData, editMode, selectedNote } =
+    useContext(DataContext);
   const [input, setInput] = useState<{
     title: string;
     text: string;
@@ -32,7 +32,10 @@ const PageEdit = ({}) => {
   };
 
   const generateNewEntries = () => {
-    return getTextReferences(input.text)
+    return extractReferences(input.text)
+      .map((v) => {
+        return v.split("_")[0];
+      })
       .filter((v) => {
         return !data[v];
       })
@@ -52,10 +55,68 @@ const PageEdit = ({}) => {
   const saveData = () => {
     const newItem = generateItemFromInputs();
     const newEntries = generateNewEntries();
+    if (!data[selectedNote]) return;
     updateData(
       { ...data, [data[selectedNote].key]: newItem, ...newEntries },
       false
     );
+  };
+
+  useEffect(() => {
+    saveData();
+  }, [input.text, input.display, input.title, input.showInTree]);
+
+  const handleCursorChange = (e: any) => {
+    const cursorPosition = e.currentTarget?.selectionStart;
+    const text = e.currentTarget.value;
+
+    const pIndex = getSelectedParagraphIndex(cursorPosition, text);
+    removeSelectedParagraph(pIndex);
+  };
+
+  const getParagraphLength = (text: string): number[] => {
+    return text
+      .split("\n")
+      .map((v: string) => v.length)
+      .reduce((acc: number[], curr: number) => {
+        if (acc.length === 0) return [curr];
+        return [...acc, curr + 1 + acc[acc.length - 1]];
+      }, []);
+  };
+
+  const getSelectedParagraphIndex = (
+    cursorPosition: number,
+    text: string
+  ): number => {
+    const paragraphLength = getParagraphLength(text);
+    let pIndex = 0;
+    for (let i = 1; i < paragraphLength.length; i++) {
+      if (
+        paragraphLength[i - 1] < cursorPosition &&
+        paragraphLength[i] >= cursorPosition
+      ) {
+        pIndex = i;
+      }
+    }
+    return pIndex;
+  };
+
+  const removeSelectedParagraph = (selectedIndex: number = -1) => {
+    const allParagraphs = Array.from(document.querySelectorAll("#text > p"));
+    let index = 0;
+    for (let p of allParagraphs) {
+      p?.classList.remove("edit-p");
+      if (
+        editMode &&
+        index === selectedIndex &&
+        p.innerHTML !== "" &&
+        item.title === input.title
+      ) {
+        p?.scrollIntoView();
+        p?.classList.add("edit-p");
+      }
+      index += 1;
+    }
   };
 
   useEffect(() => {
@@ -67,6 +128,9 @@ const PageEdit = ({}) => {
     });
   }, [data, selectedNote]);
 
+  useEffect(() => {
+    return removeSelectedParagraph;
+  }, []);
   return (
     <div className={`${styles.pageEdit} ${!editMode && styles.height0}`}>
       <label>
@@ -102,20 +166,11 @@ const PageEdit = ({}) => {
         ></input>
       </label>
       <textarea
+        onSelect={handleCursorChange}
+        onInput={handleCursorChange}
         value={input.text}
         onChange={(e) => handleUpdateData("text", e.currentTarget.value)}
       ></textarea>
-      <Button
-        onClick={saveData}
-        disabled={
-          input.text === data[selectedNote]?.text &&
-          input.title === data[selectedNote]?.title &&
-          input.display === data[selectedNote]?.display &&
-          input.showInTree === data[selectedNote]?.showInTree
-        }
-      >
-        <img src="/images/save.svg" />
-      </Button>
     </div>
   );
 };
