@@ -1,9 +1,11 @@
 @import "../../styles/variables";
+@import "material-symbols";
 
 .pageDisplay {
   position: relative;
   line-height: 2.5ch;
   height: 100%;
+  padding-bottom: 1rem;
   display: flex;
   flex-direction: column;
 

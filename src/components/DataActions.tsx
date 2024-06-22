@@ -7,7 +7,12 @@ import Tree from "./Tree";
 import Button, { behaviourEnum } from "./Button/Button";
 import ModalTemplateConfirm from "./Modal/ModalDefaults/ModalTemplateConfirm";
 
-const DataActions = () => {
+interface IProps {
+  darkMode: boolean;
+  setDarkMode: any;
+}
+
+const DataActions = ({ darkMode, setDarkMode }: IProps) => {
   const { updateData, data, resetData, setFileHandle } =
     useContext(DataContext);
   const { setContent } = useContext(modalContext);
@@ -44,11 +49,23 @@ const DataActions = () => {
   return (
     <div className={styles.dataActions}>
       <div className={styles.helper}>
+        <Button
+          naked={true}
+          onClick={() => {
+            setDarkMode((state: boolean) => !state);
+          }}
+        >
+          <span className={styles["material-symbols-outlined"]}>
+            {darkMode ? "dark_mode" : "light_mode"}
+          </span>
+        </Button>
         <Button naked={true} onClick={openModalReset}>
-          <img src="/images/reset.svg" />
+          <span className={styles["material-symbols-outlined"]}>history</span>
         </Button>
         <Button naked={true} onClick={() => setContent(<Tree />)}>
-          <img src="/images/tree.svg" />
+          <span className={styles["material-symbols-outlined"]}>
+            network_node
+          </span>
         </Button>
         <input
           data-tip={"Upload"}
@@ -57,12 +74,12 @@ const DataActions = () => {
           onClick={(e: any) => {
             handleLoad(e);
           }}
-        />
+        ></input>
         <Button
           naked={true}
           onClick={() => saveToFile(data["RootPage"].title, data)}
         >
-          <img src="/images/download.svg" />
+          <span className={styles["material-symbols-outlined"]}>download</span>
         </Button>
       </div>
     </div>

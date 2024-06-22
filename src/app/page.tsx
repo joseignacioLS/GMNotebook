@@ -14,21 +14,15 @@ export default function Home() {
       <div
         style={{
           position: "fixed",
-          top: "1rem",
-          right: "1rem",
+          left: "1rem",
+          bottom: "1rem",
           zIndex: "10",
         }}
         onClick={() => setDarkMode((v) => !v)}
-      >
-        <ToggleButton
-          isOn={darkMode}
-          leftButton={<img src="/images/sun.svg" />}
-          rightButton={<img src="/images/moon.svg" />}
-        ></ToggleButton>
-      </div>
+      ></div>
       <NoteBook />
       <Modal />
-      <DataActions />
+      <DataActions darkMode={darkMode} setDarkMode={setDarkMode} />
     </main>
   );
 }

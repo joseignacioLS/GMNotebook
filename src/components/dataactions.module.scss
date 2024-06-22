@@ -1,8 +1,11 @@
+@import "material-symbols";
 @import "../styles/variables";
+
+@import 'https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,400,1,0';
 
 .dataActions {
   position: fixed;
-  right: $gap_m;
+  left: $gap_m;
   bottom: $gap_m;
 
   padding: $gap_m;
@@ -16,6 +19,8 @@
 
   transition: grid-template-rows 0.3s;
 
+  box-shadow: 4px 4px rgba($palette_grey_0, .5);
+
   >div {
     display: flex;
     flex-direction: column;
@@ -26,7 +31,7 @@
   }
 
   &:hover {
-    grid-template-rows: 9.5rem;
+    grid-template-rows: 12rem;
   }
 
   input,
@@ -39,20 +44,23 @@
     border: 0;
     cursor: pointer;
     background-color: transparent;
+    padding: $gap_s;
   }
 
   input::-webkit-file-upload-button {
     visibility: hidden;
   }
 
+
   input::before {
-    content: "";
+    font-family: "Material Symbols Outlined";
+    position: relative;
+    content: "upload";
     height: 2rem;
     width: 2rem;
     cursor: pointer;
     display: block;
-    background-image: url("/images/upload.svg");
-    background-position: center;
-    background-size: 100%;
+    font-size: 24px;
+    color: inherit;
   }
 }
