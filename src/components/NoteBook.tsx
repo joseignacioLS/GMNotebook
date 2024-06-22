@@ -2,12 +2,13 @@ import React, { useContext } from "react";
 import Page from "./Page/Page";
 import NoteList from "./NoteList/NoteList";
 
-import styles from "./notebook.module.scss";
 import Button from "./Button/Button";
 import PageEdit from "./Page/PageEdit";
 import { NavigationContext } from "@/context/navigation";
 import { DataContext } from "@/context/data";
 import ToggleButton from "./Button/ToggleButton";
+
+import styles from "./notebook.module.scss";
 
 const NoteBook = () => {
   const { editMode, updateEditMode, updateSelectedNote } =
@@ -18,22 +19,32 @@ const NoteBook = () => {
     <div className={styles.notebook}>
       <Page />
       <div className={styles.rightColumn}>
-        <Button
-          naked={true}
-          addClass={styles.toggleColumn}
-          onClick={() => {
-            if (editMode) {
-              updateSelectedNote(path.at(-1));
-            }
-            updateEditMode((v: boolean) => !v);
-          }}
-        >
-          <ToggleButton
-            isOn={editMode}
-            leftButton={<img src="/images/book.svg" />}
-            rightButton={<img src="/images/edit.svg" />}
-          />
-        </Button>
+        <div className={styles.editButtonToggle}>
+          <Button
+            naked={true}
+            addClass={styles.toggleColumn}
+            onClick={() => {
+              if (editMode) {
+                updateSelectedNote(path.at(-1));
+              }
+              updateEditMode((v: boolean) => !v);
+            }}
+          >
+            <ToggleButton
+              isOn={editMode}
+              leftButton={
+                <span className={styles["material-symbols-outlined"]}>
+                  local_library
+                </span>
+              }
+              rightButton={
+                <span className={styles["material-symbols-outlined"]}>
+                  Edit
+                </span>
+              }
+            />
+          </Button>
+        </div>
         {editMode ? <PageEdit /> : <NoteList />}
       </div>
     </div>

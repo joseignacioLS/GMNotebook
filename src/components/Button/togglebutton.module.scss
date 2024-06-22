@@ -11,17 +11,20 @@
 
   .toggleSurface {
     position: relative;
-    width: 4rem;
-    height: 2rem;
-    background-color: $palette_grey_2;
+    width: 5rem;
+    height: 3rem;
+    padding: $gap_m;
+    background-color: $palette_grey_4;
     border-radius: $border_radius_total;
+
+    box-shadow: 4px 4px rgba($palette_grey_0, .5);
 
     .toggleKnob {
       position: absolute;
-      padding: $gap_m;
+      padding: $gap_s;
       width: 2rem;
       height: 2rem;
-      background-color: $palette_grey_2;
+      background-color: $palette_grey_4;
       border-radius: $border_radius_total;
       transition: transform 0.3s;
       display: flex;

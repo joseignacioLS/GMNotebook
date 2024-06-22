@@ -109,4 +109,8 @@ main {
   p {
     color: $palette_grey_4;
   }
+
+  label>span {
+    color: white;
+  }
 }

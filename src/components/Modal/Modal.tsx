@@ -10,7 +10,7 @@ const Modal = () => {
     <div className={styles.modalContainer}>
       <div className={styles.modal}>
         <Button addClass={styles.closeButton} naked={true} onClick={closeModal}>
-          <img src="/images/close.svg" />
+          <span className={styles["material-symbols-outlined"]}>close</span>
         </Button>
         {content}
       </div>

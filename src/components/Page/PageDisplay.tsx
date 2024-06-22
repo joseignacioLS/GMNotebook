@@ -22,7 +22,9 @@ const PageDisplay = () => {
           }}
           disabled={path.length < 2}
         >
-          <img src="/images/back.svg" />
+          <span className={styles["material-symbols-outlined"]}>
+            arrow_back_ios
+          </span>
         </Button>
         <h1 onClick={() => updateSelectedNote(item.key)}>{item.title}</h1>
       </div>
