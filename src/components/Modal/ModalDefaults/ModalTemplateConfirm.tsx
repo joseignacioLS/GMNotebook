@@ -4,7 +4,7 @@ import { modalContext } from "@/context/modal";
 
 import styles from "./modaltemplateconfirm.module.scss";
 
-interface propsI {
+interface IProps {
   children: string | ReactElement;
   positiveButtonText: string | ReactElement;
   positiveButtonAction: () => void;
@@ -14,7 +14,7 @@ const ModalTemplateConfirm = ({
   positiveButtonText,
   positiveButtonAction,
   children,
-}: propsI) => {
+}: IProps) => {
   const { closeModal } = useContext(modalContext);
   return (
     <div className={styles.wrapper}>

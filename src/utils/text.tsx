@@ -1,5 +1,5 @@
 import { IReference } from "@/context/constants";
-import { ReactElement } from "react";
+import { ReactElement, ReactNode } from "react";
 import Reference from "@/components/Page/Reference";
 
 export interface ILineProcess {
@@ -14,7 +14,7 @@ interface ILineProcessReference {
 
 const specialMatchesRegex = new RegExp("(note:|img:)", "g");
 
-export const getWordCount = (text: string) => {
+export const getWordCount = (text: string): number => {
   return text?.split(" ").length;
 };
 
@@ -90,7 +90,7 @@ export const processLine = (
   index: number,
   plain: boolean,
   wrapped: boolean = false
-) => {
+): ReactNode => {
   const isTitle = line.match(/^\# /);
   const isSubtitle = line.match(/^\#\# /);
   if (isTitle) {
@@ -135,7 +135,7 @@ export const extractReferences = (text: string): string[] => {
   }, []);
 };
 
-const exportLineReferences = (line: string, index: number) => {
+const exportLineReferences = (line: string, index: number): string[] => {
   const specialMatches = line.match(/(note:|img:)/g);
   const result: ILineProcessReference | undefined = specialMatches?.reduce(
     (acc: ILineProcessReference, curr, i) => {

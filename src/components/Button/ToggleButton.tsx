@@ -1,7 +1,7 @@
 import React, { ReactElement } from "react";
 import styles from "./togglebutton.module.scss";
 
-interface propsI {
+interface IProps {
   isOn: boolean;
   leftOption?: string;
   rightOption?: string;
@@ -14,7 +14,7 @@ const ToggleButton = ({
   rightOption,
   leftButton,
   rightButton,
-}: propsI) => {
+}: IProps) => {
   return (
     <div className={styles.wrapper}>
       <span style={{ opacity: isOn ? "1" : ".25" }}>{leftOption}</span>

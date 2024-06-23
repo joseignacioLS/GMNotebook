@@ -6,13 +6,12 @@ import { NavigationContext } from "@/context/navigation";
 import { generateColor } from "@/utils/color";
 import { useProcessText } from "@/hooks/useProcessText";
 
-interface propsI {
+interface IProps {
   itemKey: string;
 }
 
-const NoteCard = ({ itemKey }: propsI) => {
-  const { data, selectedNote, updateSelectedNote, editMode } =
-    useContext(DataContext);
+const NoteCard = ({ itemKey }: IProps) => {
+  const { data, selectedNote, updateSelectedNote } = useContext(DataContext);
   const { navigateTo } = useContext(NavigationContext);
 
   const key = itemKey.split("_")[0];
