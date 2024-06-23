@@ -1,5 +1,5 @@
 import { IReference } from "@/context/constants";
-import { ReactElement } from "react";
+import { ReactElement, ReactNode } from "react";
 import Reference from "@/components/Page/Reference";
 import { checkIfVisible } from "./dom";
 
@@ -15,7 +15,7 @@ interface ILineProcessReference {
 
 const specialMatchesRegex = new RegExp("(note:|img:)", "g");
 
-export const getWordCount = (text: string) => {
+export const getWordCount = (text: string): number => {
   return text?.split(" ").length;
 };
 
@@ -152,7 +152,7 @@ export const extractReferences = (text: string): string[] => {
   }, []);
 };
 
-const exportLineReferences = (line: string, index: number) => {
+const exportLineReferences = (line: string, index: number): string[] => {
   const specialMatches = line.match(/(note:|img:)/g);
   if (!specialMatches) {
     return [];

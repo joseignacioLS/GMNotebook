@@ -2,8 +2,9 @@
 
 import Modal from "@/components/Modal/Modal";
 import NoteBook from "../components/NoteBook";
-import { useState } from "react";
 import DataActions from "@/components/DataActions";
+
+import { useState } from "react";
 
 export default function Home() {
   const [darkMode, setDarkMode] = useState<boolean>(true);

@@ -10,14 +10,14 @@ interface IProps {
   rightButton?: string | ReactElement;
   onClick?: any;
 }
-const ToggleButton = ({
+const ToggleButton: React.FC<IProps> = ({
   isOn,
   leftOption,
   rightOption,
   leftButton,
   rightButton,
   onClick,
-}: IProps) => {
+}) => {
   return (
     <Button naked={true} onClick={onClick}>
       <div className={styles.wrapper}>
