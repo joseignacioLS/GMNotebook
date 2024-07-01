@@ -67,6 +67,12 @@ const DataActions = ({ darkMode, setDarkMode }: IProps) => {
             network_node
           </span>
         </Button>
+        <Button
+          naked={true}
+          onClick={() => saveToFile(data["RootPage"].title, data)}
+        >
+          <span className={styles["material-symbols-outlined"]}>download</span>
+        </Button>
         <input
           data-tip={"Upload"}
           type="file"
@@ -75,12 +81,6 @@ const DataActions = ({ darkMode, setDarkMode }: IProps) => {
             handleLoad(e);
           }}
         ></input>
-        <Button
-          naked={true}
-          onClick={() => saveToFile(data["RootPage"].title, data)}
-        >
-          <span className={styles["material-symbols-outlined"]}>download</span>
-        </Button>
       </div>
     </div>
   );
