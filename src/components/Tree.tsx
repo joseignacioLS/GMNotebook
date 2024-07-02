@@ -7,7 +7,7 @@ import { NavigationContext } from "@/context/navigation";
 import { modalContext } from "@/context/modal";
 import { relaxTree } from "@/utils/tree";
 
-const Tree = () => {
+const Tree: React.FC = () => {
   const { data, tree, setTree, updateSelectedNote } = useContext(DataContext);
   const { navigateTo } = useContext(NavigationContext);
   const { closeModal } = useContext(modalContext);

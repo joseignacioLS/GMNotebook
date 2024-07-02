@@ -10,7 +10,7 @@ interface IProps {
   naked?: boolean;
 }
 
-const Reference = ({ reference, naked = false }: IProps) => {
+const Reference: React.FC<IProps> = ({ reference, naked = false }) => {
   const { selectedNote, updateSelectedNote, data } = useContext(DataContext);
   const { navigateTo } = useContext(NavigationContext);
 

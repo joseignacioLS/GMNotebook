@@ -8,6 +8,8 @@
   padding-bottom: 1rem;
   display: flex;
   flex-direction: column;
+  font-size: $font_size_l;
+  overflow: hidden;
 
   .titleContainer {
     height: 4rem;

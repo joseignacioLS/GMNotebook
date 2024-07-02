@@ -1,9 +1,10 @@
 import React, { useContext, useEffect, useState } from "react";
 import styles from "./pageedit.module.scss";
 import { DataContext } from "@/context/data";
-import { extractReferences } from "@/utils/text";
+import { extractReferences, getSelectedParagraphIndex } from "@/utils/text";
+import Input from "../Input/Input";
 
-const PageEdit = ({}) => {
+const PageEdit: React.FC = () => {
   const { item, data, updateData, editMode, selectedNote } =
     useContext(DataContext);
   const [input, setInput] = useState<{
@@ -74,33 +75,6 @@ const PageEdit = ({}) => {
     removeSelectedParagraph(pIndex);
   };
 
-  const getParagraphLength = (text: string): number[] => {
-    return text
-      .split("\n")
-      .map((v: string) => v.length)
-      .reduce((acc: number[], curr: number) => {
-        if (acc.length === 0) return [curr];
-        return [...acc, curr + 1 + acc[acc.length - 1]];
-      }, []);
-  };
-
-  const getSelectedParagraphIndex = (
-    cursorPosition: number,
-    text: string
-  ): number => {
-    const paragraphLength = getParagraphLength(text);
-    let pIndex = 0;
-    for (let i = 1; i < paragraphLength.length; i++) {
-      if (
-        paragraphLength[i - 1] < cursorPosition &&
-        paragraphLength[i] >= cursorPosition
-      ) {
-        pIndex = i;
-      }
-    }
-    return pIndex;
-  };
-
   const removeSelectedParagraph = (selectedIndex: number = -1) => {
     const allParagraphs = Array.from(document.querySelectorAll("#text > p"));
     let index = 0;
@@ -133,38 +107,27 @@ const PageEdit = ({}) => {
   }, []);
   return (
     <div className={`${styles.pageEdit} ${!editMode && styles.height0}`}>
-      <label>
-        <span data-help={"This is the title of the page"}>Title</span>
-        <input
-          value={input.title}
-          onChange={(e) => handleUpdateData("title", e.currentTarget.value)}
-        ></input>
-      </label>
-      <label>
-        <span
-          data-help={
-            "This will substitute the note:keyword wherever this page is referenced as a note."
-          }
-        >
-          Display
-        </span>
-        <input
-          value={input.display}
-          onChange={(e) => handleUpdateData("display", e.currentTarget.value)}
-        ></input>
-      </label>
-      <label>
-        <span data-help={"Decide if this note is shown in the tree"}>
-          Shown in Tree?
-        </span>
-        <input
-          type="checkbox"
-          checked={input.showInTree}
-          onChange={(e) =>
-            handleUpdateData("showInTree", e.currentTarget.checked)
-          }
-        ></input>
-      </label>
+      <Input
+        value={input.title}
+        onClick={(e) => handleUpdateData("title", e.currentTarget.value)}
+        label={"Title"}
+        tooltip={"This is the title of the page"}
+      />
+      <Input
+        value={input.display}
+        onClick={(e) => handleUpdateData("display", e.currentTarget.value)}
+        label={"Display"}
+        tooltip={
+          "This will substitute the note:keyword wherever this page is referenced as a note."
+        }
+      />
+      <Input
+        value={input.showInTree}
+        onClick={(e) => handleUpdateData("showInTree", e.currentTarget.checked)}
+        label={" Show in Tree?"}
+        tooltip={"Decide if this note is shown in the tree"}
+        type="checkbox"
+      />
       <textarea
         onSelect={handleCursorChange}
         onInput={handleCursorChange}

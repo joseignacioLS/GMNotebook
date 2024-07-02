@@ -10,8 +10,9 @@ interface IProps {
   itemKey: string;
 }
 
-const NoteCard = ({ itemKey }: IProps) => {
-  const { data, selectedNote, updateSelectedNote } = useContext(DataContext);
+const NoteCard: React.FC<IProps> = ({ itemKey }) => {
+  const { data, selectedNote, updateSelectedNote, editMode } =
+    useContext(DataContext);
   const { navigateTo } = useContext(NavigationContext);
 
   const key = itemKey.split("_")[0];
