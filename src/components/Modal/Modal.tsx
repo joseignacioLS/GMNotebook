@@ -3,9 +3,9 @@ import styles from "./modal.module.scss";
 import { modalContext } from "@/context/modal";
 import Button from "../Button/Button";
 
-const Modal = () => {
+const Modal: React.FC = () => {
   const { isVisible, content, closeModal } = useContext(modalContext);
-  if (!isVisible) return;
+  if (!isVisible) return <></>;
   return (
     <div className={styles.modalContainer}>
       <div className={styles.modal}>

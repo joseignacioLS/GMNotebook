@@ -5,7 +5,7 @@ import { DataContext } from "@/context/data";
 import Button from "../Button/Button";
 import { useProcessText } from "@/hooks/useProcessText";
 
-const PageDisplay = () => {
+const PageDisplay: React.FC = () => {
   const { item, updateSelectedNote } = useContext(DataContext);
   const { path, navBack } = useContext(NavigationContext);
 

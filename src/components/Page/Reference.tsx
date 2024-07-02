@@ -5,12 +5,12 @@ import { DataContext } from "@/context/data";
 import { NavigationContext } from "@/context/navigation";
 import { generateColor } from "@/utils/color";
 
-interface propsI {
+interface IProps {
   reference: IReference;
   naked?: boolean;
 }
 
-const Reference = ({ reference, naked = false }: propsI) => {
+const Reference: React.FC<IProps> = ({ reference, naked = false }) => {
   const { selectedNote, updateSelectedNote, data } = useContext(DataContext);
   const { navigateTo } = useContext(NavigationContext);
 

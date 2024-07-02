@@ -12,7 +12,7 @@ interface IProps {
   setDarkMode: any;
 }
 
-const DataActions = ({ darkMode, setDarkMode }: IProps) => {
+const DataActions: React.FC<IProps> = ({ darkMode, setDarkMode }) => {
   const { updateData, data, resetData, setFileHandle } =
     useContext(DataContext);
   const { setContent } = useContext(modalContext);

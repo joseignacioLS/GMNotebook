@@ -1,12 +1,14 @@
 import React, { ReactElement } from "react";
 import styles from "./togglebutton.module.scss";
+import Button from "./Button";
 
-interface propsI {
+interface IProps {
   isOn: boolean;
   leftOption?: string;
   rightOption?: string;
   leftButton?: string | ReactElement;
   rightButton?: string | ReactElement;
+  onClick?: any;
 }
 const ToggleButton = ({
   isOn,
@@ -14,22 +16,25 @@ const ToggleButton = ({
   rightOption,
   leftButton,
   rightButton,
-}: propsI) => {
+  onClick,
+}: IProps) => {
   return (
-    <div className={styles.wrapper}>
-      <span style={{ opacity: isOn ? "1" : ".25" }}>{leftOption}</span>
-      <div className={styles.toggleSurface}>
-        <div
-          className={styles.toggleKnob}
-          style={{
-            transform: isOn ? "translateX(2rem)" : "translateX(0px)",
-          }}
-        >
-          {isOn ? rightButton : leftButton}
+    <Button naked={true} onClick={onClick}>
+      <div className={styles.wrapper}>
+        <span style={{ opacity: isOn ? "1" : ".25" }}>{leftOption}</span>
+        <div className={styles.toggleSurface}>
+          <div
+            className={styles.toggleKnob}
+            style={{
+              transform: isOn ? "translateX(2rem)" : "translateX(0px)",
+            }}
+          >
+            {isOn ? rightButton : leftButton}
+          </div>
         </div>
+        <span style={{ opacity: !isOn ? "1" : ".25" }}>{rightOption}</span>
       </div>
-      <span style={{ opacity: !isOn ? "1" : ".25" }}>{rightOption}</span>
-    </div>
+    </Button>
   );
 };
 
