@@ -1,5 +1,5 @@
 import "@testing-library/jest-dom";
-import { render, screen } from "@testing-library/react";
+import { fireEvent, render } from "@testing-library/react";
 import ToggleButton from "./ToggleButton";
 
 describe("ToggleButton", () => {
@@ -7,35 +7,38 @@ describe("ToggleButton", () => {
     isOn: true,
     leftOption: "left",
     rightOption: "right",
-    leftButton: <button data-testid="leftButton">LeftButton</button>,
-    rightButton: <button data-testid="rightButton">RightButton</button>,
+    leftButton: <span data-testid="leftButton">LeftButton</span>,
+    rightButton: <span data-testid="rightButton">RightButton</span>,
+    onClick: jest.fn(),
   };
 
   it("renders", () => {
-    const result = render(<ToggleButton {...mock} />);
-    const button = result.container.querySelector("div.wrapper");
-    expect(button).toBeInTheDocument();
+    const { getByText } = render(<ToggleButton {...mock} />);
 
-    const leftOption = result.container.querySelector(
-      "div.wrapper > span:first-child"
-    );
-    expect(leftOption).toHaveTextContent(mock.leftOption);
+    const leftOption = getByText("left");
+    expect(leftOption).toBeInTheDocument();
 
-    const rightOption = result.container.querySelector(
-      "div.wrapper > span:last-child"
-    );
-    expect(rightOption).toHaveTextContent(mock.rightOption);
+    const rightOption = getByText("right");
+    expect(rightOption).toBeInTheDocument();
   });
   it("shows right button", () => {
-    render(<ToggleButton {...mock} />);
+    const { getByTestId } = render(<ToggleButton {...mock} />);
 
-    const rightButton = screen.getByTestId("rightButton");
+    const rightButton = getByTestId("rightButton");
     expect(rightButton).toBeInTheDocument();
   });
   it("shows left button", () => {
-    render(<ToggleButton {...{ ...mock, isOn: false }} />);
+    const { getByTestId } = render(
+      <ToggleButton {...{ ...mock, isOn: false }} />
+    );
 
-    const leftButton = screen.getByTestId("leftButton");
+    const leftButton = getByTestId("leftButton");
     expect(leftButton).toBeInTheDocument();
+  });
+
+  it("changes on click", async () => {
+    const { getByText } = render(<ToggleButton {...mock} />);
+    fireEvent.click(getByText("RightButton"));
+    expect(mock.onClick).toHaveBeenCalledTimes(1);
   });
 });

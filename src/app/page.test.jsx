@@ -4,9 +4,9 @@ import Page from "./page";
 
 describe("Page", () => {
   it("renders", () => {
-    render(<Page />);
+    const { getByRole } = render(<Page />);
 
-    const main = screen.getByRole("main");
+    const main = getByRole("main");
 
     expect(main).toBeInTheDocument();
   });
