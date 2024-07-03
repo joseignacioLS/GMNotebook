@@ -1,5 +1,5 @@
 import { IReference } from "@/context/constants";
-import { ReactElement, ReactNode } from "react";
+import { ReactElement } from "react";
 import Reference from "@/components/Page/Reference";
 import { checkIfVisible } from "./dom";
 
@@ -13,21 +13,31 @@ interface ILineProcessReference {
   index: number;
 }
 
+interface IInsertionObject {
+  innerHTML: string;
+  key?: string;
+  id?: string;
+}
+
 const specialMatchesRegex = new RegExp("(note:|img:)", "g");
 
 export const getWordCount = (text: string): number => {
   return text?.split(" ").length;
 };
 
-const checkForTitle = (line: string) => {
+export const checkForTitle = (line: string) => {
   return line.match(/^\# /);
 };
 
-const checkForSubtitle = (line: string) => {
+export const checkForSubtitle = (line: string) => {
   return line.match(/^\#\# /);
 };
 
-const formatTitleLine = (line: string, index: number, plain: boolean) => {
+export const formatTitleLine = (
+  line: string,
+  index: number,
+  plain: boolean
+) => {
   return (
     <p key={line} id={`p-${index}`} className="text-title">
       {processLine(line.slice(1), index, plain, true)}
@@ -54,12 +64,12 @@ export const removeReferences = (
 };
 
 const generateItemFromMatch = (
-  match: string,
+  matchKey: string,
   key: string,
   id: string,
   plain: boolean
 ) => {
-  if (match === "note:") {
+  if (matchKey === "note:") {
     return (
       <Reference
         key={id}
@@ -73,52 +83,100 @@ const generateItemFromMatch = (
         naked={plain}
       ></Reference>
     );
-  } else if (match === "img:") {
+  } else if (matchKey === "img:") {
     return <img key={id} src={key} />;
   }
   return <>{key}</>;
 };
 
-const findTextInsertions = (line: string, index: number, plain: boolean) => {
+const generateInsertionObject = (
+  line: string,
+  match: RegExpMatchArray,
+  matchKey: string,
+  index: number,
+  prevIndex: number,
+  iterationIndex: number
+): IInsertionObject[] => {
+  const key = match[0].split(matchKey)[1];
+  const id = key + "_" + index + "_" + iterationIndex;
+  const inBetweenText = line.slice(prevIndex, prevIndex + (match.index || 0));
+  return [
+    { key: undefined, id: undefined, innerHTML: inBetweenText },
+    { key, id, innerHTML: matchKey },
+  ];
+};
+
+const getFullInsertionMatch = (
+  matchKey: string,
+  line: string,
+  index: number
+): RegExpMatchArray | null => {
   const regexRef: { [key: string]: string } = {
     "note:": "note:[A-Záéíóúüïñ0-9]+",
     "img:": "img:[^\n ]+",
   };
-  const specialMatches = line.match(specialMatchesRegex);
-  if (!specialMatches) {
-    return { result: [line], index: 0 } as ILineProcess;
-  }
-  const textInsertions = specialMatches?.reduce(
-    (acc: ILineProcess, curr, i) => {
-      if (curr) {
-        const regex = new RegExp(`${regexRef[curr]}`, "i");
-        const match = line.slice(acc.index).match(regex);
-        if (!match || match.index === undefined) {
-          return acc;
-        }
-        const key = match[0].split(curr)[1];
-        const id = key + "_" + index + "_" + i;
-        const nextIndex = acc.index + match.index + match[0].length;
-        const inBetweenText = line.slice(acc.index, acc.index + match.index);
-        const item = generateItemFromMatch(curr, key, id, plain);
+  const regex = new RegExp(`${regexRef[matchKey]}`, "i");
+  const match = line.slice(index).match(regex);
+  return match;
+};
 
-        return {
-          result: [...acc.result, inBetweenText, item],
-          index: nextIndex,
-        };
+const getArrayOfInsertions = (
+  line: string,
+  arrayOfMatches: any,
+  index: number
+): IInsertionObject[] => {
+  const result = arrayOfMatches?.reduce(
+    (
+      acc: { result: IInsertionObject[]; index: number },
+      matchKey: string,
+      iterationIndex: number
+    ) => {
+      if (!matchKey) {
+        return acc;
       }
-      return acc;
+      const match = getFullInsertionMatch(matchKey, line, acc.index);
+      if (!match || match.index === undefined) {
+        return acc;
+      }
+      const insertionObjects = generateInsertionObject(
+        line,
+        match,
+        matchKey,
+        index,
+        acc.index,
+        iterationIndex
+      );
+
+      const nextIndex = acc.index + match.index + match[0].length;
+      return {
+        result: [...acc.result, ...insertionObjects],
+        index: nextIndex,
+      };
     },
     {
       result: [],
       index: 0,
-    } as ILineProcess
+    }
   );
 
-  // add line ending
-  textInsertions?.result.push(line.slice(textInsertions.index));
+  result?.result.push({
+    key: undefined,
+    id: undefined,
+    innerHTML: line.slice(result.index),
+  });
 
-  return textInsertions;
+  return result.result;
+};
+
+export const findTextInsertions = (
+  line: string,
+  index: number
+): IInsertionObject[] => {
+  const specialMatches = line.match(specialMatchesRegex);
+  if (!specialMatches) {
+    return [{ innerHTML: line, id: undefined, key: undefined }];
+  }
+  return getArrayOfInsertions(line, specialMatches, index);
 };
 
 export const processLine = (
@@ -134,13 +192,17 @@ export const processLine = (
     return formatSubtitleLine(line, index, plain);
   }
 
-  const textInsertions = findTextInsertions(line, index, plain);
+  const textInsertions = findTextInsertions(line, index);
+  const formatedLine = textInsertions.map((item: any) => {
+    if (item.id === undefined) return item.innerHTML;
+    return generateItemFromMatch(item.innerHTML, item.key, item.id, plain);
+  });
 
   return wrapped ? (
-    <span key={line + index}>{textInsertions.result}</span>
+    <span key={line + index}>{formatedLine}</span>
   ) : (
     <p key={line + index} id={`p-${index}`}>
-      {textInsertions.result}
+      {formatedLine}
     </p>
   );
 };
