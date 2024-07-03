@@ -10,8 +10,8 @@ describe("Button", () => {
   };
 
   it("renders", () => {
-    render(<Button {...mock} />);
-    const button = screen.getByRole("button");
+    const { getByRole } = render(<Button {...mock} />);
+    const button = getByRole("button");
     expect(button).toBeInTheDocument();
   });
 

@@ -1,6 +1,10 @@
 import { isValidElement } from "react";
 import {
+  checkForSubtitle,
+  checkForTitle,
   extractReferences,
+  findTextInsertions,
+  formatTitleLine,
   getWordCount,
   processLine,
   removeReferences,
@@ -17,6 +21,23 @@ describe("getWordCount", () => {
     const phrase = [...new Array(count).keys()].join(" ");
     expect(getWordCount(phrase)).toBe(count);
   });
+});
+
+describe("checkForTitle", () => {
+  expect(checkForTitle("# Title")).not.toBeNull();
+  expect(checkForTitle("Title")).toBeNull();
+  expect(checkForTitle("## Title")).toBeNull();
+});
+
+describe("checkForSubtitle", () => {
+  expect(checkForSubtitle("## Title")).not.toBeNull();
+  expect(checkForSubtitle("Title")).toBeNull();
+  expect(checkForSubtitle("# Title")).toBeNull();
+});
+
+describe("formatTitleLine", () => {
+  const result = formatTitleLine("# Title line", 0, true);
+  expect(result.props.children.props.children[0]).toBe(" Title line");
 });
 
 describe("remove references", () => {
@@ -50,20 +71,30 @@ describe("process line", () => {
   });
   it("Title shows the correct text", () => {
     const result = processLine("# Title", 0, false);
-    expect(result.props.children.props.children).toBe(" Title");
+    expect(result.props.children.props.children[0]).toBe(" Title");
     const resultB = processLine("# Title", 0, true);
-    expect(resultB.props.children.props.children).toBe(" Title");
+    expect(resultB.props.children.props.children[0]).toBe(" Title");
   });
   it("Subtitle shows the correct text", () => {
     const result = processLine("## Title", 0, false);
-    expect(result.props.children.props.children).toBe(" Title");
+    expect(result.props.children.props.children[0]).toBe(" Title");
     const resultB = processLine("## Title", 0, true);
-    expect(resultB.props.children.props.children).toBe(" Title");
+    expect(resultB.props.children.props.children[0]).toBe(" Title");
   });
   it("Should return text without decoration", () => {
     const result = processLine("Simple text", 0, false);
-    expect(result.props.children).toBe("Simple text");
+    expect(result.props.children[0]).toBe("Simple text");
     const resultB = processLine("Simple text", 0, true);
-    expect(resultB.props.children).toBe("Simple text");
+    expect(resultB.props.children[0]).toBe("Simple text");
   });
+});
+
+describe("findTextInsertions", () => {
+  const result = findTextInsertions("note:holi que tal va? img:fdsafda");
+  it("splits the text correctly", () => {
+    expect(result.length).toBe(5);
+  });
+  it("generates references", () => {
+    console.log(result[1])
+  })
 });
