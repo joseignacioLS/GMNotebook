@@ -154,10 +154,9 @@ const getArrayOfInsertions = (
         iterationIndex
       );
 
-      const nextIndex = insertions.index + match.index + match[0].length;
       return {
         result: [...insertions.result, ...insertionObjects],
-        index: nextIndex,
+        index: insertions.index + match.index + match[0].length,
       };
     },
     {
@@ -290,7 +289,7 @@ export const filterReferences = (text: string) => {
   return extractedReferences.reduce((references: string[], key: string) => {
     const visible = checkIfVisible(key);
     if (!visible) return references;
-    const searchKey = key.split("_")[0];
+    const [searchKey] = key.split("_");
     const alreadyVisible = references.some((reference: string) => {
       return searchKey === reference.split("_")[0];
     });
