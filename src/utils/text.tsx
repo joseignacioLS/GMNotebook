@@ -20,23 +20,19 @@ interface IInsertionObject {
   id?: string;
 }
 
-export const getWordCount = (text: string): number => {
-  return text?.split(" ").length;
-};
+// const getWordCount = (text: string): number => {
+//   return text?.split(" ").length;
+// };
 
-export const checkForTitle = (line: string) => {
+const checkForTitle = (line: string) => {
   return line.match(regex.title);
 };
 
-export const checkForSubtitle = (line: string) => {
+const checkForSubtitle = (line: string) => {
   return line.match(regex.subtitle);
 };
 
-export const formatTitleLine = (
-  line: string,
-  index: number,
-  plain: boolean
-) => {
+const formatTitleLine = (line: string, index: number, plain: boolean) => {
   return (
     <p key={line} id={`p-${index}`} className="text-title">
       {processLine(line.slice(2), index, plain, true)}
@@ -52,23 +48,23 @@ const formatSubtitleLine = (line: string, index: number, plain: boolean) => {
   );
 };
 
-const generateInsertionRegex = (
-  key: string,
-  value: string,
-  flags: string = ""
-) => {
-  return new RegExp(`${key}\:${value}`, flags);
-};
+// const generateInsertionRegex = (
+//   key: string,
+//   value: string,
+//   flags: string = ""
+// ) => {
+//   return new RegExp(`${key}\:${value}`, flags);
+// };
 
-export const removeReferences = (
-  text: string,
-  references: string[]
-): string => {
-  references.forEach((refe: string) => {
-    text = text.replace(generateInsertionRegex("note", refe, "g"), refe);
-  });
-  return text;
-};
+// const removeReferences = (
+//   text: string,
+//   references: string[]
+// ): string => {
+//   references.forEach((refe: string) => {
+//     text = text.replace(generateInsertionRegex("note", refe, "g"), refe);
+//   });
+//   return text;
+// };
 
 const generateItemFromMatch = (
   matchKey: string,
@@ -96,6 +92,14 @@ const generateItemFromMatch = (
   return <>{key}</>;
 };
 
+const generateInsertionId = (
+  key: string,
+  index: number,
+  iterationIndex: number
+) => {
+  return `${key}_${index}_${iterationIndex}`;
+};
+
 const generateInsertionObject = (
   line: string,
   match: RegExpMatchArray,
@@ -104,12 +108,18 @@ const generateInsertionObject = (
   prevIndex: number,
   iterationIndex: number
 ): IInsertionObject[] => {
-  const key = match[0].split(matchKey)[1];
-  const id = key + "_" + index + "_" + iterationIndex;
-  const inBetweenText = line.slice(prevIndex, prevIndex + (match.index || 0));
+  const [, key] = match[0].split(matchKey);
   return [
-    { key: undefined, id: undefined, innerHTML: inBetweenText },
-    { key, id, innerHTML: matchKey },
+    {
+      key: undefined,
+      id: undefined,
+      innerHTML: line.slice(prevIndex, prevIndex + (match.index || 0)),
+    },
+    {
+      key,
+      id: generateInsertionId(key, index, iterationIndex),
+      innerHTML: matchKey,
+    },
   ];
 };
 
@@ -174,7 +184,7 @@ const getArrayOfInsertions = (
   return result.result;
 };
 
-export const splitLineByInsertions = (
+const splitLineByInsertions = (
   line: string,
   index: number
 ): IInsertionObject[] => {
@@ -223,17 +233,31 @@ export const processLine = (
 export const extractReferences = (text: string): string[] => {
   const lines = text.split("\n");
   return lines.reduce((references: string[], line: string, index: number) => {
-    return [...references, ...exportLineReferences(line, index)] as string[];
+    const specialMatches = line.match(regex.insertions);
+    if (!specialMatches) {
+      return references;
+    }
+    return [
+      ...references,
+      ...exportLineReferences(line, specialMatches, index),
+    ] as string[];
   }, []);
 };
 
-const exportLineReferences = (line: string, index: number): string[] => {
-  const specialMatches = line.match(regex.insertions);
-  if (!specialMatches) {
-    return [];
-  }
-  const result: ILineProcessReference = specialMatches.reduce(
-    (references: ILineProcessReference, matchKey, i) => {
+const exportLineReferences = (
+  line: string,
+  arrayOfMatches: RegExpMatchArray,
+  index: number
+): string[] => {
+  const result: ILineProcessReference = arrayOfMatches.reduce(
+    (
+      references: ILineProcessReference,
+      matchKey: string,
+      iterationIndex: number
+    ) => {
+      if (!matchKey) {
+        return references;
+      }
       const match = getFullInsertionMatch(matchKey, line, references.index);
       if (!match || match.index === undefined) {
         return references;
@@ -241,7 +265,10 @@ const exportLineReferences = (line: string, index: number): string[] => {
       const [, key] = match[0].split(":");
       if (match[0].includes(EMatchKeys.note)) {
         return {
-          result: [...references.result, `${key}_${index}_${i}`],
+          result: [
+            ...references.result,
+            generateInsertionId(key, index, iterationIndex),
+          ],
           index: references.index + match.index + match[0].length,
         } as ILineProcessReference;
       }
@@ -284,7 +311,7 @@ export const getSelectedParagraphIndex = (
   return pIndex;
 };
 
-export const filterReferences = (text: string) => {
+export const filterReferencesBasedOnVisibility = (text: string) => {
   const extractedReferences = extractReferences(text);
   return extractedReferences.reduce((references: string[], key: string) => {
     const visible = checkIfVisible(key);

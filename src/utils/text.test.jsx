@@ -1,89 +1,98 @@
 import { isValidElement } from "react";
 import {
-  checkForSubtitle,
-  checkForTitle,
   extractReferences,
-  formatTitleLine,
-  getWordCount,
+  filterReferences,
+  filterReferencesBasedOnVisibility,
+  getSelectedParagraphIndex,
   processLine,
-  removeReferences,
 } from "./text";
+import { render } from "@testing-library/react";
+import { checkIfVisible } from "./dom";
 
-describe("getWordCount", () => {
-  const result = getWordCount("");
-  it("returns a number", () => {
-    expect(typeof result).toBe("number");
-  });
-
-  it("returns the number of words", () => {
-    const count = Math.floor(Math.random() * 30);
-    const phrase = [...new Array(count).keys()].join(" ");
-    expect(getWordCount(phrase)).toBe(count);
-  });
-});
-
-describe("checkForTitle", () => {
-  expect(checkForTitle("# Title")).not.toBeNull();
-  expect(checkForTitle("Title")).toBeNull();
-  expect(checkForTitle("## Title")).toBeNull();
-});
-
-describe("checkForSubtitle", () => {
-  expect(checkForSubtitle("## Title")).not.toBeNull();
-  expect(checkForSubtitle("Title")).toBeNull();
-  expect(checkForSubtitle("# Title")).toBeNull();
-});
-
-describe("formatTitleLine", () => {
-  const result = formatTitleLine("# Title line", 0, true);
-  expect(result.props.children.props.children[0]).toBe("Title line");
-});
-
-describe("remove references", () => {
-  const mock = "note:hola que note:tal va.\nnote:por ahí note:";
-  it("returns a string", () => {
-    const result = removeReferences(mock, []);
-    expect(typeof result).toBe("string");
-  });
-  it("removes only the passed references", () => {
-    const result = removeReferences(mock, ["hola"]);
-    expect(result.includes("note:hola")).toBe(false);
-    expect(result.includes("hola")).toBe(true);
-    expect(result.includes("note:tal")).toBe(true);
-  });
-});
-
-describe("extract references", () => {
-  const mock = "note:hola que note:tal va.\nnote:por ahí note:";
-  it("returns an array of strings", () => {
-    const result = extractReferences(mock);
-    expect(Array.isArray(result)).toBe(true);
-    expect(result.every((e) => typeof e === "string")).toBe(true);
-  });
-});
+jest.mock("./dom", () => ({
+  checkIfVisible: jest.fn(),
+}));
 
 describe("process line", () => {
-  const mock = ["this is the line note:line", 0, false];
   it("returns a react node", () => {
-    const result = processLine(...mock);
+    const result = processLine("this is the line note:line", 0, false);
     expect(isValidElement(result)).toBe(true);
   });
   it("Title shows the correct text", () => {
-    const result = processLine("# Title", 0, false);
-    expect(result.props.children.props.children[0]).toBe("Title");
-    const resultB = processLine("# Title", 0, true);
-    expect(resultB.props.children.props.children[0]).toBe("Title");
+    const { container } = render(processLine("# Title", 0, false));
+    const result = container.querySelector("p.text-title");
+    expect(result).not.toBeNull();
+    expect(result.innerHTML).toBe("<span>Title</span>");
   });
   it("Subtitle shows the correct text", () => {
-    const result = processLine("## Title", 0, false);
-    expect(result.props.children.props.children[0]).toBe("Title");
-    const resultB = processLine("## Title", 0, true);
-    expect(resultB.props.children.props.children[0]).toBe("Title");
+    const { container } = render(processLine("## Title", 0, false));
+    const result = container.querySelector("p.text-subtitle");
+    expect(result).not.toBeNull();
+    expect(result.innerHTML).toBe("<span>Title</span>");
   });
   it("Should return text without decoration", () => {
     const result = processLine("Simple text", 0, false);
     expect(result.props.children[0]).toBe("Simple text");
     const resultB = processLine("Simple text", 0, true);
     expect(resultB.props.children[0]).toBe("Simple text");
+  });
+  it("Should generate a note", () => {
+    const { container } = render(processLine("This is a note:note", 0, false));
+    const result = container.querySelector("span.reference");
+    expect(result).not.toBeNull();
+    expect(result.innerHTML).toBe("note");
+  });
+  it("Should generate a img", () => {
+    const { container } = render(processLine("This is a img:note", 0, false));
+    const result = container.querySelector("img");
+    expect(result).not.toBeNull();
+  });
+});
+
+describe("extractReferences", () => {
+  const text =
+    "Mock line with some note:Notes to test if note:references\n are note:extracted correctly.\nimg:fsfas.fsdafdas";
+  const result = extractReferences(text);
+  it("Extracts all the references", () => {
+    expect(result.length).toBe(3);
+  });
+  it("Formats the references", () => {
+    expect(
+      result.every((r) => {
+        return r.match(/^[A-Záéíóúüïñ0-9]+_[0-9]+_[0-9]+$/i);
+      })
+    ).toBe(true);
+  });
+});
+
+describe("getSelectedParagraphIndex", () => {
+  it("returns the correct paragraph index", () => {
+    const text = "Paragraph 1\nParagraph 2\nParagraph 3";
+    const index = getSelectedParagraphIndex(15, text);
+    expect(index).toBe(1);
+  });
+
+  it("returns the first paragraph index if cursor is at the beginning", () => {
+    const text = "Paragraph 1\nParagraph 2\nParagraph 3";
+    const index = getSelectedParagraphIndex(0, text);
+    expect(index).toBe(0);
+  });
+});
+
+describe("filterReferencesBasedOnVisibility", () => {
+  it("filters visible references correctly", () => {
+    const text = "This is a line with a reference note:ref1.";
+    checkIfVisible.mockReturnValueOnce(true);
+
+    const filteredReferences = filterReferencesBasedOnVisibility(text);
+    expect(filteredReferences).toEqual(["ref1_0_0"]);
+  });
+
+  it("filters out invisible references", () => {
+    const text = "This is a line with a reference note:ref1.";
+    checkIfVisible.mockReturnValueOnce(false);
+
+    const filteredReferences = filterReferencesBasedOnVisibility(text);
+    expect(filteredReferences).toEqual([]);
   });
 });

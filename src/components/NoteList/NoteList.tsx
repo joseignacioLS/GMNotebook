@@ -2,14 +2,14 @@ import React, { useContext, useEffect, useState } from "react";
 import styles from "./notelist.module.scss";
 import { DataContext } from "@/context/data";
 import NoteCard from "./NoteCard";
-import { filterReferences } from "@/utils/text";
+import { filterReferencesBasedOnVisibility } from "@/utils/text";
 
 const NoteList: React.FC = () => {
   const { item } = useContext(DataContext);
   const [references, setReferences] = useState<string[]>([]);
 
   const updateReferences = () => {
-    setReferences(filterReferences(item.text));
+    setReferences(filterReferencesBasedOnVisibility(item.text));
   };
 
   useEffect(() => {
