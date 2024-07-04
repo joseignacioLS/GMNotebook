@@ -3,13 +3,13 @@ import styles from "./pagedisplay.module.scss";
 import { NavigationContext } from "@/context/navigation";
 import { DataContext } from "@/context/data";
 import Button from "../Button/Button";
-import { useProcessText } from "@/hooks/useProcessText";
+import { processText } from "@/utils/text";
 
 const PageDisplay: React.FC = () => {
   const { item, updateSelectedNote } = useContext(DataContext);
   const { path, navBack } = useContext(NavigationContext);
 
-  const displayText = useProcessText(item.text, false);
+  const displayText = processText(item.text, false);
 
   return (
     <div className={`${styles.pageDisplay}`}>

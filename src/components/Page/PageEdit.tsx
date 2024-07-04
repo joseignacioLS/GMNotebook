@@ -1,7 +1,11 @@
 import React, { useContext, useEffect, useState } from "react";
 import styles from "./pageedit.module.scss";
 import { DataContext } from "@/context/data";
-import { extractReferences, getSelectedParagraphIndex } from "@/utils/text";
+import {
+  cleanTextSpaces,
+  extractReferences,
+  getSelectedParagraphIndex,
+} from "@/utils/text";
 import Input from "../Input/Input";
 
 const PageEdit: React.FC = () => {
@@ -19,7 +23,10 @@ const PageEdit: React.FC = () => {
     showInTree: data[selectedNote]?.showInTree || false,
   });
 
-  const handleUpdateData = (key: string, value: any) => {
+  const handleUpdateData = (key: string, value: string | boolean) => {
+    if (typeof value === "string") {
+      value = cleanTextSpaces(value);
+    }
     setInput((oldValue) => {
       return { ...oldValue, [key]: value };
     });

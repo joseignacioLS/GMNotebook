@@ -1,8 +1,6 @@
-import { IReference } from "@/context/constants";
 import { ReactElement } from "react";
-import Reference from "@/components/Page/Reference";
-import { checkIfVisible } from "./dom";
-import { EMatchKeys, regex, specialMatchesRegex } from "./constans";
+import { IInsertionObject, checkIfVisible, processLine } from "./dom";
+import { EMatchKeys, regex } from "./constans";
 
 export interface ILineProcess {
   result: (string | ReactElement)[];
@@ -13,84 +11,6 @@ interface ILineProcessReference {
   result: string[];
   index: number;
 }
-
-interface IInsertionObject {
-  innerHTML: string;
-  key?: string;
-  id?: string;
-}
-
-// const getWordCount = (text: string): number => {
-//   return text?.split(" ").length;
-// };
-
-const checkForTitle = (line: string) => {
-  return line.match(regex.title);
-};
-
-const checkForSubtitle = (line: string) => {
-  return line.match(regex.subtitle);
-};
-
-const formatTitleLine = (line: string, index: number, plain: boolean) => {
-  return (
-    <p key={line} id={`p-${index}`} className="text-title">
-      {processLine(line.slice(2), index, plain, true)}
-    </p>
-  );
-};
-
-const formatSubtitleLine = (line: string, index: number, plain: boolean) => {
-  return (
-    <p key={line} id={`p-${index}`} className="text-subtitle">
-      {processLine(line.slice(3), index, plain, true)}
-    </p>
-  );
-};
-
-// const generateInsertionRegex = (
-//   key: string,
-//   value: string,
-//   flags: string = ""
-// ) => {
-//   return new RegExp(`${key}\:${value}`, flags);
-// };
-
-// const removeReferences = (
-//   text: string,
-//   references: string[]
-// ): string => {
-//   references.forEach((refe: string) => {
-//     text = text.replace(generateInsertionRegex("note", refe, "g"), refe);
-//   });
-//   return text;
-// };
-
-const generateItemFromMatch = (
-  matchKey: string,
-  key: string,
-  id: string,
-  plain: boolean
-) => {
-  if (matchKey === EMatchKeys.note) {
-    return (
-      <Reference
-        key={id}
-        reference={
-          {
-            id,
-            visible: true,
-            key,
-          } as IReference
-        }
-        naked={plain}
-      ></Reference>
-    );
-  } else if (matchKey === EMatchKeys.image) {
-    return <img key={id} src={key} />;
-  }
-  return <>{key}</>;
-};
 
 const generateInsertionId = (
   key: string,
@@ -110,11 +30,13 @@ const generateInsertionObject = (
 ): IInsertionObject[] => {
   const [, key] = match[0].split(matchKey);
   return [
+    // text between previous match and current
     {
       key: undefined,
       id: undefined,
       innerHTML: line.slice(prevIndex, prevIndex + (match.index || 0)),
     },
+    // insertion
     {
       key,
       id: generateInsertionId(key, index, iterationIndex),
@@ -174,7 +96,7 @@ const getArrayOfInsertions = (
       index: 0,
     }
   );
-  // add end of text
+  // add end of text after last insertion
   result?.result.push({
     key: undefined,
     id: undefined,
@@ -184,50 +106,15 @@ const getArrayOfInsertions = (
   return result.result;
 };
 
-const splitLineByInsertions = (
+export const splitLineByInsertions = (
   line: string,
   index: number
 ): IInsertionObject[] => {
-  const specialMatches = line.match(specialMatchesRegex);
+  const specialMatches = line.match(regex.insertions);
   if (!specialMatches) {
     return [{ innerHTML: line, id: undefined, key: undefined }];
   }
   return getArrayOfInsertions(line, specialMatches, index);
-};
-
-const formatSplittedLine = (
-  lineByInsertions: IInsertionObject[],
-  plain: boolean
-) => {
-  return lineByInsertions.map((item: any) => {
-    if (item.id === undefined) return item.innerHTML;
-    return generateItemFromMatch(item.innerHTML, item.key, item.id, plain);
-  });
-};
-
-export const processLine = (
-  line: string,
-  index: number,
-  plain: boolean,
-  wrapped: boolean = false
-) => {
-  if (checkForTitle(line)) {
-    return formatTitleLine(line, index, plain);
-  }
-  if (checkForSubtitle(line)) {
-    return formatSubtitleLine(line, index, plain);
-  }
-
-  const lineByInsertions = splitLineByInsertions(line, index);
-  const formatedLine = formatSplittedLine(lineByInsertions, plain);
-
-  return wrapped ? (
-    <span key={line + index}>{formatedLine}</span>
-  ) : (
-    <p key={line + index} id={`p-${index}`}>
-      {formatedLine}
-    </p>
-  );
 };
 
 export const extractReferences = (text: string): string[] => {
@@ -323,4 +210,14 @@ export const filterReferencesBasedOnVisibility = (text: string) => {
     if (alreadyVisible) return references;
     return [...references, key] as string[];
   }, [] as string[]);
+};
+
+export const processText = (text: string, plain: boolean) => {
+  return text.split("\n").map((line, i) => {
+    return processLine(line, i, plain);
+  });
+};
+
+export const cleanTextSpaces = (text: string) => {
+  return text.replace(/\n +$/, "\n").replace(/ +/g, " ");
 };

@@ -24,7 +24,7 @@ main {
   padding: $gap_l;
   background-color: $palette_grey_4;
   color: $palette_grey_0;
-  transition: color .2s, background-color .2s;
+  transition: color 0.2s, background-color 0.2s;
 }
 
 h1,
@@ -36,7 +36,6 @@ h2 {
     display: none;
   }
 }
-
 
 p {
   min-height: 1.5ch;
@@ -83,25 +82,31 @@ img {
 .text-title {
   font-weight: bold;
   font-size: 125%;
-  opacity: .8;
+  opacity: 0.8;
 }
 
 .text-subtitle {
   font-weight: bold;
   font-size: 112%;
-  opacity: .6;
+  opacity: 0.6;
+}
+
+.text-list {
+  padding-left: $gap_l;
+  &::before {
+    content: "• ";
+    padding-right: $gap_m;
+  }
 }
 
 .edit-p {
-  background-color: rgba($palette_alert, .4);
+  background-color: rgba($palette_alert, 0.4);
   border-radius: $border_radius_m;
 }
-
 
 main {
   &.dark {
     background-color: $palette_grey_0;
-
   }
 }
 
@@ -110,7 +115,7 @@ main {
     color: $palette_grey_4;
   }
 
-  label>span {
+  label > span {
     color: white;
   }
 }

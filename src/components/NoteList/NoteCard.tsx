@@ -4,7 +4,7 @@ import React, { useContext } from "react";
 import styles from "./notecard.module.scss";
 import { NavigationContext } from "@/context/navigation";
 import { generateColor } from "@/utils/color";
-import { useProcessText } from "@/hooks/useProcessText";
+import { processText } from "@/utils/text";
 
 interface IProps {
   itemKey: string;
@@ -20,7 +20,7 @@ const NoteCard: React.FC<IProps> = ({ itemKey }) => {
   const title = data[key]?.title || "";
   const text = data[key]?.text || "";
 
-  const displayShortText = useProcessText(
+  const displayShortText = processText(
     text.split(" ").length > 25
       ? text.split(" ").slice(0, 25).join(" ") + " ..."
       : text,
