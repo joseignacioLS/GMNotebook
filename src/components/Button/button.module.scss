@@ -1,6 +1,7 @@
 @import "../../styles/variables";
 
 .button {
+  position: relative;
   background-color: transparent;
   cursor: pointer;
   min-height: 2rem;
@@ -21,10 +22,6 @@
   &:disabled {
     opacity: 0.25;
     cursor: default;
-  }
-
-  &:hover {
-    text-shadow: 1px 1px rgba($palette_grey_2, 1);
   }
 
   &:hover * {

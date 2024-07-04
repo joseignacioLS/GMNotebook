@@ -130,8 +130,8 @@ const PageEdit: React.FC = () => {
       />
       <Input
         value={input.showInTree}
-        onClick={(e) => handleUpdateData("showInTree", e.currentTarget.checked)}
-        label={" Show in Tree?"}
+        onClick={(e) => handleUpdateData("showInTree", !input.showInTree)}
+        label={" Show in tree?"}
         tooltip={"Decide if this note is shown in the tree"}
         type="checkbox"
       />

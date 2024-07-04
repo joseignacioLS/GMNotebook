@@ -39,6 +39,7 @@ const Button = ({
       className={`${styles.button} ${addClass}`}
       onClick={onClick}
       disabled={disabled}
+      aria-label="hoola"
     >
       {children}
     </button>

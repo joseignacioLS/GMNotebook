@@ -1,4 +1,5 @@
 import React from "react";
+import ToggleButton from "../Button/ToggleButton";
 interface IProps {
   value: any;
   onClick: (e: any) => void;
@@ -13,12 +14,22 @@ const Input: React.FC<IProps> = ({
   tooltip,
   type = "text",
 }) => {
-  return (
-    <label>
-      <span data-help={tooltip}>{label}</span>
-      <input value={value} onChange={onClick} type={type} />
-    </label>
-  );
+  switch (type) {
+    case "text":
+      return (
+        <label>
+          <span data-help={tooltip}>{label}</span>
+          <input value={value} onChange={onClick} type={type} />
+        </label>
+      );
+    case "checkbox":
+      return (
+        <label>
+          <span data-help={tooltip}>{label}</span>
+          <ToggleButton isOn={value} onClick={onClick}></ToggleButton>;
+        </label>
+      );
+  }
 };
 
 export default Input;

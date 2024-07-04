@@ -14,8 +14,8 @@ const ToggleButton: React.FC<IProps> = ({
   isOn,
   leftOption,
   rightOption,
-  leftButton,
-  rightButton,
+  leftButton = <div className="roundBlob alert"></div>,
+  rightButton = <div className="roundBlob"></div>,
   onClick,
 }) => {
   return (
