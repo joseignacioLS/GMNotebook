@@ -8,8 +8,6 @@
   left: $gap_m;
   bottom: $gap_m;
 
-  padding: $gap_m;
-
   display: grid;
   grid-template-rows: 2rem;
   align-items: end;
@@ -21,17 +19,17 @@
 
   box-shadow: $default_dark_shadow;
 
-  > div {
+  >div {
     display: flex;
     flex-direction: column;
     justify-content: flex-end;
-    gap: $gap_m;
+    gap: $gap_s;
     overflow: hidden;
     height: 100%;
   }
 
   &:hover {
-    grid-template-rows: 12rem;
+    grid-template-rows: 11rem;
   }
 
   input,
@@ -39,7 +37,7 @@
     position: relative;
     flex-shrink: 0;
     width: 2rem;
-    height: 2rem;
+    aspect-ratio: 1 / 1;
     font-size: $font_size_m;
     border: 0;
     cursor: pointer;

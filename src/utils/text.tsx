@@ -217,7 +217,3 @@ export const processText = (text: string, plain: boolean) => {
     return processLine(line, i, plain);
   });
 };
-
-export const cleanTextSpaces = (text: string) => {
-  return text.replace(/\n +$/, "\n").replace(/ +/g, " ");
-};

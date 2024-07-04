@@ -1,11 +1,7 @@
 import React, { useContext, useEffect, useState } from "react";
 import styles from "./pageedit.module.scss";
 import { DataContext } from "@/context/data";
-import {
-  cleanTextSpaces,
-  extractReferences,
-  getSelectedParagraphIndex,
-} from "@/utils/text";
+import { extractReferences, getSelectedParagraphIndex } from "@/utils/text";
 import Input from "../Input/Input";
 
 const PageEdit: React.FC = () => {
@@ -24,9 +20,6 @@ const PageEdit: React.FC = () => {
   });
 
   const handleUpdateData = (key: string, value: string | boolean) => {
-    if (typeof value === "string") {
-      value = cleanTextSpaces(value);
-    }
     setInput((oldValue) => {
       return { ...oldValue, [key]: value };
     });
