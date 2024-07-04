@@ -13,7 +13,7 @@ interface IProps {
 }
 
 const DataActions: React.FC<IProps> = ({ darkMode, setDarkMode }) => {
-  const { updateData, data, resetData, setFileHandle } =
+  const { updateData, data, resetData, updateFileHandle } =
     useContext(DataContext);
   const { setContent } = useContext(modalContext);
 
@@ -41,11 +41,9 @@ const DataActions: React.FC<IProps> = ({ darkMode, setDarkMode }) => {
   const handleLoad = async (e: any) => {
     e.preventDefault();
     const fileHandle = await getFileHandle();
-    setFileHandle(fileHandle);
-    const file = await fileHandle.getFile();
-    const text = await file.text();
-    updateData(JSON.parse(text) as any, true);
+    updateFileHandle(fileHandle);
   };
+
   return (
     <div className={styles.dataActions}>
       <div className={styles.helper}>

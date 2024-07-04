@@ -26,7 +26,7 @@ interface contextOutputI {
   updateSelectedNote: any;
   editMode: boolean;
   setEditMode: any;
-  setFileHandle: any;
+  updateFileHandle: any;
 }
 
 export const DataContext = createContext<contextOutputI>({
@@ -42,7 +42,7 @@ export const DataContext = createContext<contextOutputI>({
   setTree: () => {},
   updateSelectedNote: () => {},
   setEditMode: () => {},
-  setFileHandle: () => {},
+  updateFileHandle: () => {},
 });
 
 export const DataProvider = ({ children }: { children: ReactElement }) => {
@@ -56,15 +56,24 @@ export const DataProvider = ({ children }: { children: ReactElement }) => {
 
   const { path, resetPath, getCurrentPage } = useContext(NavigationContext);
 
-  const updateData = (value: dataI, resetEntry: boolean = true): void => {
+  const updateData = (
+    value: dataI,
+    resetEntry: boolean = true,
+    saveToFile: boolean = false
+  ): void => {
     const cleanData = cleanUpData(value);
-    setTimeout(async () => {
-      setData(JSON.parse(JSON.stringify(cleanData)));
-      setTree(generateDataTree(cleanData));
-      if (resetEntry) resetPath();
-      // saveToLocalStorage(cleanData);
-      if (fileHandle) saveToFileHandle(fileHandle, cleanData);
-    }, 0);
+    setData(JSON.parse(JSON.stringify(cleanData)));
+    setTree(generateDataTree(cleanData));
+    if (resetEntry) resetPath();
+    // saveToLocalStorage(cleanData);
+    if (fileHandle && saveToFile) saveToFileHandle(fileHandle, cleanData);
+  };
+
+  const updateFileHandle = async (newFileHandle: FileSystemFileHandle) => {
+    setFileHandle(newFileHandle);
+    const file = await newFileHandle.getFile();
+    const text = await file.text();
+    updateData(JSON.parse(text) as dataI, true, false);
   };
 
   const cleanUpData = (value: dataI): dataI => {
@@ -128,6 +137,7 @@ export const DataProvider = ({ children }: { children: ReactElement }) => {
   useEffect(() => {
     if (data?.RootPage === undefined) {
       updateData(tutorial);
+      setFileHandle(null);
       return;
     }
     const currentPage = getCurrentPage();
@@ -170,7 +180,7 @@ export const DataProvider = ({ children }: { children: ReactElement }) => {
         setTree,
         updateSelectedNote,
         setEditMode,
-        setFileHandle,
+        updateFileHandle,
       }}
     >
       {children}
