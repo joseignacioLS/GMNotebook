@@ -5,11 +5,27 @@ import Button from "../Button/Button";
 
 const Modal: React.FC = () => {
   const { isVisible, content, closeModal } = useContext(modalContext);
+
+  const handleClose = (e: React.MouseEvent<HTMLElement>) => {
+    e.preventDefault();
+    e.stopPropagation();
+    closeModal();
+  };
   if (!isVisible) return <></>;
   return (
-    <div className={styles.modalContainer}>
-      <div className={styles.modal}>
-        <Button addClass={styles.closeButton} naked={true} onClick={closeModal}>
+    <div className={styles.modalContainer} onClick={handleClose}>
+      <div
+        className={styles.modal}
+        onClick={(e) => {
+          e.preventDefault();
+          e.stopPropagation();
+        }}
+      >
+        <Button
+          addClass={styles.closeButton}
+          naked={true}
+          onClick={handleClose}
+        >
           <span className={styles["material-symbols-outlined"]}>close</span>
         </Button>
         {content}

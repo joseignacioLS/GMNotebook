@@ -71,14 +71,16 @@ const DataActions: React.FC<IProps> = ({ darkMode, setDarkMode }) => {
         >
           <span className={styles["material-symbols-outlined"]}>download</span>
         </Button>
-        <input
-          data-tip={"Upload"}
-          type="file"
-          id="file"
-          onClick={(e: any) => {
-            handleLoad(e);
-          }}
-        ></input>
+        <Button onClick={() => {}} naked={true}>
+          <input
+            data-tip={"Upload"}
+            type="file"
+            id="file"
+            onClick={(e: any) => {
+              handleLoad(e);
+            }}
+          ></input>
+        </Button>
       </div>
     </div>
   );

@@ -2,6 +2,7 @@ import Reference from "@/components/Page/Reference";
 import { EMatchKeys, specialLinesConfig } from "./constans";
 import { splitLineByInsertions } from "./text";
 import { IReference } from "@/context/constants";
+import Image from "@/components/Page/Image";
 
 export interface IInsertionObject {
   innerHTML: string;
@@ -30,7 +31,7 @@ const generateItemFromMatch = (
       ></Reference>
     );
   } else if (matchKey === EMatchKeys.image) {
-    return <img key={id} src={key} />;
+    return <Image key={id} src={key} />;
   }
   return <>{key}</>;
 };

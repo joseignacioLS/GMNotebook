@@ -8,6 +8,11 @@
   border: 0;
   flex-shrink: 0;
 
+  transition: text-shadow 0.2s;
+  > * {
+    transition: text-shadow 0.2s;
+  }
+
   img {
     width: 100%;
     object-fit: contain;
@@ -16,5 +21,13 @@
   &:disabled {
     opacity: 0.25;
     cursor: default;
+  }
+
+  &:hover {
+    text-shadow: 1px 1px rgba($palette_grey_2, 1);
+  }
+
+  &:hover * {
+    text-shadow: 1px 1px rgba($palette_grey_2, 1);
   }
 }

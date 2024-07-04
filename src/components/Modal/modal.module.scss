@@ -13,9 +13,12 @@
   justify-content: center;
   align-items: center;
   z-index: 100;
+
+  cursor: pointer;
 }
 
 .modal {
+  cursor: default;
   position: relative;
   padding: $gap_xl;
   border-radius: $border_radius_l;
@@ -30,7 +33,6 @@
   h4,
   h5,
   div {
-
     color: $palette_grey_0;
   }
 
