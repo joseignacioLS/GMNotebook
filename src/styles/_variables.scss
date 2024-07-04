@@ -12,6 +12,7 @@ $palette_green_2: rgb(127, 255, 212);
 
 $palette_alert: rgb(255, 69, 0);
 
+$gap_xs: calc($_gap_base / 4);
 $gap_s: calc($_gap_base / 2);
 $gap_m: $_gap_base;
 $gap_l: calc($_gap_base * 2);
