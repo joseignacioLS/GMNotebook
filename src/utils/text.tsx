@@ -52,7 +52,7 @@ const getFullInsertionMatch = (
 ): RegExpMatchArray | null => {
   const regexRef: { [key in EMatchKeys]: RegExp } = {
     [EMatchKeys.note]: regex.noteInsertion,
-    [EMatchKeys.image]: regex.imageInsergion,
+    [EMatchKeys.image]: regex.imageInsertion,
   };
   const selectedRegex = new RegExp(regexRef[matchKey as EMatchKeys], "i");
   const match = line.slice(index).match(selectedRegex);
