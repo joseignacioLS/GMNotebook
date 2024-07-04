@@ -1,4 +1,4 @@
-$_gap_base: .5rem;
+$_gap_base: 0.5rem;
 $_font_size_base: 1rem;
 
 $palette_grey_0: rgb(16, 16, 16);
@@ -18,13 +18,15 @@ $gap_l: calc($_gap_base * 2);
 $gap_xl: calc($_gap_base * 4);
 $gap_xxl: calc($_gap_base * 8);
 
-$border_radius_m: .5rem;
+$border_radius_m: 0.5rem;
 $border_radius_l: 1rem;
 $border_radius_total: 1000px;
 
-$font_size_s: calc($_font_size_base * .75);
+$font_size_s: calc($_font_size_base * 0.75);
 $font_size_m: $_font_size_base;
 $font_size_l: calc($_font_size_base * 1.5);
 $font_size_xl: calc($_font_size_base * 2);
 
 $media_phone: 800px;
+
+$default_dark_shadow: 4px 4px rgba($palette_grey_0, 0.5);

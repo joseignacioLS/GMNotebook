@@ -59,7 +59,7 @@ export const DataProvider = ({ children }: { children: ReactElement }) => {
   const updateData = (
     value: dataI,
     resetEntry: boolean = true,
-    saveToFile: boolean = false
+    saveToFile: boolean = true
   ): void => {
     const cleanData = cleanUpData(value);
     setData(JSON.parse(JSON.stringify(cleanData)));

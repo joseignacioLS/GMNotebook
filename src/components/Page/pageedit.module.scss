@@ -20,14 +20,15 @@
 
     span {
       position: relative;
-
       &:hover::after {
         content: attr(data-help);
         position: absolute;
         display: inline-block;
         left: calc(100% + $gap_m);
         top: calc(100% + $gap_m);
+        color: $palette_grey_0;
         background-color: $palette_green_2;
+        box-shadow: $default_dark_shadow;
         padding: $gap_m $gap_l;
         border-radius: $gap_m;
         text-align: left;

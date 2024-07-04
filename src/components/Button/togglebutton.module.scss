@@ -17,7 +17,7 @@
     background-color: $palette_grey_4;
     border-radius: $border_radius_total;
 
-    box-shadow: 4px 4px rgba($palette_grey_0, .5);
+    box-shadow: $default_dark_shadow;
 
     .toggleKnob {
       position: absolute;
