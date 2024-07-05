@@ -3,8 +3,8 @@ import React, { useContext } from "react";
 
 import styles from "./notecard.module.scss";
 import { NavigationContext } from "@/context/navigation";
-import { generateColor } from "@/utils/color";
 import { processText } from "@/utils/text";
+import { colorContext } from "@/context/colors";
 
 interface IProps {
   itemKey: string;
@@ -13,6 +13,7 @@ interface IProps {
 
 const NoteCard: React.FC<IProps> = ({ itemKey, visible }) => {
   const { data, selectedNote, updateSelectedNote } = useContext(DataContext);
+  const { generateColor } = useContext(colorContext);
   const { navigateTo } = useContext(NavigationContext);
 
   const key = itemKey.split("_")[0];

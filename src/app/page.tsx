@@ -4,16 +4,17 @@ import Modal from "@/components/Modal/Modal";
 import NoteBook from "../components/NoteBook";
 import DataActions from "@/components/DataActions";
 
-import { useState } from "react";
+import { useContext } from "react";
+import { colorContext } from "@/context/colors";
 
 export default function Home() {
-  const [darkMode, setDarkMode] = useState<boolean>(true);
+  const { darkMode } = useContext(colorContext);
 
   return (
     <main className={darkMode ? "dark" : "white"}>
       <NoteBook />
       <Modal />
-      <DataActions darkMode={darkMode} setDarkMode={setDarkMode} />
+      <DataActions />
     </main>
   );
 }

@@ -6,15 +6,10 @@ import { modalContext } from "@/context/modal";
 import Tree from "./Tree";
 import Button, { behaviourEnum } from "./Button/Button";
 import ModalTemplateConfirm from "./Modal/ModalDefaults/ModalTemplateConfirm";
+import ModalPalette from "./Modal/ModalDefaults/ModalPalette";
 
-interface IProps {
-  darkMode: boolean;
-  setDarkMode: any;
-}
-
-const DataActions: React.FC<IProps> = ({ darkMode, setDarkMode }) => {
-  const { updateData, data, resetData, updateFileHandle } =
-    useContext(DataContext);
+const DataActions: React.FC = () => {
+  const { data, resetData, updateFileHandle } = useContext(DataContext);
   const { setContent } = useContext(modalContext);
 
   const openModalReset = () => {
@@ -38,6 +33,10 @@ const DataActions: React.FC<IProps> = ({ darkMode, setDarkMode }) => {
     );
   };
 
+  const handleUpdatePalette = () => {
+    setContent(<ModalPalette />);
+  };
+
   const handleLoad = async (e: any) => {
     e.preventDefault();
     const fileHandle = await getFileHandle();
@@ -47,15 +46,8 @@ const DataActions: React.FC<IProps> = ({ darkMode, setDarkMode }) => {
   return (
     <div className={styles.dataActions}>
       <div className={styles.helper}>
-        <Button
-          naked={true}
-          onClick={() => {
-            setDarkMode((state: boolean) => !state);
-          }}
-        >
-          <span className={styles["material-symbols-outlined"]}>
-            {darkMode ? "dark_mode" : "light_mode"}
-          </span>
+        <Button naked={true} onClick={handleUpdatePalette}>
+          <span className={styles["material-symbols-outlined"]}>palette</span>
         </Button>
         <Button naked={true} onClick={openModalReset}>
           <span className={styles["material-symbols-outlined"]}>history</span>

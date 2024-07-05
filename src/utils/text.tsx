@@ -217,3 +217,9 @@ export const processText = (text: string, plain: boolean) => {
     return processLine(line, i, plain);
   });
 };
+
+export const stringToNumber = (input: string): number => {
+  return input.split("").reduce((acc: number, curr: string) => {
+    return acc + curr.charCodeAt(0);
+  }, 0);
+};

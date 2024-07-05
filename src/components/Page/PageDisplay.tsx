@@ -4,16 +4,21 @@ import { NavigationContext } from "@/context/navigation";
 import { DataContext } from "@/context/data";
 import Button from "../Button/Button";
 import { processText } from "@/utils/text";
+import { colorContext } from "@/context/colors";
 
 const PageDisplay: React.FC = () => {
   const { item, updateSelectedNote } = useContext(DataContext);
   const { path, navBack } = useContext(NavigationContext);
+  const { generateColor } = useContext(colorContext);
 
   const displayText = processText(item.text, false);
 
   return (
     <div className={`${styles.pageDisplay}`}>
-      <div className={styles.titleContainer}>
+      <div
+        className={styles.titleContainer}
+        style={{ backgroundColor: generateColor(item.key) }}
+      >
         <Button
           naked={true}
           onClick={() => {

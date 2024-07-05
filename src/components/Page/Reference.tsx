@@ -3,7 +3,7 @@ import styles from "./reference.module.scss";
 import { IReference } from "@/context/constants";
 import { DataContext } from "@/context/data";
 import { NavigationContext } from "@/context/navigation";
-import { generateColor } from "@/utils/color";
+import { colorContext } from "@/context/colors";
 
 interface IProps {
   reference: IReference;
@@ -12,6 +12,7 @@ interface IProps {
 
 const Reference: React.FC<IProps> = ({ reference, naked = false }) => {
   const { selectedNote, updateSelectedNote, data } = useContext(DataContext);
+  const { generateColor } = useContext(colorContext);
   const { navigateTo } = useContext(NavigationContext);
 
   return (

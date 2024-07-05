@@ -2,31 +2,40 @@ import React from "react";
 import ToggleButton from "../Button/ToggleButton";
 interface IProps {
   value: any;
-  onClick: (e: any) => void;
+  onChange: (e: any) => void;
   label: string;
-  tooltip: string;
+  tooltip?: string;
   type?: string;
+  config?: any;
 }
 const Input: React.FC<IProps> = ({
   value,
-  onClick,
+  onChange,
   label,
   tooltip,
   type = "text",
+  config = {},
 }) => {
   switch (type) {
     case "text":
       return (
         <label>
           <span data-help={tooltip}>{label}</span>
-          <input value={value} onChange={onClick} type={type} />
+          <input value={value} onChange={onChange} type={type} />
         </label>
       );
     case "checkbox":
       return (
         <label>
           <span data-help={tooltip}>{label}</span>
-          <ToggleButton isOn={value} onClick={onClick}></ToggleButton>;
+          <ToggleButton isOn={value} onClick={onChange}></ToggleButton>;
+        </label>
+      );
+    case "range":
+      return (
+        <label>
+          <span data-help={tooltip}>{label}</span>
+          <input type="range" value={value} onChange={onChange} {...config} />
         </label>
       );
   }

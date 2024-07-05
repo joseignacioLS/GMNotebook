@@ -2,15 +2,16 @@ import React, { ReactElement, useContext, useEffect } from "react";
 import styles from "./tree.module.scss";
 import { DataContext } from "@/context/data";
 import { leafI } from "@/context/constants";
-import { generateColor } from "@/utils/color";
 import { NavigationContext } from "@/context/navigation";
 import { modalContext } from "@/context/modal";
 import { relaxTree } from "@/utils/tree";
+import { colorContext } from "@/context/colors";
 
 const Tree: React.FC = () => {
   const { data, tree, setTree, updateSelectedNote } = useContext(DataContext);
   const { navigateTo } = useContext(NavigationContext);
   const { closeModal } = useContext(modalContext);
+  const { generateColor } = useContext(colorContext);
 
   const relaxTreeMore = (): void => {
     setTree((oldValue: leafI[]) => relaxTree(oldValue));
