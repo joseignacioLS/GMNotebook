@@ -109,13 +109,13 @@ const PageEdit: React.FC = () => {
     <div className={`${styles.pageEdit} ${!editMode && styles.height0}`}>
       <Input
         value={input.title}
-        onClick={(e) => handleUpdateData("title", e.currentTarget.value)}
+        onChange={(e) => handleUpdateData("title", e.currentTarget.value)}
         label={"Title"}
         tooltip={"This is the title of the page"}
       />
       <Input
         value={input.display}
-        onClick={(e) => handleUpdateData("display", e.currentTarget.value)}
+        onChange={(e) => handleUpdateData("display", e.currentTarget.value)}
         label={"Display"}
         tooltip={
           "This will substitute the note:keyword wherever this page is referenced as a note."
@@ -123,7 +123,7 @@ const PageEdit: React.FC = () => {
       />
       <Input
         value={input.showInTree}
-        onClick={(e) => handleUpdateData("showInTree", !input.showInTree)}
+        onChange={(e) => handleUpdateData("showInTree", !input.showInTree)}
         label={" Show in tree?"}
         tooltip={"Decide if this note is shown in the tree"}
         type="checkbox"
