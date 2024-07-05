@@ -34,7 +34,7 @@ export const colorContext = createContext<colorOutputI>({
 export const ColorProvider = ({ children }: { children: ReactElement }) => {
   const [darkMode, setDarkMode] = useState(true);
   const [paletteConfig, setPaletteConfig] = useState({
-    hue: undefined,
+    hue: 0,
     range: 360,
     saturation: 20,
     luminosity: 40,
@@ -60,15 +60,25 @@ export const ColorProvider = ({ children }: { children: ReactElement }) => {
   const updatePaletteConfig = (key: string, value: number) => {
     setPaletteConfig((oldState) => {
       const newState = { ...oldState, [key]: value };
+      console.log(newState);
       saveToLocalStorage(newState, "colorConfig");
       return newState;
     });
+  };
+
+  const checkPaletteConfig = (config: any) => {
+    if (config.hue === undefined) return false;
+    if (config.range === undefined) return false;
+    if (config.saturation === undefined) return false;
+    if (config.luminosity === undefined) return false;
+    return true;
   };
 
   const retrieveColorConfig = () => {
     const retrieved = retrieveLocalStorage("colorConfig");
     if (!retrieved) return;
     const newConfig = JSON.parse(retrieved);
+    if (!checkPaletteConfig(newConfig)) return;
     setPaletteConfig(newConfig);
   };
 
