@@ -8,11 +8,11 @@ import { processText } from "@/utils/text";
 
 interface IProps {
   itemKey: string;
+  visible: boolean;
 }
 
-const NoteCard: React.FC<IProps> = ({ itemKey }) => {
-  const { data, selectedNote, updateSelectedNote, editMode } =
-    useContext(DataContext);
+const NoteCard: React.FC<IProps> = ({ itemKey, visible }) => {
+  const { data, selectedNote, updateSelectedNote } = useContext(DataContext);
   const { navigateTo } = useContext(NavigationContext);
 
   const key = itemKey.split("_")[0];
@@ -32,18 +32,20 @@ const NoteCard: React.FC<IProps> = ({ itemKey }) => {
       id={`note-${key.split("_")[0]}`}
       className={`${styles.note} ${
         itemKey === selectedNote && styles.selected
-      } ${styles.visibleNote}`}
+      } ${visible && styles.visibleNote}`}
       style={{ backgroundColor: generateColor(key) }}
     >
-      <h2
-        onClick={() => {
-          updateSelectedNote(key);
-          navigateTo(key || "");
-        }}
-      >
-        {title}
-      </h2>
-      {displayShortText}
+      <div>
+        <h2
+          onClick={() => {
+            updateSelectedNote(key);
+            navigateTo(key || "");
+          }}
+        >
+          {title}
+        </h2>
+        {displayShortText}
+      </div>
     </div>
   );
 };

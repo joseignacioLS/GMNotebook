@@ -8,11 +8,17 @@
   height: 100%;
   column-gap: $gap_m;
 
+  transition: grid-template-columns 0.2s;
+
   .editButtonToggle {
     position: absolute;
     bottom: $gap_m;
     right: $gap_m;
     z-index: 10;
+  }
+
+  &.referenceLess {
+    grid-template-columns: 1fr 0fr;
   }
 }
 

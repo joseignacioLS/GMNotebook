@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import NoteList from "./NoteList/NoteList";
 
 import PageEdit from "./Page/PageEdit";
@@ -8,16 +8,51 @@ import ToggleButton from "./Button/ToggleButton";
 
 import styles from "./notebook.module.scss";
 import PageDisplay from "./Page/PageDisplay";
+import {
+  extractReferences,
+  filterReferencesBasedOnVisibility,
+} from "@/utils/text";
 
 const NoteBook: React.FC = () => {
   const { editMode, updateEditMode, updateSelectedNote } =
     useContext(DataContext);
   const { path } = useContext(NavigationContext);
 
+  const { item } = useContext(DataContext);
+  const [references, setReferences] = useState<{
+    total: string[];
+    visible: string[];
+  }>({
+    total: [],
+    visible: [],
+  });
+
+  const updateReferences = () => {
+    const totalReferences = extractReferences(item.text);
+    const visibleReferences = filterReferencesBasedOnVisibility(item.text);
+    setReferences({ total: totalReferences, visible: visibleReferences });
+  };
+
+  useEffect(() => {
+    updateReferences();
+    document
+      .querySelector("#text")
+      ?.addEventListener("scroll", updateReferences);
+    return () => {
+      document
+        .querySelector("#text")
+        ?.removeEventListener("scroll", updateReferences);
+    };
+  }, [item.text]);
+
   return (
-    <div className={styles.notebook}>
+    <div
+      className={`${styles.notebook} ${
+        references.total.length < 1 && !editMode && styles.referenceLess
+      }`}
+    >
       <PageDisplay />
-      {editMode ? <PageEdit /> : <NoteList />}
+      {editMode ? <PageEdit /> : <NoteList references={references} />}
       <div className={styles.editButtonToggle}>
         <ToggleButton
           onClick={() => {

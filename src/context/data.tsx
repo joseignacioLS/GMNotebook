@@ -162,7 +162,7 @@ export const DataProvider = ({ children }: { children: ReactElement }) => {
   // }, []);
 
   useEffect(() => {
-    setTimeout(() => updateEditMode(false), 0);
+    updateEditMode(false);
   }, [path]);
 
   return (
