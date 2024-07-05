@@ -22,6 +22,7 @@ main {
   height: 100%;
   width: 100%;
   padding: $gap_l;
+  padding-bottom: 0;
   background-color: $palette_grey_4;
   color: $palette_grey_0;
   transition: color 0.2s, background-color 0.2s;

@@ -219,7 +219,7 @@ export const processText = (text: string, plain: boolean) => {
 };
 
 export const stringToNumber = (input: string): number => {
-  return input.split("").reduce((acc: number, curr: string) => {
-    return acc + curr.charCodeAt(0);
-  }, 0);
+  return input.split("").reduce((acc: number, curr: string, i: number) => {
+    return acc * (curr.charCodeAt(0) / (i + 1));
+  }, 1);
 };

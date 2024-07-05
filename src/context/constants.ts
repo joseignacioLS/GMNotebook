@@ -64,14 +64,14 @@ export const tutorial: dataI = {
   },
   actions: {
     title: "Actions",
-    text: '# App theme\nSwitch between ligth and dark theme\n# Reset\nCome back to this tutorial anytime you want. But be careful to save your progress before!\n# Tree view\nWhen editing a note, you can toggle a "show in tree" property. If checked, a tree of connections will be generated in this view.\n# Save\nDownload the notebook as a json file, so you can keep your progress\n# Upload\nUpload a previously saved notebook, keep working on it. When a file is uploaded, any changes made are automatically saved, so you do not need to download the file anymore!',
+    text: '# App theme\nSwitch between ligth and dark theme and modify the color configuration for your notes.\n# Reset\nCome back to this tutorial anytime you want. But be careful to save your progress before!\n# Tree view\nWhen editing a note, you can toggle a "show in tree" property. If checked, a tree of connections will be generated in this view.\n# Save\nDownload the notebook as a json file, so you can keep your progress\n# Upload\nUpload a previously saved notebook, keep working on it. When a file is uploaded, any changes made are automatically saved, so you do not need to download the file anymore!',
     display: "actions",
     key: "actions",
     showInTree: true,
   },
   styling: {
     title: "Styling",
-    text: "# This is a title\n## This is a subtitles\n- This is a list item\n- And this is another list item",
+    text: "# This is a title\n## This is a subtitle\n- This is a list item\n- And this is another list item",
     display: "styling",
     key: "styling",
     showInTree: true,
