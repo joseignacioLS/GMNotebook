@@ -24,8 +24,8 @@
 
 @media (max-width: $media_phone) {
   .notebook {
-    grid-template-columns: 1fr;
-    grid-template-rows: 1fr 0;
+    grid-template-columns: 100%;
+    grid-template-rows: 100dvh 0;
     grid-template-areas:
       "text"
       "notes";

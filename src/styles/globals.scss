@@ -26,6 +26,7 @@ main {
   background-color: $palette_grey_4;
   color: $palette_grey_0;
   transition: color 0.2s, background-color 0.2s;
+  overflow: hidden;
 }
 
 h1,
@@ -94,6 +95,7 @@ img {
 
 .text-list {
   padding-left: $gap_l;
+
   &::before {
     content: "• ";
     padding-right: $gap_m;
@@ -116,7 +118,7 @@ main {
     color: $palette_grey_4;
   }
 
-  label > span {
+  label>span {
     color: white;
   }
 }

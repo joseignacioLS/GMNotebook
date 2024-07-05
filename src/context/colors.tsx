@@ -18,27 +18,24 @@ interface colorOutputI {
   };
 }
 
+const initialPaletteConfig = {
+  hue: 0,
+  range: 360,
+  saturation: 20,
+  luminosity: 40,
+};
+
 export const colorContext = createContext<colorOutputI>({
   darkMode: false,
   toggleDarkMode: () => {},
   generateColor: (seed: string) => seed,
   updatePaletteConfig: () => {},
-  paletteConfig: {
-    hue: undefined,
-    range: 90,
-    saturation: 20,
-    luminosity: 40,
-  },
+  paletteConfig: initialPaletteConfig,
 });
 
 export const ColorProvider = ({ children }: { children: ReactElement }) => {
   const [darkMode, setDarkMode] = useState(true);
-  const [paletteConfig, setPaletteConfig] = useState({
-    hue: 0,
-    range: 360,
-    saturation: 20,
-    luminosity: 40,
-  });
+  const [paletteConfig, setPaletteConfig] = useState(initialPaletteConfig);
 
   const toggleDarkMode = () =>
     setDarkMode((v) => {
@@ -60,7 +57,6 @@ export const ColorProvider = ({ children }: { children: ReactElement }) => {
   const updatePaletteConfig = (key: string, value: number) => {
     setPaletteConfig((oldState) => {
       const newState = { ...oldState, [key]: value };
-      console.log(newState);
       saveToLocalStorage(newState, "colorConfig");
       return newState;
     });

@@ -15,8 +15,13 @@
   display: flex;
   justify-content: center;
   align-items: center;
+
   span {
     color: $palette_grey_4;
     font-weight: bold;
   }
+}
+
+.dark {
+  color: $palette_grey_0 !important;
 }
