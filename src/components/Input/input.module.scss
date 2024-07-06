@@ -21,12 +21,16 @@
   input {
     width: 100%;
     font-size: $font_size_m;
-    padding: $gap_m;
     min-width: 0;
+    padding: $gap_m 0;
     border: 0;
     background-color: transparent;
     border-radius: $border_radius_l;
     font-weight: bold;
+
+    &[type="text"] {
+      padding: $gap_m;
+    }
 
     &:active,
     &:focus {
