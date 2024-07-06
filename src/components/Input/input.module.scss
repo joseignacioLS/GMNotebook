@@ -1,0 +1,39 @@
+@import "../../styles/variables";
+
+.wrapper {
+  height: fit-content;
+  display: grid;
+  font-size: $font_size_m;
+  grid-template-columns: auto 1fr;
+  align-items: center;
+  gap: $gap_l;
+  padding: $gap_s $gap_l;
+
+  background-color: $palette_grey_3;
+  border-radius: $border_radius_total;
+  box-shadow: $default_dark_shadow;
+
+  span {
+    color: $palette_grey_1;
+    font-weight: bold;
+  }
+
+  input {
+    width: 100%;
+    font-size: $font_size_m;
+    padding: $gap_m;
+    min-width: 0;
+    border: 0;
+    background-color: transparent;
+    border-radius: $border_radius_l;
+    font-weight: bold;
+
+    &:active,
+    &:focus {
+      border: 0;
+      outline: 0;
+      text-decoration: underline;
+
+    }
+  }
+}

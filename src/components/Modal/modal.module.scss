@@ -22,22 +22,9 @@
   position: relative;
   padding: $gap_xl;
   border-radius: $border_radius_l;
-  background-color: $palette_grey_4;
   box-shadow: $default_dark_shadow;
-
-  p,
-  span,
-  label,
-  label > span,
-  a,
-  h1,
-  h2,
-  h3,
-  h4,
-  h5,
-  div {
-    color: $palette_grey_0;
-  }
+  color: $palette_grey_0 !important;
+  background-color: $palette_grey_4;
 
   .closeButton {
     position: absolute;

@@ -5,6 +5,11 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+}
+
+*,
+*:before,
+*:after {
   color: inherit;
   font-family: inherit;
 }
@@ -12,8 +17,6 @@
 html,
 body {
   font-family: "Inclusive Sans", sans-serif;
-  background-color: $palette_grey_3;
-  color: $palette_grey_1;
   height: 100dvh;
   width: 100%;
 }
@@ -31,7 +34,6 @@ main {
 
 h1,
 h2 {
-  color: $palette_grey_4;
   margin-bottom: $gap_l;
 
   &::-webkit-scrollbar {
@@ -109,19 +111,11 @@ img {
 
 main {
   &.dark {
+    color: $palette_grey_4;
     background-color: $palette_grey_0;
   }
 }
 
-.dark {
-  p {
-    color: $palette_grey_4;
-  }
-
-  label>span {
-    color: white;
-  }
-}
 
 .roundBlob {
   width: 2rem;
@@ -132,4 +126,8 @@ main {
 
 .alert {
   background-color: $palette_alert;
+}
+
+.noShadow {
+  box-shadow: none !important;
 }

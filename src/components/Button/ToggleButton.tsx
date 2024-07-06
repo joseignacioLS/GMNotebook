@@ -7,16 +7,22 @@ interface IProps {
   leftButton?: string | ReactElement;
   rightButton?: string | ReactElement;
   onClick?: any;
+  shadow?: boolean;
 }
 const ToggleButton: React.FC<IProps> = ({
   isOn,
   leftButton = <div className="roundBlob"></div>,
   rightButton = <div className="roundBlob alert"></div>,
   onClick,
+  shadow = true,
 }) => {
   return (
     <Button naked={true} onClick={onClick}>
-      <div className={`${styles.wrapper} ${isOn && styles.on}`}>
+      <div
+        className={`${styles.wrapper} ${isOn && styles.on} ${
+          !shadow && "noShadow"
+        }`}
+      >
         <div className={styles.toggleKnob}>
           {isOn ? rightButton : leftButton}
         </div>

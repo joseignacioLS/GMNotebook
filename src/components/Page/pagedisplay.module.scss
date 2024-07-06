@@ -39,7 +39,7 @@
   }
 
   .text {
-    padding: $gap_l 0;
+    padding: $gap_l $gap_s;
     height: 100%;
     overflow-y: auto;
     overflow-x: hidden;
