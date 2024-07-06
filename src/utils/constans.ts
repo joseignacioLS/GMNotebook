@@ -10,6 +10,7 @@ export const regex: { [key: string]: RegExp } = {
   title: new RegExp(/^\# /),
   subtitle: new RegExp(/^\#\# /),
   list: new RegExp(/^- /),
+  spoiler: new RegExp(/^\* /)
 };
 
 interface ISpecialLineConfig {
@@ -42,4 +43,11 @@ export const specialLinesConfig: { [key: string]: ISpecialLineConfig } = {
       sliceCount: 2,
     },
   },
+  spoiler: {
+    regex: regex.spoiler,
+    config: {
+      type: "spoiler",
+      sliceCount: 2,
+    }
+  }
 };

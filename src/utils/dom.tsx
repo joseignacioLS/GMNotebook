@@ -56,8 +56,16 @@ const formatSpecialLine = (
   line: string,
   index: number,
   plain: boolean,
+  wrapped: boolean,
   config: { type: string; sliceCount: number }
 ) => {
+  if (wrapped) {
+    return (
+      <span key={line} id={`p-${index}`} className={`text-${config.type}`}>
+        {processLine(line.slice(config.sliceCount), index, plain, true)}
+      </span>
+    );
+  }
   return (
     <p key={line} id={`p-${index}`} className={`text-${config.type}`}>
       {processLine(line.slice(config.sliceCount), index, plain, true)}
@@ -84,7 +92,7 @@ export const processLine = (
   for (let key in specialLinesConfig) {
     const { regex, config } = specialLinesConfig[key];
     if (line.match(regex)) {
-      return formatSpecialLine(line, index, plain, config);
+      return formatSpecialLine(line, index, plain, wrapped, config);
     }
   }
   const lineByInsertions = splitLineByInsertions(line, index);

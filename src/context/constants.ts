@@ -38,7 +38,7 @@ export const tutorial: dataI = {
     title: "Main page",
     key: "RootPage",
     display: "",
-    text: "# Welcome\nThis is the GameMaster Notebook companion, a simple web app to assist game masters or any other world builders.\nThe tools is designed for PC, but the generated notebook can be consumed from a mobile device.\n\n# How does it work?\nYou just write whatever information you need to have written down, and when you feel that some key concept could be explained in more detail, but do not want your text to feel to overwhelming, you just drop a note:note.\n\n## Writing\nYou can enable the note:editMode any time you want, in any page you want, and you will be able to edit the page right-away. Check the note about the note:editMode to see learn more\n\n## Notes\nNotes are the base concept of the app. Your notes will appear on the right column of the application if they appear on the left one. This way you can have references to other concepts without getting into detail in the text.\nNotes are shared! You can reuse any note in any other text, so you do not have to write it twice.\n\n## Styling\nIt is important to have some kind of note:styling when organizing information, for this we have titles, subtitles and lists!\n\n## Images\nAdd note:images from urls with the keyword img. See at work in the note\n\n# Actions\nThere are some note:actions you need to know about, that can be accessed from the bottom-left menu when you hover it.",
+    text: "# Welcome\nThis is the GameMaster Notebook companion, a simple web app to assist game masters and world builders.\nThe tool is designed for PC, but the generated notebook can be accessed from a mobile device.\n\n# How does it work?\nYou just write whatever information you need to have written down, and when you feel that some key concept could be explained in more detail, but do not want your text to feel to overwhelming, drop a note:note.\n\n## Writing\nYou can enable the note:editMode any time you want, in any page you want, and you will be able to edit the page right-away. Check the note about the note:editMode to see learn more\n\n## Notes\nNotes are the base concept of the app. Your notes will appear on the right column of the application if they appear on the current page. This way you can have references to other concepts without getting into detail in the text.\nNotes are shared! You can reuse any note in any other text, so you do not have to write it twice.\n\n## Styling\nIt is important to have some kind of note:styling when organizing information, for this we have titles, subtitles and lists!\n\n## Images\nAdd note:images from urls with the keyword img. See at work in the note\n\n# Actions\nThere are some note:actions you need to know about, that can be accessed from the bottom-left menu when you hover it.",
     showInTree: true,
   },
   note: {
@@ -71,9 +71,9 @@ export const tutorial: dataI = {
   },
   styling: {
     title: "Styling",
-    text: "# This is a title\n## This is a subtitle\n- This is a list item\n- And this is another list item",
+    text: "# This is a title\n## This is a subtitle\n- This is a list item\n- And this is another list item\nYou can also write spoilers!\n* Use them to hide stuff\n* # Even titles\n* ## Subtitles\n* - Or list items",
     display: "styling",
     key: "styling",
-    showInTree: true,
-  },
+    showInTree: true
+  }
 };
