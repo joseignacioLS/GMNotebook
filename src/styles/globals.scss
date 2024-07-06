@@ -104,6 +104,22 @@ img {
   }
 }
 
+.text-spoiler {
+  transition: color .2s, background-color .2s;
+  cursor: pointer;
+  padding: $gap_m 0;
+
+  &:not(:active) {
+    color: transparent;
+    background-color: $palette_grey_2;
+    border-radius: 0;
+
+    >* {
+      opacity: 0;
+    }
+  }
+}
+
 .edit-p {
   background-color: rgba($palette_alert, 0.4);
   border-radius: $border_radius_m;
