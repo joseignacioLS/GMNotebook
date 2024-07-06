@@ -44,13 +44,10 @@ export const ColorProvider = ({ children }: { children: ReactElement }) => {
     });
 
   const generateColor = (seed: string): string => {
-    let hue = Math.floor(rng(stringToNumber(seed)) * 360);
-    if (paletteConfig.hue !== undefined) {
-      hue =
-        paletteConfig.hue +
-        Math.floor(rng(stringToNumber(seed)) * paletteConfig.range) * 2 -
-        paletteConfig.range;
-    }
+    const hue =
+      paletteConfig.hue +
+      Math.floor(rng(stringToNumber(seed)) * paletteConfig.range) * 2 -
+      paletteConfig.range;
     return `hsl(${hue}, ${paletteConfig.saturation}%, ${paletteConfig.luminosity}%)`;
   };
 

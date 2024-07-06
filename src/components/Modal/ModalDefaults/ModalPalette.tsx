@@ -54,18 +54,14 @@ const ModalPalette: React.FC = () => {
           onChange={(e) => {
             updatePaletteConfig("hue", +e.currentTarget.value);
           }}
-          label="Target"
+          label="Hue"
           type="range"
-          config={{ min: 0, max: 360, step: 15 }}
-        />
-        <Input
-          value={pconfig.range}
-          onChange={(e) => {
-            updatePaletteConfig("range", +e.currentTarget.value);
+          config={{
+            min: 0,
+            max: 360,
+            step: 15,
+            disabled: pconfig.range >= 360,
           }}
-          label="Range"
-          type="range"
-          config={{ min: 0, max: 360, step: 10 }}
         />
         <Input
           value={pconfig.saturation}
@@ -84,6 +80,15 @@ const ModalPalette: React.FC = () => {
           label="Luminosity"
           type="range"
           config={{ min: 20, max: 80, step: 10 }}
+        />
+        <Input
+          value={pconfig.range}
+          onChange={(e) => {
+            updatePaletteConfig("range", +e.currentTarget.value);
+          }}
+          label="Range"
+          type="range"
+          config={{ min: 0, max: 360, step: 10 }}
         />
       </section>
       <div
