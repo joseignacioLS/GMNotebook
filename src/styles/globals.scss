@@ -25,7 +25,6 @@ main {
   height: 100%;
   width: 100%;
   padding: $gap_l;
-  padding-bottom: 0;
   background-color: $palette_grey_4;
   color: $palette_grey_0;
   transition: color 0.2s, background-color 0.2s;
@@ -146,4 +145,14 @@ main {
 
 .noShadow {
   box-shadow: none !important;
+  text-shadow: none !important;
+
+  >* {
+    box-shadow: none !important;
+    text-shadow: none !important;
+  }
+}
+
+.color-confirm {
+  color: $palette_green_1 !important;
 }

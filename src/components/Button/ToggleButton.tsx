@@ -11,8 +11,18 @@ interface IProps {
 }
 const ToggleButton: React.FC<IProps> = ({
   isOn,
-  leftButton = <div className="roundBlob"></div>,
-  rightButton = <div className="roundBlob alert"></div>,
+  leftButton = (
+    <span className={`${styles["material-symbols-outlined"]} noShadow`}>
+      close
+    </span>
+  ),
+  rightButton = (
+    <span
+      className={`${styles["material-symbols-outlined"]} color-confirm noShadow`}
+    >
+      check
+    </span>
+  ),
   onClick,
   shadow = true,
 }) => {

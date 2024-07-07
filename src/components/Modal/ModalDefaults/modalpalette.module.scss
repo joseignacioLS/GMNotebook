@@ -6,6 +6,11 @@
   flex-direction: column;
   margin: $gap_l 0;
   gap: $gap_m;
+
+
+  label {
+    grid-template-columns: 1fr 2fr;
+  }
 }
 
 .colorPreview {

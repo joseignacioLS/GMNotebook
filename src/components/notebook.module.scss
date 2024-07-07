@@ -16,6 +16,10 @@
     right: $gap_m;
     z-index: 10;
     color: $palette_grey_0;
+
+    @media (max-width: $media_phone) {
+      display: none;
+    }
   }
 
   &.referenceLess {
