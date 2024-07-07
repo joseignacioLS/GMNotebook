@@ -22,8 +22,8 @@ const NoteCard: React.FC<IProps> = ({ itemKey, visible }) => {
   const text = data[key]?.text || "";
 
   const displayShortText = processText(
-    text.split(" ").length > 25
-      ? text.split(" ").slice(0, 25).join(" ") + " ..."
+    text.split("\n").length > 5
+      ? text.split("\n").slice(0, 5).join("\n") + "\n..."
       : text,
     true
   );
