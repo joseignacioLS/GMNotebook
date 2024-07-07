@@ -4,6 +4,7 @@ import { NavigationProvider } from "@/context/navigation";
 
 import "../styles/globals.scss";
 import { ColorProvider } from "@/context/colors";
+import Head from "next/head";
 
 export const metadata = {
   title: "GM Notebook",

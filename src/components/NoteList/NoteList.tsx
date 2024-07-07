@@ -32,6 +32,7 @@ const NoteList: React.FC<IProps> = ({ references }) => {
     const visibleNoteKeys = references.visible.map((r) => r.split("_")[0]);
     updateVisibleNotes(visibleNoteKeys);
   }, [references.visible]);
+
   return (
     <div className={styles.noteListContainer} id="notes">
       {visibleNotes}
