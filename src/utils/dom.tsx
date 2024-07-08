@@ -32,6 +32,13 @@ const generateItemFromMatch = (
     );
   } else if (matchKey === EMatchKeys.image) {
     return <Image key={id} src={key} />;
+  } else if (matchKey === EMatchKeys.link) {
+    const [text, href] = key.match(/^([^=]+)=(.+)$/)?.slice(1, 3) || ["", ""];
+    return (
+      <a key={id} href={href} target="_blank">
+        {text}
+      </a>
+    );
   }
   return <>{key}</>;
 };
