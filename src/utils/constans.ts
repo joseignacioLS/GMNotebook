@@ -12,7 +12,8 @@ export const regex: { [key: string]: RegExp } = {
   title: new RegExp(/^\# /),
   subtitle: new RegExp(/^\#\# /),
   list: new RegExp(/^- /),
-  spoiler: new RegExp(/^\* /)
+  spoiler: new RegExp(/^\* /),
+  mermaid: new RegExp(/'''[A-Za-z0-9\-> \n\;\[\(\)\]]+'''/)
 };
 
 interface ISpecialLineConfig {
@@ -51,5 +52,19 @@ export const specialLinesConfig: { [key: string]: ISpecialLineConfig } = {
       type: "spoiler",
       sliceCount: 2,
     }
+  },
+  mermaid: {
+    regex: regex.mermaid,
+    config: {
+      type: "mermaid",
+      sliceCount: 0
+    }
   }
 };
+
+export const specialBlockConfig = {
+  mermaid: {
+    regex: regex.mermaid,
+    config: {}
+  }
+}
