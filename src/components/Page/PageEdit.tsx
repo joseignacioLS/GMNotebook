@@ -135,9 +135,11 @@ const PageEdit: React.FC = () => {
       />
       <textarea
         onSelect={handleCursorChange}
-        onInput={handleCursorChange}
+        onInput={(e) => {
+          handleCursorChange(e);
+          handleUpdateData("text", e.currentTarget.value);
+        }}
         value={input.text}
-        onChange={(e) => handleUpdateData("text", e.currentTarget.value)}
       ></textarea>
     </div>
   );
