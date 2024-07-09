@@ -69,9 +69,7 @@ const formatSpecialLine = (
 ) => {
   if (config.type === "mermaid") {
     // return <span key={line}>{line}</span>;
-    return (
-      <Mermaid key={line} diagram={`${line.replace(/'/g, "")}`} />
-    );
+    return <Mermaid key={line} diagram={`${line.replace(/'/g, "")}`} />;
     // return <div className="mermaid">{`graph TD; ${line.replace(/'/g, "")}`}</div>;
   }
   if (wrapped) {

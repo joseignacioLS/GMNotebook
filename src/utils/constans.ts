@@ -7,7 +7,7 @@ export enum EMatchKeys {
 export const regex: { [key: string]: RegExp } = {
   insertions: new RegExp("(note:|img:|link:)", "g"),
   noteInsertion: new RegExp("note:[A-Záéíóúüïñ0-9]+"),
-  linkInsertion: new RegExp("link:[A-Záéíóúüïñ0-9]+=[A-Za-z\.,:/\\0-9]+"),
+  linkInsertion: new RegExp("link:[A-Záéíóúüïñ0-9]+=[A-Za-z\.,:/\\0-9\?=]+"),
   imageInsertion: new RegExp("img:[^\n ]+"),
   title: new RegExp(/^\# /),
   subtitle: new RegExp(/^\#\# /),

@@ -38,7 +38,7 @@ export const tutorial: IData = {
     title: "Main page",
     key: "RootPage",
     display: "",
-    text: "# Welcome\nThis is the GameMaster Notebook companion, a simple web app to assist game masters and world builders.\nThe tool is designed for PC, but the generated notebook can be accessed from a mobile device.\n\n# How does it work?\nYou just write whatever information you need to have written down, and when you feel that some key concept could be explained in more detail, but do not want your text to feel to overwhelming, drop a note:note.\n\n## Writing\nYou can enable the note:editMode any time you want, in any page you want, and you will be able to edit the page right-away. Check the note about the note:editMode to see learn more\n\n## Notes\nNotes are the base concept of the app. Your notes will appear on the right column of the application if they appear on the current page. This way you can have references to other concepts without getting into detail in the text.\nNotes are shared! You can reuse any note in any other text, so you do not have to write it twice.\n\n## Styling\nIt is important to have some kind of note:styling when organizing information, for this we have titles, subtitles and lists!\n\n## Images\nAdd note:images from urls with the keyword img. See at work in the note\n\n## Diagramas\nYou can also add note:diagrams using mermaid (markdown)\n\n# Actions\nThere are some note:actions you need to know about, that can be accessed from the bottom-left menu when you hover it.",
+    text: "# Welcome\nThis is the GameMaster Notebook companion, a simple web app to assist game masters and world builders.\nThe tool is designed for PC, but the generated notebook can be accessed from a mobile device.\n\n# How does it work?\nYou just write whatever information you need to have written down, and when you feel that some key concept could be explained in more detail, but do not want your text to feel to overwhelming, drop a note:note.\n\n## Writing\nYou can enable the note:editMode any time you want, in any page you want, and you will be able to edit the page right-away. Check the note about the note:editMode to see learn more\n\n## Notes\nNotes are the base concept of the app. Your notes will appear on the right column of the application if they appear on the current page. This way you can have references to other concepts without getting into detail in the text.\nNotes are shared! You can reuse any note in any other text, so you do not have to write it twice.\n\n## Styling\nIt is important to have some kind of note:styling when organizing information, for this we have titles, subtitles and lists!\n\n## Images\nAdd note:images from urls with the keyword img. See at work in the note\n\n## Diagrams\nYou can also add note:diagrams using mermaid (markdown)\n\n## Links\nAdd references to external information using note:links\n\n# Actions\nThere are some note:actions you need to know about, that can be accessed from the bottom-left menu when you hover it.",
     showInTree: true,
   },
   note: {
@@ -64,9 +64,16 @@ export const tutorial: IData = {
   },
   diagrams: {
     title: "Diagrams",
-    text: "# Add diagrams to ilustrate flows\n'''graph LR; BBE --> hook; hook --> party; '''",
+    text: "# Add diagrams to ilustrate flows\n'''graph LR; BBE --> Priest; Priest --> Kobolds; Priest --> Bandits '''\nThis is a experimental feature, so it might now work properly sometimes.",
     display: "diagrams",
     key: "diagrams",
+    showInTree: true,
+  },
+  links: {
+    title: "Link",
+    text: "# Add Links to external references\nUse the link: keyword with a to-show-text and an url to add a link, just like this:\nlink:Google=https://www.google.com",
+    display: "links",
+    key: "links",
     showInTree: true,
   },
   actions: {
@@ -81,6 +88,6 @@ export const tutorial: IData = {
     text: "# This is a title\n## This is a subtitle\n- This is a list item\n- And this is another list item\nYou can also write spoilers!\n* Use them to hide stuff\n* # Even titles\n* ## Subtitles\n* - Or list items",
     display: "styling",
     key: "styling",
-    showInTree: true
-  }
+    showInTree: true,
+  },
 };
