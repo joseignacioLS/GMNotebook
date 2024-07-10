@@ -1,31 +1,30 @@
-@import "material-symbols";
-@import "../styles/variables";
+@use "../styles/variables";
 
+@import "material-symbols";
 @import "https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,400,1,0";
 
 .dataActions {
-
   --button-size: 3rem;
 
   position: fixed;
-  left: $gap_m;
-  bottom: $gap_m;
+  left: variables.$gap_m;
+  bottom: variables.$gap_m;
 
   display: grid;
   grid-template-rows: var(--button-size);
   align-items: end;
 
-  color: $palette_grey_0;
-  background-color: $palette_grey_4;
-  border-radius: $border_radius_total;
+  color: variables.$palette_grey_0;
+  background-color: variables.$palette_grey_4;
+  border-radius: variables.$border_radius_total;
 
   transition: grid-template-rows 0.3s;
 
-  box-shadow: $default_dark_shadow;
+  box-shadow: variables.$default_dark_shadow;
 
   font-size: 24px;
 
-  >div {
+  > div {
     display: flex;
     flex-direction: column;
     justify-content: flex-end;
@@ -47,7 +46,7 @@
     border: 0;
     cursor: pointer;
     background-color: transparent;
-    padding: $gap_s;
+    padding: variables.$gap_s;
   }
 
   input::-webkit-file-upload-button {

@@ -1,11 +1,11 @@
-@import "../../../styles/variables";
+@use "../../../styles/variables";
 @import "material-symbols";
 
 .inputs {
   display: flex;
   flex-direction: column;
-  margin: $gap_l 0;
-  gap: $gap_m;
+  margin: variables.$gap_l 0;
+  gap: variables.$gap_m;
 
 
   label {
@@ -16,17 +16,17 @@
 .colorPreview {
   width: 100%;
   height: 4rem;
-  border-radius: $border_radius_m;
+  border-radius: variables.$border_radius_m;
   display: flex;
   justify-content: center;
   align-items: center;
 
   span {
-    color: $palette_grey_4;
+    color: variables.$palette_grey_4;
     font-weight: bold;
   }
 }
 
 .dark {
-  color: $palette_grey_0 !important;
+  color: variables.$palette_grey_0 !important;
 }

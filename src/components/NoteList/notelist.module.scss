@@ -1,4 +1,4 @@
-@import "../../styles/variables";
+@use "../../styles/variables";
 
 .noteListContainer {
   width: 100%;
@@ -6,12 +6,12 @@
   overflow-y: auto;
   scroll-behavior: smooth;
 
-  @media (max-width: $media_phone) {
+  @media (max-width: variables.$media_phone) {
     display: none;
   }
 }
 
-@media (max-width: $media_phone) {
+@media (max-width: variables.$media_phone) {
   .noteListContainer {
     height: fit-content;
   }

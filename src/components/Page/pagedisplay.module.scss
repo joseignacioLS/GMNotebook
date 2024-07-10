@@ -1,4 +1,4 @@
-@import "../../styles/variables";
+@use "../../styles/variables";
 @import "material-symbols";
 
 .pageDisplay {
@@ -8,7 +8,7 @@
   padding-bottom: 1rem;
   display: flex;
   flex-direction: column;
-  font-size: $font_size_l;
+  font-size: variables.$font_size_l;
   overflow: hidden;
 
   .titleContainer {
@@ -17,10 +17,10 @@
     align-items: center;
     justify-content: flex-start;
     flex-shrink: 0;
-    padding: 0 $gap_m;
-    gap: $gap_m;
+    padding: 0 variables.$gap_m;
+    gap: variables.$gap_m;
 
-    border-radius: $border_radius_total;
+    border-radius: variables.$border_radius_total;
 
     span {
       cursor: pointer;
@@ -35,12 +35,12 @@
       display: flex;
       align-items: center;
       margin: 0;
-      color: $palette_grey_4;
+      color: variables.$palette_grey_4;
     }
   }
 
   .text {
-    padding: $gap_l $gap_s;
+    padding: variables.$gap_l variables.$gap_s;
     height: 100%;
     overflow-y: auto;
     overflow-x: hidden;

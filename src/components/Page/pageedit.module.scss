@@ -1,28 +1,28 @@
-@import "../../styles/variables";
+@use "../../styles/variables";
 
 .pageEdit {
   position: relative;
-  padding: $gap_l 0;
+  padding: variables.$gap_l 0;
   display: flex;
   flex-direction: column;
-  gap: $gap_m;
+  gap: variables.$gap_m;
   width: 100%;
   height: 100%;
 
-  color: $palette_grey_0;
+  color: variables.$palette_grey_0;
 
   textarea {
-    padding: $gap_m;
+    padding: variables.$gap_m;
     height: 100%;
     width: 100%;
-    font-size: $font_size_l;
+    font-size: variables.$font_size_l;
     overflow-y: auto;
     border: 1px solid palette_grey_0;
     background-color: palette_grey_2;
-    border-radius: $border_radius_l;
+    border-radius: variables.$border_radius_l;
   }
 
-  @media (max-width: $media_phone) {
+  @media (max-width: variables.$media_phone) {
     display: none;
   }
 }

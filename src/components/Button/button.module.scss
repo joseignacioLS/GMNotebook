@@ -1,11 +1,11 @@
-@import "../../styles/variables";
+@use "../../styles/variables";
 
 .button {
   position: relative;
   background-color: transparent;
   cursor: pointer;
   min-height: 1.5rem;
-  border-radius: $border_radius_total;
+  border-radius: variables.$border_radius_total;
   border: 0;
   flex-shrink: 0;
 
@@ -25,6 +25,6 @@
   }
 
   &:hover * {
-    text-shadow: 1px 1px rgba($palette_grey_2, 1);
+    text-shadow: 1px 1px rgba(variables.$palette_grey_2, 1);
   }
 }

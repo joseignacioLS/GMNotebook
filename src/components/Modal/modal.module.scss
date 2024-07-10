@@ -1,6 +1,5 @@
+@use "../../styles/variables";
 @import "material-symbols";
-
-@import "../../styles/variables";
 
 .modalContainer {
   position: fixed;
@@ -20,16 +19,16 @@
 .modal {
   cursor: default;
   position: relative;
-  padding: $gap_xl;
-  border-radius: $border_radius_l;
-  box-shadow: $default_dark_shadow;
-  color: $palette_grey_0 !important;
-  background-color: $palette_grey_4;
+  padding: variables.$gap_xl;
+  border-radius: variables.$border_radius_l;
+  box-shadow: variables.$default_dark_shadow;
+  color: variables.$palette_grey_0 !important;
+  background-color: variables.$palette_grey_4;
 
   .closeButton {
     position: absolute;
-    right: $gap_m;
-    top: $gap_m;
+    right: variables.$gap_m;
+    top: variables.$gap_m;
     z-index: 100;
   }
 }

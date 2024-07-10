@@ -1,4 +1,4 @@
-@import "../styles/variables";
+@use "../styles/variables";
 
 .treeContainer {
   position: relative;
@@ -15,16 +15,16 @@
   }
 
   .leaf {
-    font-size: $font_size_s;
+    font-size: variables.$font_size_s;
     position: absolute;
     width: 5rem;
-    padding: $gap_m;
+    padding: variables.$gap_m;
     display: flex;
     justify-content: center;
     align-items: center;
     text-align: center;
-    border-radius: $border_radius_m;
-    color: $palette_grey_4;
+    border-radius: variables.$border_radius_m;
+    color: variables.$palette_grey_4;
     transform: translate(-50%, -50%);
     user-select: none;
     cursor: pointer;

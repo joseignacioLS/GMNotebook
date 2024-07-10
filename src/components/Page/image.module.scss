@@ -1,10 +1,10 @@
-@import "../../styles/variables";
+@use "../../styles/variables";
 
 .img {
   width: auto;
   max-height: 400px;
   max-width: 100%;
-  border-radius: $border_radius_l;
+  border-radius: variables.$border_radius_l;
   &.fullSize {
     max-height: 80dvh;
     max-width: 90vw;

@@ -1,5 +1,5 @@
+@use "./variables";
 @import url("https://fonts.googleapis.com/css2?family=Inclusive+Sans:ital@0;1&display=swap");
-@import "./variables";
 
 * {
   margin: 0;
@@ -24,16 +24,16 @@ body {
 main {
   height: 100%;
   width: 100%;
-  padding: $gap_l;
-  background-color: $palette_grey_4;
-  color: $palette_grey_0;
+  padding: variables.$gap_l;
+  background-color: variables.$palette_grey_4;
+  color: variables.$palette_grey_0;
   transition: color 0.2s, background-color 0.2s;
   overflow: hidden;
 }
 
 h1,
 h2 {
-  margin-bottom: $gap_l;
+  margin-bottom: variables.$gap_l;
 
   &::-webkit-scrollbar {
     display: none;
@@ -43,7 +43,7 @@ h2 {
 p {
   min-height: 1.5ch;
   line-height: 2.5ch;
-  margin-bottom: $gap_m;
+  margin-bottom: variables.$gap_m;
 }
 
 a {
@@ -59,12 +59,12 @@ div::-webkit-scrollbar-track {
 }
 
 div::-webkit-scrollbar-thumb {
-  background: $palette_grey_1;
+  background: variables.$palette_grey_1;
   border-radius: 2px;
 }
 
 div::-webkit-scrollbar-thumb:hover {
-  background: $palette_grey_1;
+  background: variables.$palette_grey_1;
 }
 
 img {
@@ -78,7 +78,7 @@ img {
 
 @keyframes flash-item {
   50% {
-    background-color: $palette_alert;
+    background-color: variables.$palette_alert;
   }
 }
 
@@ -95,64 +95,63 @@ img {
 }
 
 .text-list {
-  padding-left: $gap_l;
+  padding-left: variables.$gap_l;
 
   &::before {
     content: "• ";
-    padding-right: $gap_m;
+    padding-right: variables.$gap_m;
   }
 }
 
 .text-spoiler {
-  transition: color .2s, background-color .2s;
+  transition: color 0.2s, background-color 0.2s;
   cursor: pointer;
-  padding: $gap_m 0;
+  padding: variables.$gap_m 0;
 
   &:not(:active) {
     color: transparent;
-    background-color: $palette_grey_2;
+    background-color: variables.$palette_grey_2;
     border-radius: 0;
 
-    >* {
+    > * {
       opacity: 0;
     }
   }
 }
 
 .edit-p {
-  background-color: rgba($palette_alert, 0.4);
-  border-radius: $border_radius_m;
+  background-color: rgba(variables.$palette_alert, 0.4);
+  border-radius: variables.$border_radius_m;
 }
 
 main {
   &.dark {
-    color: $palette_grey_4;
-    background-color: $palette_grey_0;
+    color: variables.$palette_grey_4;
+    background-color: variables.$palette_grey_0;
   }
 }
-
 
 .roundBlob {
   width: 2rem;
   height: 2rem;
   border-radius: 50%;
-  background-color: $palette_grey_0;
+  background-color: variables.$palette_grey_0;
 }
 
 .alert {
-  background-color: $palette_alert;
+  background-color: variables.$palette_alert;
 }
 
 .noShadow {
   box-shadow: none !important;
   text-shadow: none !important;
 
-  >* {
+  > * {
     box-shadow: none !important;
     text-shadow: none !important;
   }
 }
 
 .color-confirm {
-  color: $palette_green_1 !important;
+  color: variables.$palette_green_1 !important;
 }
