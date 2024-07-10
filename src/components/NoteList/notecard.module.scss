@@ -1,25 +1,29 @@
 @use "../../styles/variables";
 
 .note {
+  flex-shrink: 0;
   position: relative;
-  color: variables.$palette_grey_4;
-  padding: 0;
-  border-radius: variables.$border_radius_m;
-  overflow: hidden;
+
   padding: 0 variables.$gap_l;
 
-  font-size: variables.$font_size_xl;
-  line-height: 2.5ch;
+  overflow: hidden;
 
-  user-select: none;
+  display: grid;
+  grid-template-rows: 0fr;
 
   --animation-time: 0.3s;
 
   transition: margin var(--animation-time), padding var(--animation-time),
     grid-template-rows var(--animation-time);
 
-  display: grid;
-  grid-template-rows: 0fr;
+  color: variables.$palette_grey_4;
+  font-size: variables.$font_size_xl;
+  line-height: 2.5ch;
+
+  border-radius: variables.$border_radius_m;
+
+  user-select: none;
+
   h2 {
     cursor: pointer;
   }
@@ -28,8 +32,9 @@
   }
 
   &.visibleNote {
+    margin-top: variables.$gap_m;
     padding: variables.$gap_l;
-    margin-bottom: variables.$gap_l;
+
     grid-template-rows: 1fr;
   }
 }
@@ -44,8 +49,9 @@
   position: absolute;
   top: variables.$gap_s;
   right: variables.$gap_s;
+
   cursor: pointer;
-  text-shadow: 0px 0px 10px variables.$palette_grey_0;
+  text-shadow: variables.$blur_dark_text_shadow;
 }
 
 .expand {
@@ -53,11 +59,11 @@
   right: variables.$gap_s;
   cursor: pointer;
 
-  text-shadow: 0px 0px variables.$gap_s variables.$palette_grey_0;
+  text-shadow: variables.$dark_text_shadow;
 }
 
 .hidden {
   height: 0;
   padding: 0 variables.$gap_m;
-  margin: 0 variables.$gap_m;
+  margin: 0;
 }

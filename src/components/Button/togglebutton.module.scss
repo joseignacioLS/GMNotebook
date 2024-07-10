@@ -4,7 +4,7 @@
 .wrapper {
   position: relative;
   aspect-ratio: 2 / 1;
-  height: 2rem;
+  height: variables.$gap_xl;
   cursor: pointer;
   background-color: variables.$palette_grey_4;
   border-radius: variables.$border_radius_total;

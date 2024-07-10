@@ -5,19 +5,21 @@
   position: relative;
   line-height: 2.5ch;
   height: 100%;
-  padding-bottom: 1rem;
   display: flex;
   flex-direction: column;
   font-size: variables.$font_size_l;
   overflow: hidden;
 
   .titleContainer {
-    height: 4rem;
+    margin-top: variables.$gap_m;
+    padding: 0 variables.$gap_m;
+
+    height: variables.$gap_xxl;
+
     display: flex;
     align-items: center;
     justify-content: flex-start;
     flex-shrink: 0;
-    padding: 0 variables.$gap_m;
     gap: variables.$gap_m;
 
     border-radius: variables.$border_radius_total;
@@ -40,7 +42,7 @@
   }
 
   .text {
-    padding: variables.$gap_l variables.$gap_s;
+    padding: variables.$gap_l variables.$gap_s variables.$gap_xxl;
     height: 100%;
     overflow-y: auto;
     overflow-x: hidden;

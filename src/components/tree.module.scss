@@ -17,7 +17,7 @@
   .leaf {
     font-size: variables.$font_size_s;
     position: absolute;
-    width: 5rem;
+    width: variables.$gap_xxl;
     padding: variables.$gap_m;
     display: flex;
     justify-content: center;

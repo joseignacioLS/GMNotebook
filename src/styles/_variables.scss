@@ -31,3 +31,7 @@ $font_size_xl: calc($_font_size_base * 2);
 $media_phone: 800px;
 
 $default_dark_shadow: 4px 4px rgba($palette_grey_0, 0.5);
+
+$default_text_shadow: 1px 1px 0 rgba($palette_grey_2, 1);
+$dark_text_shadow: 1px 1px $gap_s $palette_grey_0;
+$blur_dark_text_shadow: 0px 0px $gap_l $palette_grey_0;

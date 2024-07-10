@@ -27,7 +27,7 @@
     background-color: transparent;
     border-radius: variables.$border_radius_l;
     font-weight: bold;
-
+    color: variables.$palette_grey_0;
     &[type="text"] {
       padding: variables.$gap_m;
     }
@@ -37,7 +37,6 @@
       border: 0;
       outline: 0;
       text-decoration: underline;
-
     }
   }
 }

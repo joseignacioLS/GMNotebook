@@ -7,7 +7,6 @@
   margin: variables.$gap_l 0;
   gap: variables.$gap_m;
 
-
   label {
     grid-template-columns: 1fr 2fr;
   }
@@ -15,7 +14,7 @@
 
 .colorPreview {
   width: 100%;
-  height: 4rem;
+  height: variables.$gap_xxl;
   border-radius: variables.$border_radius_m;
   display: flex;
   justify-content: center;

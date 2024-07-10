@@ -3,9 +3,12 @@
 
 .notebook {
   position: relative;
+  height: 100%;
+
+  padding: 0 variables.$gap_l;
+
   display: grid;
   grid-template-columns: 1fr 1fr;
-  height: 100%;
   column-gap: variables.$gap_m;
 
   transition: grid-template-columns 0.2s;

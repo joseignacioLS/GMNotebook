@@ -24,7 +24,6 @@ body {
 main {
   height: 100%;
   width: 100%;
-  padding: variables.$gap_l;
   background-color: variables.$palette_grey_4;
   color: variables.$palette_grey_0;
   transition: color 0.2s, background-color 0.2s;
@@ -51,7 +50,7 @@ a {
 }
 
 ::-webkit-scrollbar {
-  width: 4px;
+  width: variables.$gap_m;
 }
 
 div::-webkit-scrollbar-track {
@@ -129,13 +128,6 @@ main {
     color: variables.$palette_grey_4;
     background-color: variables.$palette_grey_0;
   }
-}
-
-.roundBlob {
-  width: 2rem;
-  height: 2rem;
-  border-radius: 50%;
-  background-color: variables.$palette_grey_0;
 }
 
 .alert {
