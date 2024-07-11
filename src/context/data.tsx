@@ -8,20 +8,20 @@ import {
   useEffect,
   useState,
 } from "react";
-import { dataI, itemI, leafI, tutorial } from "./constants";
+import { IData, IItem, ILeaf, tutorial } from "./constants";
 import { NavigationContext } from "./navigation";
 import { generateDataTree } from "@/utils/tree";
 import { saveToFileHandle } from "@/utils/file";
 
 interface contextOutputI {
-  data: dataI;
-  item: itemI;
+  data: IData;
+  item: IItem;
   updateEditMode: any;
-  updateData: (value: dataI, reset: boolean) => void;
+  updateData: (value: IData, reset: boolean) => void;
   resetData: () => void;
   selectedNote: string;
   setSelectedNote: any;
-  tree: leafI[];
+  tree: ILeaf[];
   setTree: any;
   updateSelectedNote: any;
   editMode: boolean;
@@ -34,7 +34,7 @@ export const DataContext = createContext<contextOutputI>({
   item: tutorial["RootPage"],
   editMode: false,
   updateEditMode: () => {},
-  updateData: (value: dataI, reset: boolean) => {},
+  updateData: (value: IData, reset: boolean) => {},
   resetData: () => {},
   selectedNote: "",
   setSelectedNote: () => {},
@@ -46,8 +46,8 @@ export const DataContext = createContext<contextOutputI>({
 });
 
 export const DataProvider = ({ children }: { children: ReactElement }) => {
-  const [data, setData] = useState<dataI>(tutorial);
-  const [tree, setTree] = useState<leafI[]>([]);
+  const [data, setData] = useState<IData>(tutorial);
+  const [tree, setTree] = useState<ILeaf[]>([]);
   const [selectedNote, setSelectedNote] = useState<string>("RootPage");
   const [editMode, setEditMode] = useState<boolean>(false);
   const [fileHandle, setFileHandle] = useState<FileSystemFileHandle | null>(
@@ -55,28 +55,31 @@ export const DataProvider = ({ children }: { children: ReactElement }) => {
   );
 
   const { path, resetPath, getCurrentPage } = useContext(NavigationContext);
-
+  
   const updateData = (
-    value: dataI,
+    newData: IData,
     resetEntry: boolean = true,
     saveToFile: boolean = true
   ): void => {
-    const cleanData = cleanUpData(value);
-    setData(JSON.parse(JSON.stringify(cleanData)));
-    setTree(generateDataTree(cleanData));
-    if (resetEntry) resetPath();
-    // saveToLocalStorage(cleanData);
-    if (fileHandle && saveToFile) saveToFileHandle(fileHandle, cleanData);
+    setData((prevState: IData) => {
+      const cleanData = cleanUpData({ ...prevState, ...newData });
+      const updatedData = structuredClone(cleanData);
+      setTree(generateDataTree(updatedData));
+      if (resetEntry) resetPath();
+      // saveToLocalStorage(cleanData);
+      if (fileHandle && saveToFile) saveToFileHandle(fileHandle, updatedData);
+      return updatedData;
+    });
   };
 
   const updateFileHandle = async (newFileHandle: FileSystemFileHandle) => {
     setFileHandle(newFileHandle);
     const file = await newFileHandle.getFile();
     const text = await file.text();
-    updateData(JSON.parse(text) as dataI, true, false);
+    updateData(JSON.parse(text) as IData, true, false);
   };
 
-  const cleanUpData = (value: dataI): dataI => {
+  const cleanUpData = (value: IData): IData => {
     const deletedKeys: string[] = [];
     const references: string[] = ["RootPage"];
 
@@ -169,7 +172,7 @@ export const DataProvider = ({ children }: { children: ReactElement }) => {
     <DataContext.Provider
       value={{
         data,
-        item: data[getCurrentPage()] || tutorial["RootPage"],
+        item: data?.[getCurrentPage()] || tutorial["RootPage"],
         editMode,
         updateEditMode,
         updateData,

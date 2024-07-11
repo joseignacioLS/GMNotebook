@@ -1,4 +1,4 @@
-import { dataI } from "@/context/constants";
+import { IData } from "@/context/constants";
 
 export const saveToFile = (filename: string, content: any): void => {
   const data = JSON.stringify(content, null, 4);
@@ -29,7 +29,7 @@ export const loadFile = (inputSelector: string, callback: any): void => {
         if (parsed[key].showInTree === undefined)
           parsed[key].showInTree = false;
       });
-      callback(parsed as dataI);
+      callback(parsed as IData);
     } catch (err) {
       console.log(err);
     }

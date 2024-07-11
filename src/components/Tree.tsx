@@ -1,7 +1,7 @@
 import React, { ReactElement, useContext, useEffect } from "react";
 import styles from "./tree.module.scss";
 import { DataContext } from "@/context/data";
-import { leafI } from "@/context/constants";
+import { ILeaf } from "@/context/constants";
 import { NavigationContext } from "@/context/navigation";
 import { modalContext } from "@/context/modal";
 import { relaxTree } from "@/utils/tree";
@@ -14,7 +14,7 @@ const Tree: React.FC = () => {
   const { generateColor } = useContext(colorContext);
 
   const relaxTreeMore = (): void => {
-    setTree((oldValue: leafI[]) => relaxTree(oldValue));
+    setTree((oldValue: ILeaf[]) => relaxTree(oldValue));
   };
 
   const relaxTreeForFirstVisualization = (): void => {
@@ -34,7 +34,7 @@ const Tree: React.FC = () => {
   return (
     <div className={styles.treeContainer}>
       <svg viewBox="0 0 100 100" preserveAspectRatio="none">
-        {tree.reduce((acc: ReactElement[], curr: leafI) => {
+        {tree.reduce((acc: ReactElement[], curr: ILeaf) => {
           return [
             ...acc,
             ...Array.from(new Set(curr.children)).map((index) => {
@@ -51,7 +51,7 @@ const Tree: React.FC = () => {
           ];
         }, [])}
       </svg>
-      {tree.map((leaf: leafI) => {
+      {tree.map((leaf: ILeaf) => {
         const color = generateColor(leaf.key);
         return (
           <span

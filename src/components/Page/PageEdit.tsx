@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useCallback, useContext, useEffect, useState } from "react";
 import styles from "./pageedit.module.scss";
 import { DataContext } from "@/context/data";
 import { extractReferences, getSelectedParagraphIndex } from "@/utils/text";
@@ -57,10 +57,7 @@ const PageEdit: React.FC = () => {
     const newItem = generateItemFromInputs();
     const newEntries = generateNewEntries();
     if (!data[selectedNote]) return;
-    updateData(
-      { ...data, [data[selectedNote].key]: newItem, ...newEntries },
-      false
-    );
+    updateData({ [data[selectedNote].key]: newItem, ...newEntries }, false);
   };
 
   useEffect(() => {
@@ -94,13 +91,21 @@ const PageEdit: React.FC = () => {
   };
 
   useEffect(() => {
-    setInput({
+    const newInput = {
       text: data[selectedNote]?.text || "",
       title: data[selectedNote]?.title || "",
       display: data[selectedNote]?.display || "",
       showInTree: data[selectedNote]?.showInTree || false,
-    });
-  }, [data, selectedNote]);
+    };
+    if (
+      Object.keys(input).some((key: string) => {
+        const typedKey = key as keyof typeof input;
+        return input[typedKey] !== newInput[typedKey];
+      })
+    ) {
+      setInput(newInput);
+    }
+  }, [selectedNote]);
 
   useEffect(() => {
     return removeSelectedParagraph;

@@ -1,8 +1,8 @@
-import { dataI, leafI } from "@/context/constants";
+import { IData, ILeaf } from "@/context/constants";
 import { extractReferences } from "./text";
 
-export const generateDataTree = (value: dataI): leafI[] => {
-  const tree: leafI[] = Object.keys(value)
+export const generateDataTree = (value: IData): ILeaf[] => {
+  const tree: ILeaf[] = Object.keys(value)
     //get only leafs to shown
     .filter((key: string) => {
       return value[key].showInTree;
@@ -24,31 +24,31 @@ export const generateDataTree = (value: dataI): leafI[] => {
 
   // get children of leaft
   Object.keys(value).forEach((key: string) => {
-    const leaf = tree.findIndex((v: leafI) => v.key === key);
+    const leaf = tree.findIndex((v: ILeaf) => v.key === key);
     if (leaf < 0) return;
     const refes = extractReferences(value[key].text);
     tree[leaf].children = refes
       .map((v) => {
-        return tree.findIndex((k: leafI) => k.key === v.split("_")[0]);
+        return tree.findIndex((k: ILeaf) => k.key === v.split("_")[0]);
       })
       .filter((v) => v > -1);
   });
   return tree;
 };
 
-export const relaxTree = (tree: leafI[]): leafI[] => {
+export const relaxTree = (tree: ILeaf[]): ILeaf[] => {
   const FORCE_CONSTANT = 0.00001;
   const REPEL_CONSTANT = 2500;
   const ATTRACT_CONSTANT = 5;
 
   const forces = tree.map(() => [0, 0]);
 
-  tree.forEach((leaf: leafI, index: number) => {
+  tree.forEach((leaf: ILeaf, index: number) => {
     // attractive force towards center of graph
     const v = [leaf.position[0] - 50, leaf.position[1] - 50];
     const d = Math.max(1, Math.sqrt(v[0] * v[0] + v[1] * v[1]));
     forces[index] = [forces[index][0] - v[0] * d, forces[index][1] - v[1] * d];
-    tree.forEach((otherLeaf: leafI, otherIndex: number) => {
+    tree.forEach((otherLeaf: ILeaf, otherIndex: number) => {
       if (leaf.key === otherLeaf.key) return;
       const v = [
         leaf.position[0] - otherLeaf.position[0],
@@ -79,7 +79,7 @@ export const relaxTree = (tree: leafI[]): leafI[] => {
     });
   });
 
-  return tree.map((leaf: leafI, index: number) => {
+  return tree.map((leaf: ILeaf, index: number) => {
     // capping forces to eliminate small movements
     const fX: number =
       Math.abs(forces[index][0]) - 0 > 1 ? forces[index][0] : 0;

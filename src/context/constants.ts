@@ -1,4 +1,4 @@
-export interface itemI {
+export interface IItem {
   title: string;
   text: string;
   key: string;
@@ -6,34 +6,34 @@ export interface itemI {
   showInTree: boolean;
 }
 
-export interface textPieceI {
+export interface ITextPiece {
   content: string;
   type: string;
 }
 
-export interface IReference extends textPieceI {
+export interface IReference extends ITextPiece {
   key: string;
   visible: boolean;
   id: string;
 }
 
-export interface dataI {
-  [key: string]: itemI;
+export interface IData {
+  [key: string]: IItem;
 }
 
-export interface tipI {
+export interface ITip {
   tip: string;
   className: string;
 }
 
-export interface leafI {
+export interface ILeaf {
   index: number;
   key: string;
   children: number[];
   position: number[];
 }
 
-export const tutorial: dataI = {
+export const tutorial: IData = {
   RootPage: {
     title: "Main page",
     key: "RootPage",
