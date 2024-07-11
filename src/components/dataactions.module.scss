@@ -9,7 +9,7 @@
   bottom: variables.$gap_m;
 
   display: grid;
-  grid-template-rows: variables.$gap_xxl;
+  grid-template-rows: calc(variables.$gap_xl * 1.5);
   align-items: end;
 
   color: variables.$palette_grey_0;
@@ -31,14 +31,14 @@
   }
 
   &:hover {
-    grid-template-rows: calc(variables.$gap_xxl * 5);
+    grid-template-rows: calc(calc(variables.$gap_xl * 1.5) * 5);
   }
 
   input,
   button {
     position: relative;
     flex-shrink: 0;
-    width: variables.$gap_xxl;
+    width: calc(variables.$gap_xl * 1.5);
     aspect-ratio: 1 / 1;
     font-size: inherit;
     border: 0;

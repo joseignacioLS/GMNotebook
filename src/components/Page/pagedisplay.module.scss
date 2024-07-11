@@ -3,7 +3,6 @@
 
 .pageDisplay {
   position: relative;
-  line-height: 2.5ch;
   height: 100%;
   display: flex;
   flex-direction: column;
@@ -11,7 +10,6 @@
   overflow: hidden;
 
   .titleContainer {
-    margin-top: variables.$gap_m;
     padding: 0 variables.$gap_m;
 
     height: variables.$gap_xxl;

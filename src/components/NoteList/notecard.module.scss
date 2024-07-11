@@ -17,8 +17,7 @@
     grid-template-rows var(--animation-time);
 
   color: variables.$palette_grey_4;
-  font-size: variables.$font_size_xl;
-  line-height: 2.5ch;
+  font-size: variables.$font_size_l;
 
   border-radius: variables.$border_radius_m;
 
@@ -32,7 +31,7 @@
   }
 
   &.visibleNote {
-    margin-top: variables.$gap_m;
+    margin-bottom: variables.$gap_l;
     padding: variables.$gap_l;
 
     grid-template-rows: 1fr;

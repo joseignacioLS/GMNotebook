@@ -1,5 +1,4 @@
 @use "./variables";
-@import url("https://fonts.googleapis.com/css2?family=Inclusive+Sans:ital@0;1&display=swap");
 
 * {
   margin: 0;
@@ -12,11 +11,13 @@
 *:after {
   color: inherit;
   font-family: inherit;
+  line-height: inherit;
 }
 
 html,
 body {
-  font-family: "Inclusive Sans", sans-serif;
+  font-family: var(--font-inclusive);
+  line-height: 4ch;
   height: 100dvh;
   width: 100%;
 }
@@ -28,20 +29,31 @@ main {
   color: variables.$palette_grey_0;
   transition: color 0.2s, background-color 0.2s;
   overflow: hidden;
+
+  &.dark {
+    color: variables.$palette_grey_4;
+    background-color: variables.$palette_grey_0;
+  }
 }
 
 h1,
 h2 {
+  font-family: var(--font-merriweather);
   margin-bottom: variables.$gap_l;
 
   &::-webkit-scrollbar {
     display: none;
   }
 }
+h1 {
+  font-size: variables.$font_size_xxxl;
+}
+h2 {
+  font-size: variables.$font_size_xxl;
+}
 
 p {
   min-height: 1.5ch;
-  line-height: 2.5ch;
   margin-bottom: variables.$gap_m;
 }
 
@@ -82,15 +94,17 @@ img {
 }
 
 .text-title {
+  font-family: var(--font-merriweather);
+  font-size: variables.$font_size_xl;
   font-weight: bold;
-  font-size: 125%;
-  opacity: 0.8;
+  text-transform: capitalize;
 }
 
 .text-subtitle {
+  font-family: var(--font-merriweather);
+  font-size: variables.$font_size_l;
   font-weight: bold;
-  font-size: 112%;
-  opacity: 0.6;
+  text-transform: capitalize;
 }
 
 .text-list {
@@ -121,13 +135,6 @@ img {
 .edit-p {
   background-color: rgba(variables.$palette_alert, 0.4);
   border-radius: variables.$border_radius_m;
-}
-
-main {
-  &.dark {
-    color: variables.$palette_grey_4;
-    background-color: variables.$palette_grey_0;
-  }
 }
 
 .alert {
