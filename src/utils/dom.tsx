@@ -68,19 +68,21 @@ const formatSpecialLine = (
   config: { type: string; sliceCount: number }
 ) => {
   if (config.type === "mermaid") {
-    // return <span key={line}>{line}</span>;
     return <Mermaid key={line} diagram={`${line.replace(/'/g, "")}`} />;
-    // return <div className="mermaid">{`graph TD; ${line.replace(/'/g, "")}`}</div>;
   }
   if (wrapped) {
     return (
-      <span key={line} id={`p-${index}`} className={`text-${config.type}`}>
+      <span
+        key={`p-${index}`}
+        id={`p-${index}`}
+        className={`text-${config.type}`}
+      >
         {processLine(line.slice(config.sliceCount), index, plain, true)}
       </span>
     );
   }
   return (
-    <p key={line} id={`p-${index}`} className={`text-${config.type}`}>
+    <p key={`p-${index}`} id={`p-${index}`} className={`text-${config.type}`}>
       {processLine(line.slice(config.sliceCount), index, plain, true)}
     </p>
   );
