@@ -1,25 +1,22 @@
+@use "../../styles/variables";
 @import "material-symbols";
-@import "../../styles/variables";
-
 
 .wrapper {
-
   position: relative;
   aspect-ratio: 2 / 1;
-  height: 2rem;
+  height: variables.$gap_xl;
   cursor: pointer;
-  background-color: $palette_grey_4;
-  border-radius: $border_radius_total;
+  background-color: variables.$palette_grey_4;
+  border-radius: variables.$border_radius_total;
 
-  box-shadow: $default_dark_shadow;
+  box-shadow: variables.$default_dark_shadow;
 
   user-select: none;
 
   display: grid;
   grid-template-columns: 0fr 1fr 1fr;
   grid-template-areas: ". knob .";
-  transition: grid-template-columns .2s;
-
+  transition: grid-template-columns 0.2s;
 
   &.on {
     grid-template-columns: 1fr 1fr 0fr;
@@ -32,11 +29,11 @@
 
   .toggleKnob {
     grid-area: knob;
-    padding: $gap_s;
+    padding: variables.$gap_s;
     height: 100%;
     aspect-ratio: 1 / 1;
-    background-color: $palette_grey_4;
-    border-radius: $border_radius_total;
+    background-color: variables.$palette_grey_4;
+    border-radius: variables.$border_radius_total;
     transition: margin 0.2s linear;
     margin-right: auto;
 

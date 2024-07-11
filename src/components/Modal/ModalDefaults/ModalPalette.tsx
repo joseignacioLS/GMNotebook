@@ -60,7 +60,6 @@ const ModalPalette: React.FC = () => {
             min: 0,
             max: 360,
             step: 15,
-            disabled: pconfig.range >= 360,
           }}
         />
         <Input

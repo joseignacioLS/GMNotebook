@@ -3,6 +3,7 @@ import { EMatchKeys, specialLinesConfig } from "./constans";
 import { splitLineByInsertions } from "./text";
 import { IReference } from "@/context/constants";
 import Image from "@/components/Page/Image";
+import Mermaid from "@/components/Mermaid/Mermaid";
 
 export interface IInsertionObject {
   innerHTML: string;
@@ -32,6 +33,13 @@ const generateItemFromMatch = (
     );
   } else if (matchKey === EMatchKeys.image) {
     return <Image key={id} src={key} />;
+  } else if (matchKey === EMatchKeys.link) {
+    const [text, href] = key.match(/^([^=]+)=(.+)$/)?.slice(1, 3) || ["", ""];
+    return (
+      <a key={id} href={href} target="_blank">
+        {text}
+      </a>
+    );
   }
   return <>{key}</>;
 };
@@ -59,6 +67,11 @@ const formatSpecialLine = (
   wrapped: boolean,
   config: { type: string; sliceCount: number }
 ) => {
+  if (config.type === "mermaid") {
+    // return <span key={line}>{line}</span>;
+    return <Mermaid key={line} diagram={`${line.replace(/'/g, "")}`} />;
+    // return <div className="mermaid">{`graph TD; ${line.replace(/'/g, "")}`}</div>;
+  }
   if (wrapped) {
     return (
       <span key={line} id={`p-${index}`} className={`text-${config.type}`}>

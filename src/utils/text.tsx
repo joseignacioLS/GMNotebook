@@ -54,6 +54,7 @@ const getFullInsertionMatch = (
   const regexRef: { [key in EMatchKeys]: RegExp } = {
     [EMatchKeys.note]: regex.noteInsertion,
     [EMatchKeys.image]: regex.imageInsertion,
+    [EMatchKeys.link]: regex.linkInsertion,
   };
   const selectedRegex = new RegExp(regexRef[matchKey as EMatchKeys], "i");
   const match = line.slice(index).match(selectedRegex);
@@ -118,7 +119,15 @@ export const splitLineByInsertions = (
   return getArrayOfInsertions(line, specialMatches, index);
 };
 
+const formatMermaidBlocks = (text: string): string => {
+  text.match(new RegExp(regex.mermaid, "g"))?.forEach((match) => {
+    text = text.replace(match, `\n${match.replace(/(.{1})\n/g, "$1;")}`);
+  });
+  return text;
+};
+
 export const extractReferences = (text: string): string[] => {
+  text = formatMermaidBlocks(text);
   const lines = text.split("\n");
   return lines.reduce((references: string[], line: string, index: number) => {
     const specialMatches = line.match(regex.insertions);
@@ -214,6 +223,9 @@ export const filterReferencesBasedOnVisibility = (text: string) => {
 };
 
 export const processText = (text: string, plain: boolean) => {
+  // extract blocks
+  text = formatMermaidBlocks(text);
+  //process lines
   return text.split("\n").map((line, i) => {
     return processLine(line, i, plain);
   });

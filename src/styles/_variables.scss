@@ -26,8 +26,15 @@ $border_radius_total: 1000px;
 $font_size_s: calc($_font_size_base * 0.75);
 $font_size_m: $_font_size_base;
 $font_size_l: calc($_font_size_base * 1.5);
-$font_size_xl: calc($_font_size_base * 2);
+$font_size_xl: calc($_font_size_base * 1.75);
+$font_size_xxl: calc($_font_size_base * 2);
+$font_size_xxl: calc($_font_size_base * 2.25);
+$font_size_xxxl: calc($_font_size_base * 2.5);
 
 $media_phone: 800px;
 
 $default_dark_shadow: 4px 4px rgba($palette_grey_0, 0.5);
+
+$default_text_shadow: 1px 1px 0 rgba($palette_grey_2, 1);
+$dark_text_shadow: 1px 1px $gap_s $palette_grey_0;
+$blur_dark_text_shadow: 0px 0px $gap_l $palette_grey_0;

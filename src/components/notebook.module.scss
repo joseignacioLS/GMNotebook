@@ -1,23 +1,26 @@
+@use "../styles/variables";
 @import "material-symbols";
-@import "../styles/variables";
 
 .notebook {
   position: relative;
+  height: 100%;
+
+  padding: variables.$gap_l variables.$gap_l;
+
   display: grid;
   grid-template-columns: 1fr 1fr;
-  height: 100%;
-  column-gap: $gap_m;
+  column-gap: variables.$gap_m;
 
   transition: grid-template-columns 0.2s;
 
   .editButtonToggle {
     position: absolute;
-    bottom: $gap_m;
-    right: $gap_m;
+    bottom: variables.$gap_m;
+    right: variables.$gap_m;
     z-index: 10;
-    color: $palette_grey_0;
+    color: variables.$palette_grey_0;
 
-    @media (max-width: $media_phone) {
+    @media (max-width: variables.$media_phone) {
       display: none;
     }
   }
@@ -27,7 +30,7 @@
   }
 }
 
-@media (max-width: $media_phone) {
+@media (max-width: variables.$media_phone) {
   .notebook {
     grid-template-columns: 100%;
     grid-template-rows: 100dvh 0;

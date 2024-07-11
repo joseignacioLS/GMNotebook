@@ -1,25 +1,28 @@
-@import "../../styles/variables";
+@use "../../styles/variables";
 
 .note {
+  flex-shrink: 0;
   position: relative;
-  color: $palette_grey_4;
-  padding: 0;
-  border-radius: $border_radius_m;
+
+  padding: 0 variables.$gap_l;
+
   overflow: hidden;
-  padding: 0 $gap_l;
 
-  font-size: $font_size_xl;
-  line-height: 2.5ch;
-
-  user-select: none;
+  display: grid;
+  grid-template-rows: 0fr;
 
   --animation-time: 0.3s;
 
   transition: margin var(--animation-time), padding var(--animation-time),
     grid-template-rows var(--animation-time);
 
-  display: grid;
-  grid-template-rows: 0fr;
+  color: variables.$palette_grey_4;
+  font-size: variables.$font_size_l;
+
+  border-radius: variables.$border_radius_m;
+
+  user-select: none;
+
   h2 {
     cursor: pointer;
   }
@@ -28,36 +31,38 @@
   }
 
   &.visibleNote {
-    padding: $gap_l;
-    margin-bottom: $gap_l;
+    margin-bottom: variables.$gap_l;
+    padding: variables.$gap_l;
+
     grid-template-rows: 1fr;
   }
 }
 
-@media (max-width: $media_phone) {
+@media (max-width: variables.$media_phone) {
   .note {
-    font-size: $font_size_l;
+    font-size: variables.$font_size_l;
   }
 }
 
 .linkVisit {
   position: absolute;
-  top: $gap_s;
-  right: $gap_s;
+  top: variables.$gap_s;
+  right: variables.$gap_s;
+
   cursor: pointer;
-  text-shadow: 0px 0px 10px $palette_grey_0;
+  text-shadow: variables.$blur_dark_text_shadow;
 }
 
 .expand {
   position: absolute;
-  right: $gap_s;
+  right: variables.$gap_s;
   cursor: pointer;
 
-  text-shadow: 0px 0px $gap_s $palette_grey_0;
+  text-shadow: variables.$dark_text_shadow;
 }
 
 .hidden {
   height: 0;
-  padding: 0 $gap_m;
-  margin: 0 $gap_m;
+  padding: 0 variables.$gap_m;
+  margin: 0;
 }

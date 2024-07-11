@@ -1,16 +1,19 @@
 export enum EMatchKeys {
   note = "note:",
   image = "img:",
+  link = "link:"
 }
 
 export const regex: { [key: string]: RegExp } = {
-  insertions: new RegExp("(note:|img:)", "g"),
+  insertions: new RegExp("(note:|img:|link:)", "g"),
   noteInsertion: new RegExp("note:[A-Záéíóúüïñ0-9]+"),
+  linkInsertion: new RegExp("link:[A-Záéíóúüïñ0-9]+=[A-Za-z\.,:/\\0-9\?=]+"),
   imageInsertion: new RegExp("img:[^\n ]+"),
   title: new RegExp(/^\# /),
   subtitle: new RegExp(/^\#\# /),
   list: new RegExp(/^- /),
-  spoiler: new RegExp(/^\* /)
+  spoiler: new RegExp(/^\* /),
+  mermaid: new RegExp(/'''[A-Za-z0-9\-> \n\;\[\(\)\]]+'''/)
 };
 
 interface ISpecialLineConfig {
@@ -49,5 +52,19 @@ export const specialLinesConfig: { [key: string]: ISpecialLineConfig } = {
       type: "spoiler",
       sliceCount: 2,
     }
+  },
+  mermaid: {
+    regex: regex.mermaid,
+    config: {
+      type: "mermaid",
+      sliceCount: 0
+    }
   }
 };
+
+export const specialBlockConfig = {
+  mermaid: {
+    regex: regex.mermaid,
+    config: {}
+  }
+}

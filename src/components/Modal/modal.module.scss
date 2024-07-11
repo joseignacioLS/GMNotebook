@@ -1,6 +1,5 @@
+@use "../../styles/variables";
 @import "material-symbols";
-
-@import "../../styles/variables";
 
 .modalContainer {
   position: fixed;
@@ -8,7 +7,7 @@
   right: 0;
   bottom: 0;
   left: 0;
-  backdrop-filter: blur(5px);
+  backdrop-filter: blur(variables.$gap_s);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -20,16 +19,17 @@
 .modal {
   cursor: default;
   position: relative;
-  padding: $gap_xl;
-  border-radius: $border_radius_l;
-  box-shadow: $default_dark_shadow;
-  color: $palette_grey_0 !important;
-  background-color: $palette_grey_4;
+  padding: variables.$gap_xl;
+  border-radius: variables.$border_radius_l;
+  box-shadow: variables.$default_dark_shadow;
+  color: variables.$palette_grey_0 !important;
+  background-color: variables.$palette_grey_4;
+  max-width: 80vw;
 
   .closeButton {
     position: absolute;
-    right: $gap_m;
-    top: $gap_m;
+    right: variables.$gap_m;
+    top: variables.$gap_m;
     z-index: 100;
   }
 }
