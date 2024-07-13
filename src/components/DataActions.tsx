@@ -8,11 +8,13 @@ import Button, { behaviourEnum } from "./Button/Button";
 import ModalTemplateConfirm from "./Modal/ModalDefaults/ModalTemplateConfirm";
 import ModalPalette from "./Modal/ModalDefaults/ModalPalette";
 import LZString from "lz-string";
+import { toastContext } from "@/context/toast";
 
 const DataActions: React.FC = () => {
   const { data, resetData, updateFileHandle, canEdit } =
     useContext(DataContext);
   const { setContent } = useContext(modalContext);
+  const { showToastSuccess } = useContext(toastContext);
 
   const openModalReset = () => {
     setContent(
@@ -43,7 +45,10 @@ const DataActions: React.FC = () => {
     const compressData = LZString.compressToEncodedURIComponent(
       JSON.stringify(data)
     );
-    navigator.clipboard.writeText(`http:\\localhost:3500?data=${compressData}`);
+    navigator.clipboard.writeText(
+      `${window.location.origin }?data=${compressData}`
+    );
+    showToastSuccess("Link copied to clipboard");
   };
 
   const handleLoad = async (e: any) => {
