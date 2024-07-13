@@ -7,9 +7,11 @@ import Tree from "./Tree";
 import Button, { behaviourEnum } from "./Button/Button";
 import ModalTemplateConfirm from "./Modal/ModalDefaults/ModalTemplateConfirm";
 import ModalPalette from "./Modal/ModalDefaults/ModalPalette";
+import LZString from "lz-string";
 
 const DataActions: React.FC = () => {
-  const { data, resetData, updateFileHandle } = useContext(DataContext);
+  const { data, resetData, updateFileHandle, canEdit } =
+    useContext(DataContext);
   const { setContent } = useContext(modalContext);
 
   const openModalReset = () => {
@@ -37,15 +39,34 @@ const DataActions: React.FC = () => {
     setContent(<ModalPalette />);
   };
 
+  const handleShare = () => {
+    const compressData = LZString.compressToEncodedURIComponent(
+      JSON.stringify(data)
+    );
+    navigator.clipboard.writeText(`http:\\localhost:3500?data=${compressData}`);
+  };
+
   const handleLoad = async (e: any) => {
     e.preventDefault();
     const fileHandle = await getFileHandle();
     updateFileHandle(fileHandle);
   };
 
+  if (!canEdit)
+    return (
+      <div className={styles.dataActions} data-items="1">
+        <Button naked={true} onClick={handleUpdatePalette}>
+          <span className={styles["material-symbols-outlined"]}>palette</span>
+        </Button>
+      </div>
+    );
+  // TODO: hover not working!
   return (
-    <div className={styles.dataActions}>
+    <div className={styles.dataActions} data-items="6">
       <div className={styles.helper}>
+        <Button naked={true} onClick={handleShare}>
+          <span className={styles["material-symbols-outlined"]}>share</span>
+        </Button>
         <Button naked={true} onClick={handleUpdatePalette}>
           <span className={styles["material-symbols-outlined"]}>palette</span>
         </Button>

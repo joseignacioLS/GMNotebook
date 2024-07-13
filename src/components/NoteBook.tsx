@@ -14,7 +14,7 @@ import {
 } from "@/utils/text";
 
 const NoteBook: React.FC = () => {
-  const { editMode, updateEditMode, updateSelectedNote } =
+  const { editMode, updateEditMode, updateSelectedNote, canEdit } =
     useContext(DataContext);
   const { path } = useContext(NavigationContext);
 
@@ -53,25 +53,27 @@ const NoteBook: React.FC = () => {
     >
       <PageDisplay />
       {editMode ? <PageEdit /> : <NoteList references={references} />}
-      <div className={styles.editButtonToggle}>
-        <ToggleButton
-          onClick={() => {
-            if (editMode) {
-              updateSelectedNote(path.at(-1));
+      {canEdit && (
+        <div className={styles.editButtonToggle}>
+          <ToggleButton
+            onClick={() => {
+              if (editMode) {
+                updateSelectedNote(path.at(-1));
+              }
+              updateEditMode((v: boolean) => !v);
+            }}
+            isOn={editMode}
+            leftButton={
+              <span className={styles["material-symbols-outlined"]}>
+                local_library
+              </span>
             }
-            updateEditMode((v: boolean) => !v);
-          }}
-          isOn={editMode}
-          leftButton={
-            <span className={styles["material-symbols-outlined"]}>
-              local_library
-            </span>
-          }
-          rightButton={
-            <span className={styles["material-symbols-outlined"]}>Edit</span>
-          }
-        />
-      </div>
+            rightButton={
+              <span className={styles["material-symbols-outlined"]}>Edit</span>
+            }
+          />
+        </div>
+      )}
     </div>
   );
 };

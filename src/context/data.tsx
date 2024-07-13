@@ -12,11 +12,17 @@ import { IData, IItem, ILeaf, tutorial } from "./constants";
 import { NavigationContext } from "./navigation";
 import { generateDataTree } from "@/utils/tree";
 import { saveToFileHandle } from "@/utils/file";
+import { useRouter, useSearchParams } from "next/navigation";
+
+import LZString from "lz-string";
+import { toastContext } from "./toast";
+import { loadingContext } from "./loading";
 
 interface contextOutputI {
   data: IData;
   item: IItem;
   updateEditMode: any;
+  canEdit: boolean;
   updateData: (value: IData, reset: boolean) => void;
   resetData: () => void;
   selectedNote: string;
@@ -33,6 +39,7 @@ export const DataContext = createContext<contextOutputI>({
   data: tutorial,
   item: tutorial["RootPage"],
   editMode: false,
+  canEdit: true,
   updateEditMode: () => {},
   updateData: (value: IData, reset: boolean) => {},
   resetData: () => {},
@@ -48,14 +55,36 @@ export const DataContext = createContext<contextOutputI>({
 export const DataProvider = ({ children }: { children: ReactElement }) => {
   const [data, setData] = useState<IData>(tutorial);
   const [tree, setTree] = useState<ILeaf[]>([]);
+  const [canEdit, setCanEdit] = useState(true);
   const [selectedNote, setSelectedNote] = useState<string>("RootPage");
   const [editMode, setEditMode] = useState<boolean>(false);
   const [fileHandle, setFileHandle] = useState<FileSystemFileHandle | null>(
     null
   );
+  const { showToastError, showToastSuccess } = useContext(toastContext);
+  const { setShow: setShowLoading } = useContext(loadingContext);
 
   const { path, resetPath, getCurrentPage } = useContext(NavigationContext);
-  
+
+  const router = useRouter();
+
+  const getDataFromRemote = async (remoteData: string) => {
+    try {
+      const decompress: IData = JSON.parse(
+        LZString.decompressFromEncodedURIComponent(remoteData)
+      );
+      setData(decompress);
+      setTree(generateDataTree(decompress));
+      showToastSuccess("Success loading data");
+      setCanEdit(false);
+      setShowLoading(false);
+    } catch (err) {
+      setShowLoading(false);
+      showToastError("Could not load data");
+      router.replace("/");
+    }
+  };
+
   const updateData = (
     newData: IData,
     resetEntry: boolean = true,
@@ -150,23 +179,16 @@ export const DataProvider = ({ children }: { children: ReactElement }) => {
     }
   }, [path, data]);
 
-  // useEffect(() => {
-  //   const retrieved = retrieveLocalStorage();
-  //   try {
-  //     const parsed = JSON.parse(retrieved);
-  //     Object.keys(parsed).forEach((key: string) => {
-  //       if (parsed[key].showInTree === undefined)
-  //         parsed[key].showInTree === false;
-  //     });
-  //     updateData(parsed as dataI);
-  //   } catch (err) {
-  //     console.log(err);
-  //   }
-  // }, []);
-
   useEffect(() => {
     updateEditMode(false);
   }, [path]);
+
+  const searchParams = useSearchParams();
+  const remoteData = searchParams.get("data");
+  useEffect(() => {
+    if (!remoteData) return setShowLoading(false);
+    getDataFromRemote(remoteData);
+  }, [remoteData]);
 
   return (
     <DataContext.Provider
@@ -174,6 +196,7 @@ export const DataProvider = ({ children }: { children: ReactElement }) => {
         data,
         item: data?.[getCurrentPage()] || tutorial["RootPage"],
         editMode,
+        canEdit,
         updateEditMode,
         updateData,
         resetData,

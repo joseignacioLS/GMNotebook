@@ -4,6 +4,8 @@ import { NavigationProvider } from "@/context/navigation";
 import { Inclusive_Sans, Merriweather } from "next/font/google";
 import "../styles/globals.scss";
 import { ColorProvider } from "@/context/colors";
+import { ToastProvider } from "@/context/toast";
+import { LoadingProvider } from "@/context/loading";
 
 const inclusive = Inclusive_Sans({
   weight: ["400"],
@@ -27,19 +29,23 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <ColorProvider>
-        <ModalProvider>
-          <NavigationProvider>
-            <DataProvider>
-              <body
-                className={`${inclusive.variable} ${merriweather.variable}`}
-              >
-                {children}
-              </body>
-            </DataProvider>
-          </NavigationProvider>
-        </ModalProvider>
-      </ColorProvider>
+      <LoadingProvider>
+        <ToastProvider>
+          <ColorProvider>
+            <ModalProvider>
+              <NavigationProvider>
+                <DataProvider>
+                  <body
+                    className={`${inclusive.variable} ${merriweather.variable}`}
+                  >
+                    {children}
+                  </body>
+                </DataProvider>
+              </NavigationProvider>
+            </ModalProvider>
+          </ColorProvider>
+        </ToastProvider>
+      </LoadingProvider>
     </html>
   );
 }
