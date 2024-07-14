@@ -1,9 +1,12 @@
 import Reference from "@/components/Page/Reference";
-import { EMatchKeys, specialLinesConfig } from "./constans";
+import {
+  EMatchKeys,
+  ISpecialLineConfig,
+  specialLinesConfig,
+} from "./constants";
 import { splitLineByInsertions } from "./text";
 import { IReference } from "@/context/constants";
 import Image from "@/components/Page/Image";
-import Mermaid from "@/components/Mermaid/Mermaid";
 
 export interface IInsertionObject {
   innerHTML: string;
@@ -65,26 +68,29 @@ const formatSpecialLine = (
   index: number,
   plain: boolean,
   wrapped: boolean,
-  config: { type: string; sliceCount: number }
+  config: ISpecialLineConfig["config"]
 ) => {
   if (config.type === "mermaid") {
-    return <Mermaid key={line} diagram={`${line.replace(/'/g, "")}`} />;
+    return config.component?.(line, `${line.replace(/'/g, "")}`);
   }
-  if (wrapped) {
-    return (
-      <span
-        key={`p-${index}`}
-        id={`p-${index}`}
-        className={`text-${config.type}`}
-      >
-        {processLine(line.slice(config.sliceCount), index, plain, true)}
-      </span>
-    );
-  }
+  const key = `p-${index}`;
+  const content: any = processLine(
+    line.slice(config.sliceCount),
+    index,
+    plain,
+    true
+  );
+  if (config.component) return config.component(key, content, wrapped);
   return (
-    <p key={`p-${index}`} id={`p-${index}`} className={`text-${config.type}`}>
-      {processLine(line.slice(config.sliceCount), index, plain, true)}
-    </p>
+    <span
+      key={key}
+      id={key}
+      className={`text-${config.type} ${config.extraClasses.join(" ")} text ${
+        !wrapped && "paragraph"
+      }`}
+    >
+      {content}
+    </span>
   );
 };
 
@@ -113,11 +119,9 @@ export const processLine = (
   const lineByInsertions = splitLineByInsertions(line, index);
   const formatedLine = formatSplittedLine(lineByInsertions, plain);
 
-  return wrapped ? (
-    <span key={line + index}>{formatedLine}</span>
-  ) : (
-    <p key={line + index} id={`p-${index}`}>
+  return (
+    <span key={line + index} className={`text ${!wrapped && "paragraph"}`}>
       {formatedLine}
-    </p>
+    </span>
   );
 };

@@ -22,7 +22,7 @@ const DataActions: React.FC = () => {
         positiveButtonAction={resetData}
         positiveButtonText={"Reset"}
       >
-        <p>
+        <span className="text paragraph">
           Resetting the notebook will erase all your content. If you want to
           keep it, please{" "}
           <Button
@@ -32,7 +32,7 @@ const DataActions: React.FC = () => {
             Download
           </Button>{" "}
           it before resetting.
-        </p>
+        </span>
       </ModalTemplateConfirm>
     );
   };
@@ -46,7 +46,7 @@ const DataActions: React.FC = () => {
       JSON.stringify(data)
     );
     navigator.clipboard.writeText(
-      `${window.location.origin }?data=${compressData}`
+      `${window.location.origin}?data=${compressData}`
     );
     showToastSuccess("Link copied to clipboard");
   };
@@ -59,15 +59,21 @@ const DataActions: React.FC = () => {
 
   if (!canEdit)
     return (
-      <div className={styles.dataActions} data-items="1">
-        <Button naked={true} onClick={handleUpdatePalette}>
-          <span className={styles["material-symbols-outlined"]}>palette</span>
-        </Button>
+      <div className={`${styles.dataActions} ${styles.grow_2}`}>
+        <div className={styles.helper}>
+          <Button naked={true} onClick={handleUpdatePalette}>
+            <span className={styles["material-symbols-outlined"]}>palette</span>
+          </Button>
+          <Button naked={true} onClick={() => setContent(<Tree />)}>
+            <span className={styles["material-symbols-outlined"]}>
+              network_node
+            </span>
+          </Button>
+        </div>
       </div>
     );
-  // TODO: hover not working!
   return (
-    <div className={styles.dataActions} data-items="6">
+    <div className={`${styles.dataActions} ${styles.grow_6}`} data-items="6">
       <div className={styles.helper}>
         <Button naked={true} onClick={handleShare}>
           <span className={styles["material-symbols-outlined"]}>share</span>
