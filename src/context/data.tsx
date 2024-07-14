@@ -147,6 +147,8 @@ export const DataProvider = ({ children }: { children: ReactElement }) => {
   };
 
   const resetData = (): void => {
+    router.replace("/");
+    setCanEdit(true);
     updateData({ ...tutorial }, true);
   };
 

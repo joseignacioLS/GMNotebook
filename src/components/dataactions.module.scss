@@ -31,9 +31,9 @@
   }
 
   &:hover {
-    &.grow_2 {
+    &.grow_3 {
 
-      grid-template-rows: calc(calc(variables.$gap_xl) * 2);
+      grid-template-rows: calc(calc(variables.$gap_xl) * 3);
     }
 
     &.grow_6 {
