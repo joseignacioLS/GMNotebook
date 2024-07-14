@@ -1,7 +1,6 @@
 import { ReactElement } from "react";
 import { IInsertionObject, checkIfVisible, processLine } from "./dom";
-import { EMatchKeys, regex } from "./constans";
-import { IData } from "@/context/constants";
+import { EMatchKeys, regex } from "./constants";
 
 export interface ILineProcess {
   result: (string | ReactElement)[];
@@ -236,4 +235,3 @@ export const stringToNumber = (input: string): number => {
     return acc * (curr.charCodeAt(0) / (i + 1));
   }, 1);
 };
-

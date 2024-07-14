@@ -6,6 +6,8 @@ import DataActions from "@/components/DataActions";
 
 import { useContext } from "react";
 import { colorContext } from "@/context/colors";
+import Toast from "@/components/Toast/Toast";
+import Loading from "@/components/Loading/Loading";
 
 export default function Home() {
   const { darkMode } = useContext(colorContext);
@@ -15,6 +17,8 @@ export default function Home() {
       <NoteBook />
       <Modal />
       <DataActions />
+      <Toast />
+      <Loading />
     </main>
   );
 }

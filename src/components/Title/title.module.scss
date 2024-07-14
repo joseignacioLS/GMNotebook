@@ -1,0 +1,24 @@
+@use "../../styles/variables";
+
+
+.title {
+  font-family: var(--font-merriweather);
+  font-size: variables.$font_size_xl;
+  font-weight: bold;
+  text-transform: capitalize;
+  margin-top: variables.$gap_xl;
+  margin-bottom: variables.$gap_l;
+
+  &:first-of-type {
+    margin-top: 0;
+  }
+}
+
+.subtitle {
+  font-family: var(--font-merriweather);
+  font-size: variables.$font_size_l;
+  font-weight: bold;
+  text-transform: capitalize;
+  margin-top: variables.$gap_l;
+  margin-bottom: variables.$gap_m;
+}

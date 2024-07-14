@@ -20,7 +20,7 @@
     z-index: 10;
     color: variables.$palette_grey_0;
 
-    @media (max-width: variables.$media_phone) {
+    @media (width < variables.$media_phone) {
       display: none;
     }
   }

@@ -1,0 +1,24 @@
+@use "../../styles/variables";
+
+.spoiler {
+  transition: color 0.2s, background-color 0.2s, border-radius .2s;
+  cursor: pointer;
+  padding: variables.$gap_m 0;
+
+  &.noEdit {
+    cursor: default;
+    user-select: none;
+  }
+
+
+  &:not(:active),
+  &.noEdit {
+    color: transparent;
+    background-color: rgba(variables.$palette_grey_1, .8);
+    border-radius: variables.$border_radius_m;
+
+    >* {
+      opacity: 0;
+    }
+  }
+}

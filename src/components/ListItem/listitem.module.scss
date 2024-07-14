@@ -1,0 +1,11 @@
+@use "../../styles/variables";
+
+
+.listItem {
+  padding-left: variables.$gap_l;
+
+  &::before {
+    content: "• ";
+    padding-right: variables.$gap_m;
+  }
+}

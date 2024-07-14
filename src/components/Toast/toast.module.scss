@@ -1,0 +1,52 @@
+@use "../../styles/variables";
+
+.toast {
+  position: fixed;
+  left: 50%;
+  bottom: variables.$gap_m;
+  transform: translateX(-50%);
+  width: 600px;
+  border-radius: variables.$border_radius_l;
+  background-color: variables.$palette_grey_4;
+  color: variables.$palette_grey_0;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding: variables.$gap_m variables.$gap_xl;
+  box-shadow: variables.$default_dark_shadow;
+
+  &.visible {
+    animation: fade-out forwards 3s;
+  }
+
+  &.success {
+    color: variables.$palette_grey_4;
+    background-color: variables.$palette_green_1;
+  }
+
+  &.error {
+    background-color: variables.$palette_alert;
+  }
+
+  @media (width < variables.$media_phone) {
+    width: calc(100% - variables.$gap_l);
+  }
+}
+
+@keyframes fade-out {
+  from {
+    transform: translate(-50%, 200%);
+  }
+
+  10% {
+    transform: translate(-50%, 0);
+  }
+
+  90% {
+    transform: translate(-50%, 0);
+  }
+
+  to {
+    transform: translate(-50%, 200%);
+  }
+}

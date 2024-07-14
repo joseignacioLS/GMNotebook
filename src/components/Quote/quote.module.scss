@@ -1,0 +1,16 @@
+@use "../../styles/variables";
+
+.quote {
+  padding-left: variables.$gap_xl;
+  font-style: italic;
+
+  &::before {
+    content: '"';
+    font-size: variables.$font_size_xxxl;
+  }
+
+  &::after {
+    content: '"';
+    font-size: variables.$font_size_xxxl;
+  }
+}
