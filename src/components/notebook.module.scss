@@ -8,10 +8,7 @@
   padding: variables.$gap_l variables.$gap_l;
 
   display: grid;
-  grid-template-columns: 1fr 1fr;
   column-gap: variables.$gap_m;
-
-  transition: grid-template-columns 0.2s;
 
   .editButtonToggle {
     position: absolute;
@@ -25,17 +22,36 @@
     }
   }
 
+  .draggable {
+    height: 100%;
+    width: variables.$gap_l;
+    background-color: rgba(variables.$palette_grey_2, .2);
+    user-select: none;
+    cursor: grab;
+    transition: background-color .2s;
+
+    &:hover,
+    &:active {
+      background-color: rgba(variables.$palette_grey_2, .9);
+    }
+
+    &:active {
+      cursor: grabbing !important;
+    }
+
+    @media (width < variables.$media_phone) {
+      display: none;
+    }
+  }
+
   &.referenceLess {
-    grid-template-columns: 1fr 0fr;
+    grid-template-columns: 1fr 0fr 0fr;
   }
 }
 
-@media (max-width: variables.$media_phone) {
+@media (width < variables.$media_phone) {
   .notebook {
     grid-template-columns: 100%;
     grid-template-rows: 100dvh 0;
-    grid-template-areas:
-      "text"
-      "notes";
   }
 }

@@ -23,7 +23,7 @@
     outline: 0;
   }
 
-  @media (max-width: variables.$media_phone) {
+  @media (width < variables.$media_phone) {
     display: none;
   }
 }
