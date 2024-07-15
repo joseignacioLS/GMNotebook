@@ -70,15 +70,31 @@ export const DataProvider = ({ children }: { children: ReactElement }) => {
 
   const getDataFromRemote = async (remoteData: string) => {
     try {
+      const resp = await fetch(remoteData);
+      if (resp.status !== 200) throw Error("Could not load from remote");
+      else {
+        const data = await resp.json();
+        setData(data);
+        setTree(generateDataTree(data));
+        setCanEdit(false);
+        setShowLoading(false);
+        return;
+      }
+    } catch (err) {
+      console.warn(err);
+    }
+    try {
       const decompress: IData = JSON.parse(
         LZString.decompressFromEncodedURIComponent(remoteData)
       );
+      if (!decompress.RootPage) throw Error("Bad data format");
       setData(decompress);
       setTree(generateDataTree(decompress));
       showToastSuccess("Success loading data");
       setCanEdit(false);
       setShowLoading(false);
     } catch (err) {
+      console.warn(err);
       setShowLoading(false);
       showToastError("Could not load data");
       router.replace("/");
