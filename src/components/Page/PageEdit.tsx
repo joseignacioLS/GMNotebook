@@ -1,8 +1,9 @@
-import React, { useCallback, useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import styles from "./pageedit.module.scss";
 import { DataContext } from "@/context/data";
 import { extractReferences, getSelectedParagraphIndex } from "@/utils/text";
 import Input from "../Input/Input";
+import { processCommands } from "@/utils/commands";
 
 const PageEdit: React.FC = () => {
   const { item, data, updateData, editMode, selectedNote } =
@@ -19,7 +20,12 @@ const PageEdit: React.FC = () => {
     showInTree: data[selectedNote]?.showInTree || false,
   });
 
-  const handleUpdateData = (key: string, value: string | boolean) => {
+  const handleUpdateData = (
+    target: HTMLElement,
+    key: string,
+    value: string | boolean
+  ) => {
+    if (key === "text") value = processCommands(target, value as string);
     setInput((oldValue) => {
       return { ...oldValue, [key]: value };
     });
@@ -114,13 +120,17 @@ const PageEdit: React.FC = () => {
     <div className={`${styles.pageEdit} ${!editMode && styles.height0}`}>
       <Input
         value={input.title}
-        onChange={(e) => handleUpdateData("title", e.currentTarget.value)}
+        onChange={(e) =>
+          handleUpdateData(e.target, "title", e.currentTarget.value)
+        }
         label={"Title"}
         tooltip={"This is the title of the page"}
       />
       <Input
         value={input.display}
-        onChange={(e) => handleUpdateData("display", e.currentTarget.value)}
+        onChange={(e) =>
+          handleUpdateData(e.target, "display", e.currentTarget.value)
+        }
         label={"Display"}
         tooltip={
           "This will substitute the note:keyword wherever this page is referenced as a note."
@@ -128,7 +138,9 @@ const PageEdit: React.FC = () => {
       />
       <Input
         value={input.showInTree}
-        onChange={(e) => handleUpdateData("showInTree", !input.showInTree)}
+        onChange={(e) =>
+          handleUpdateData(e.target, "showInTree", !input.showInTree)
+        }
         label={" Show in tree?"}
         tooltip={"Decide if this note is shown in the tree"}
         type="checkbox"
@@ -136,8 +148,8 @@ const PageEdit: React.FC = () => {
       <textarea
         onSelect={handleCursorChange}
         onInput={(e) => {
-          handleCursorChange(e);
-          handleUpdateData("text", e.currentTarget.value);
+          e.preventDefault();
+          handleUpdateData(e.target as any, "text", e.currentTarget.value);
         }}
         value={input.text}
       ></textarea>
