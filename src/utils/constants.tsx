@@ -11,7 +11,11 @@ export enum EMatchKeys {
   link = "link:",
 }
 
-export const regex: { [key: string]: RegExp } = {
+interface IRegExpDict {
+  [key: string]: RegExp;
+}
+
+export const regex: IRegExpDict = {
   insertions: new RegExp("(note:|img:|link:)", "g"),
   noteInsertion: new RegExp("note:[A-Záéíóúüïñ0-9]+"),
   linkInsertion: new RegExp("link:[A-Záéíóúüïñ0-9]+=[A-Za-z.,:/\\0-9?=]+"),
@@ -22,6 +26,7 @@ export const regex: { [key: string]: RegExp } = {
   spoiler: new RegExp(/^\* /),
   quote: new RegExp(/^> /),
   mermaid: new RegExp(/'''[A-Za-z0-9\-> \n\;\[\(\)\]]+'''/),
+  command: new RegExp(/!:[a-z]+(\([a-z0-9]*\))? /),
 };
 
 export interface ISpecialLineConfig {
@@ -107,9 +112,10 @@ export const specialLinesConfig: { [key: string]: ISpecialLineConfig } = {
   },
 };
 
-export const specialBlockConfig = {
-  mermaid: {
-    regex: regex.mermaid,
-    config: {},
-  },
-};
+// COMMANDS
+
+export enum ECommands {
+  name = "!:name",
+  place = "!:place",
+  today = "!:today",
+}
