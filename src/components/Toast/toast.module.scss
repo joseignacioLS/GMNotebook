@@ -1,6 +1,7 @@
 @use "../../styles/variables";
 
 .toast {
+  z-index: 30;
   position: fixed;
   left: 50%;
   bottom: variables.$gap_m;

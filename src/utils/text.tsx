@@ -208,10 +208,13 @@ export const getSelectedParagraphIndex = (
   return pIndex;
 };
 
-export const filterReferencesBasedOnVisibility = (text: string) => {
+export const filterReferencesBasedOnVisibility = (
+  text: string,
+  canEdit: boolean
+) => {
   const extractedReferences = extractReferences(text);
   return extractedReferences.reduce((references: string[], key: string) => {
-    const visible = checkIfVisible(key);
+    const visible = checkIfVisible(key, canEdit);
     if (!visible) return references;
     const [searchKey] = key.split("_");
     const alreadyVisible = references.some((reference: string) => {

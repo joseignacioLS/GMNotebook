@@ -35,7 +35,10 @@ const NoteBook: React.FC = () => {
 
   const updateReferences = () => {
     const totalReferences = extractReferences(item.text);
-    const visibleReferences = filterReferencesBasedOnVisibility(item.text);
+    const visibleReferences = filterReferencesBasedOnVisibility(
+      item.text,
+      canEdit
+    );
     setReferences({ total: totalReferences, visible: visibleReferences });
   };
 

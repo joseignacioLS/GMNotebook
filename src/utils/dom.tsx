@@ -47,11 +47,22 @@ const generateItemFromMatch = (
   return <>{key}</>;
 };
 
-export const checkIfVisible = (itemKey: string) => {
+const isInsideSpoiler = (element: any) => {
+  const parent = element.parentElement;
+  if (parent.id === "text") return false;
+  if (parent.className.includes("spoiler")) return true;
+  return isInsideSpoiler(parent);
+};
+
+export const checkIfVisible = (itemKey: string, canEdit: boolean) => {
   const items = Array.from(
     document.querySelectorAll(`#text .reference${itemKey}`)
   );
   return items.some((item) => {
+    // if canEdit is false means that we are in shared mode
+    // and therefore, notes inside spoilers should not be
+    // shown in the reference list
+    if (!canEdit && isInsideSpoiler(item)) return false;
     const boundingRect = item.getBoundingClientRect();
     if (!boundingRect) return false;
     const notesContainer = document.querySelector("#text") as any;

@@ -59,18 +59,13 @@ const DataActions: React.FC = () => {
 
   if (!canEdit)
     return (
-      <div className={`${styles.dataActions} ${styles.grow_3}`}>
+      <div className={`${styles.dataActions} ${styles.grow_2}`}>
         <div className={styles.helper}>
           <Button naked={true} onClick={resetData}>
             <span className={styles["material-symbols-outlined"]}>home</span>
           </Button>
           <Button naked={true} onClick={handleUpdatePalette}>
             <span className={styles["material-symbols-outlined"]}>palette</span>
-          </Button>
-          <Button naked={true} onClick={() => setContent(<Tree />)}>
-            <span className={styles["material-symbols-outlined"]}>
-              network_node
-            </span>
           </Button>
         </div>
       </div>
