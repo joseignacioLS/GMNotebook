@@ -54,7 +54,7 @@ export const DataContext = createContext<contextOutputI>({
 
 export const DataProvider = ({ children }: { children: ReactElement }) => {
   const [data, setData] = useState<IData>(tutorial);
-  const [tree, setTree] = useState<ILeaf[]>([]);
+  const [tree, setTree] = useState<ILeaf[]>(generateDataTree(tutorial));
   const [canEdit, setCanEdit] = useState(true);
   const [selectedNote, setSelectedNote] = useState<string>("RootPage");
   const [editMode, setEditMode] = useState<boolean>(false);
@@ -95,7 +95,6 @@ export const DataProvider = ({ children }: { children: ReactElement }) => {
       const updatedData = structuredClone(cleanData);
       setTree(generateDataTree(updatedData));
       if (resetEntry) resetPath();
-      // saveToLocalStorage(cleanData);
       if (fileHandle && saveToFile) saveToFileHandle(fileHandle, updatedData);
       return updatedData;
     });
@@ -118,11 +117,6 @@ export const DataProvider = ({ children }: { children: ReactElement }) => {
         const key = v.split("_")[0];
         if (!references.includes(key)) references.push(key);
       });
-      // delete emtpy references
-      // if (value[key].text === "" && key !== "RootPage") {
-      //   delete value[key];
-      //   deletedKeys.push(key);
-      // }
     });
 
     // remove ununused references
@@ -138,18 +132,13 @@ export const DataProvider = ({ children }: { children: ReactElement }) => {
     if (currentPath !== undefined && deletedKeys.includes(currentPath)) {
       resetPath();
     }
-
-    // remove deleted keys from text
-    // Object.keys(value).forEach((key: string) => {
-    //   value[key].text = removeReferences(value[key].text, deletedKeys);
-    // });
     return value;
   };
 
   const resetData = (): void => {
     router.replace("/");
     setCanEdit(true);
-    updateData({ ...tutorial }, true);
+    updateData(structuredClone(tutorial), true);
   };
 
   const updateEditMode = (value: boolean): void => {
@@ -169,6 +158,10 @@ export const DataProvider = ({ children }: { children: ReactElement }) => {
   };
 
   useEffect(() => {
+    updateEditMode(false);
+  }, [path]);
+
+  useEffect(() => {
     if (data?.RootPage === undefined) {
       updateData(tutorial);
       setFileHandle(null);
@@ -180,10 +173,6 @@ export const DataProvider = ({ children }: { children: ReactElement }) => {
       return;
     }
   }, [path, data]);
-
-  useEffect(() => {
-    updateEditMode(false);
-  }, [path]);
 
   const searchParams = useSearchParams();
   const remoteData = searchParams.get("data");
