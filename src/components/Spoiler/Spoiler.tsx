@@ -9,7 +9,7 @@ interface IProps {
   wrapped: boolean;
 }
 const Spoiler = ({ text, id, wrapped }: IProps) => {
-  const { canEdit } = useContext(DataContext);
+  const { canEdit, editMode } = useContext(DataContext);
 
   return (
     <span
@@ -18,7 +18,7 @@ const Spoiler = ({ text, id, wrapped }: IProps) => {
     >
       {text}
       <div
-        className={`${styles.cover} ${canEdit && styles.preview} ${
+        className={`${styles.cover} ${editMode && styles.preview} ${
           !canEdit && styles.notUncovereable
         }`}
       >

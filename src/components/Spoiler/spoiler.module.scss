@@ -7,9 +7,10 @@
   padding: variables.$gap_m 0;
   z-index: 2;
 
+  &:hover .cover,
   &:hover .cover.preview {
     z-index: -1;
-    opacity: .25;
+    opacity: .1;
   }
 
 
@@ -35,7 +36,10 @@
       opacity: .5;
     }
 
+
     &.notUncovereable {
+      z-index: 3 !important;
+      opacity: 1 !important;
       cursor: default;
     }
   }
