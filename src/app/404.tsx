@@ -7,7 +7,7 @@ const Home = () => {
   const router = useRouter();
   useEffect(() => {
     router.push("/");
-  }, []);
+  }, [router]);
   return <div>404</div>;
 };
 

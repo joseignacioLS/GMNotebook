@@ -19,6 +19,7 @@ const Image: React.FC<IProps> = ({ src, fullSize, canDetail = true }) => {
       onClick={handleImageClick}
       src={src}
       style={{ cursor: canDetail ? "pointer" : "default" }}
+      alt="note image"
     />
   );
 };

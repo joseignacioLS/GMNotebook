@@ -33,15 +33,6 @@ const NoteBook: React.FC = () => {
     visible: [],
   });
 
-  const updateReferences = () => {
-    const totalReferences = extractReferences(item.text);
-    const visibleReferences = filterReferencesBasedOnVisibility(
-      item.text,
-      canEdit
-    );
-    setReferences({ total: totalReferences, visible: visibleReferences });
-  };
-
   const handleDragStart = () => {
     setDragging(true);
   };
@@ -67,21 +58,26 @@ const NoteBook: React.FC = () => {
   useEffect(() => {
     const updateWindowWidth = () => {
       setScreenWidth(window.innerWidth);
+      if (rightColumnSize === 0) {
+        setRightColumnSize(window.innerWidth / 2);
+      }
     };
     updateWindowWidth();
     window.addEventListener("resize", updateWindowWidth);
     return () => {
       window.removeEventListener("resize", updateWindowWidth);
     };
-  }, []);
+  }, [rightColumnSize]);
 
   useEffect(() => {
-    if (rightColumnSize === 0) {
-      setRightColumnSize(screenWidth / 2);
-    }
-  }, [screenWidth]);
-
-  useEffect(() => {
+    const updateReferences = () => {
+      const totalReferences = extractReferences(item.text);
+      const visibleReferences = filterReferencesBasedOnVisibility(
+        item.text,
+        canEdit
+      );
+      setReferences({ total: totalReferences, visible: visibleReferences });
+    };
     updateReferences();
     document
       .querySelector("#text")
@@ -91,7 +87,7 @@ const NoteBook: React.FC = () => {
         .querySelector("#text")
         ?.removeEventListener("scroll", updateReferences);
     };
-  }, [item.text]);
+  }, [item.text, canEdit]);
 
   return (
     <div

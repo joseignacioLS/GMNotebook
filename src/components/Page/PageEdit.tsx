@@ -1,13 +1,12 @@
 import React, { useContext, useEffect, useState } from "react";
 import styles from "./pageedit.module.scss";
 import { DataContext } from "@/context/data";
-import { extractReferences, getSelectedParagraphIndex } from "@/utils/text";
+import { extractReferences } from "@/utils/text";
 import Input from "../Input/Input";
 import { processCommands } from "@/utils/commands";
 
 const PageEdit: React.FC = () => {
-  const { item, data, updateData, editMode, selectedNote } =
-    useContext(DataContext);
+  const { data, updateData, editMode, selectedNote } = useContext(DataContext);
   const [input, setInput] = useState<{
     title: string;
     text: string;
@@ -70,32 +69,6 @@ const PageEdit: React.FC = () => {
     saveData();
   }, [input.text, input.display, input.title, input.showInTree]);
 
-  const handleCursorChange = (e: any) => {
-    const cursorPosition = e.currentTarget?.selectionStart;
-    const text = e.currentTarget.value;
-
-    const pIndex = getSelectedParagraphIndex(cursorPosition, text);
-    removeSelectedParagraph(pIndex);
-  };
-
-  const removeSelectedParagraph = (selectedIndex: number = -1) => {
-    const allParagraphs = Array.from(document.querySelectorAll("#text > p"));
-    let index = 0;
-    for (let p of allParagraphs) {
-      p?.classList.remove("edit-p");
-      if (
-        editMode &&
-        index === selectedIndex &&
-        p.innerHTML !== "" &&
-        item.title === input.title
-      ) {
-        p?.scrollIntoView();
-        p?.classList.add("edit-p");
-      }
-      index += 1;
-    }
-  };
-
   useEffect(() => {
     const newInput = {
       text: data[selectedNote]?.text || "",
@@ -113,9 +86,6 @@ const PageEdit: React.FC = () => {
     }
   }, [selectedNote]);
 
-  useEffect(() => {
-    return removeSelectedParagraph;
-  }, []);
   return (
     <div className={`${styles.pageEdit} ${!editMode && styles.height0}`}>
       <Input
@@ -146,7 +116,6 @@ const PageEdit: React.FC = () => {
         type="checkbox"
       />
       <textarea
-        onSelect={handleCursorChange}
         onInput={(e) => {
           e.preventDefault();
           handleUpdateData(e.target as any, "text", e.currentTarget.value);
