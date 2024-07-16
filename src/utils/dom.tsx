@@ -47,8 +47,9 @@ const generateItemFromMatch = (
   return <>{key}</>;
 };
 
-const isInsideSpoiler = (element: any) => {
+const isInsideSpoiler = (element: any): boolean => {
   const parent = element.parentElement;
+  if (!parent) return false;
   if (parent.id === "text") return false;
   if (parent.className.includes("spoiler")) return true;
   return isInsideSpoiler(parent);
