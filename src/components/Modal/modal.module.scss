@@ -2,6 +2,7 @@
 @import "material-symbols";
 
 .modalContainer {
+  z-index: 20;
   position: fixed;
   top: 0;
   right: 0;

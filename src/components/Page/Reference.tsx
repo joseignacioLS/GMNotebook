@@ -17,10 +17,11 @@ const Reference: React.FC<IProps> = ({ reference, naked = false }) => {
 
   return (
     <span
-      className={`${styles.reference} reference${reference.id}`}
+      className={`${styles.reference} reference${reference.id} ${
+        selectedNote === reference.key && "flash"
+      }`}
       style={{
         backgroundColor: naked ? "transparent" : generateColor(reference.key),
-        outline: selectedNote === reference.key ? "3px solid red" : "0",
       }}
       onClick={() => {
         if (naked) return;

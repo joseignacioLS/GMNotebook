@@ -21,13 +21,14 @@ const NoteCard: React.FC<IProps> = ({ itemKey, visible }) => {
   const title = data[key]?.title || "";
   const text = data[key]?.text || "";
 
-  const displayShortText = processText(
-    text.split("\n").length > 5
-      ? text.split("\n").slice(0, 5).join("\n") + "\n..."
-      : text,
-    true
-  );
-
+  const displayShortText = text
+    ? processText(
+        text.split("\n").length > 5
+          ? text.split("\n").slice(0, 5).join("\n") + "\n..."
+          : text,
+        true
+      )
+    : "";
   return (
     <div
       id={`note-${key.split("_")[0]}`}

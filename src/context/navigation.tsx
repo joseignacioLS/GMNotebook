@@ -46,8 +46,10 @@ export const NavigationProvider = ({
   };
 
   const resetPath = (): void => {
-    setPath(["RootPage"]);
-    setTimeout(resetNotesScroll, 0);
+    setTimeout(() => {
+      setPath(["RootPage"]);
+      resetNotesScroll();
+    }, 0);
   };
 
   const getCurrentPage = (): string => {

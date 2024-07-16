@@ -1,9 +1,12 @@
 import Reference from "@/components/Page/Reference";
-import { EMatchKeys, specialLinesConfig } from "./constans";
+import {
+  EMatchKeys,
+  ISpecialLineConfig,
+  specialLinesConfig,
+} from "./constants";
 import { splitLineByInsertions } from "./text";
 import { IReference } from "@/context/constants";
 import Image from "@/components/Page/Image";
-import Mermaid from "@/components/Mermaid/Mermaid";
 
 export interface IInsertionObject {
   innerHTML: string;
@@ -44,11 +47,23 @@ const generateItemFromMatch = (
   return <>{key}</>;
 };
 
-export const checkIfVisible = (itemKey: string) => {
+const isInsideSpoiler = (element: any): boolean => {
+  const parent = element.parentElement;
+  if (!parent) return false;
+  if (parent.id === "text") return false;
+  if (parent.className.includes("spoiler")) return true;
+  return isInsideSpoiler(parent);
+};
+
+export const checkIfVisible = (itemKey: string, canEdit: boolean) => {
   const items = Array.from(
     document.querySelectorAll(`#text .reference${itemKey}`)
   );
   return items.some((item) => {
+    // if canEdit is false means that we are in shared mode
+    // and therefore, notes inside spoilers should not be
+    // shown in the reference list
+    if (!canEdit && isInsideSpoiler(item)) return false;
     const boundingRect = item.getBoundingClientRect();
     if (!boundingRect) return false;
     const notesContainer = document.querySelector("#text") as any;
@@ -65,26 +80,29 @@ const formatSpecialLine = (
   index: number,
   plain: boolean,
   wrapped: boolean,
-  config: { type: string; sliceCount: number }
+  config: ISpecialLineConfig["config"]
 ) => {
   if (config.type === "mermaid") {
-    return <Mermaid key={line} diagram={`${line.replace(/'/g, "")}`} />;
+    return config.component?.(line, `${line.replace(/'/g, "")}`);
   }
-  if (wrapped) {
-    return (
-      <span
-        key={`p-${index}`}
-        id={`p-${index}`}
-        className={`text-${config.type}`}
-      >
-        {processLine(line.slice(config.sliceCount), index, plain, true)}
-      </span>
-    );
-  }
+  const key = `p-${index}`;
+  const content: any = processLine(
+    line.slice(config.sliceCount),
+    index,
+    plain,
+    true
+  );
+  if (config.component) return config.component(key, content, wrapped);
   return (
-    <p key={`p-${index}`} id={`p-${index}`} className={`text-${config.type}`}>
-      {processLine(line.slice(config.sliceCount), index, plain, true)}
-    </p>
+    <span
+      key={key}
+      id={key}
+      className={`text-${config.type} ${config.extraClasses.join(" ")} text ${
+        !wrapped && "paragraph"
+      }`}
+    >
+      {content}
+    </span>
   );
 };
 
@@ -113,11 +131,9 @@ export const processLine = (
   const lineByInsertions = splitLineByInsertions(line, index);
   const formatedLine = formatSplittedLine(lineByInsertions, plain);
 
-  return wrapped ? (
-    <span key={line + index}>{formatedLine}</span>
-  ) : (
-    <p key={line + index} id={`p-${index}`}>
+  return (
+    <span key={line + index} className={`text ${!wrapped && "paragraph"}`}>
       {formatedLine}
-    </p>
+    </span>
   );
 };

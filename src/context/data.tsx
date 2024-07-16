@@ -12,11 +12,17 @@ import { IData, IItem, ILeaf, tutorial } from "./constants";
 import { NavigationContext } from "./navigation";
 import { generateDataTree } from "@/utils/tree";
 import { saveToFileHandle } from "@/utils/file";
+import { useRouter, useSearchParams } from "next/navigation";
+
+import LZString from "lz-string";
+import { toastContext } from "./toast";
+import { loadingContext } from "./loading";
 
 interface contextOutputI {
   data: IData;
   item: IItem;
   updateEditMode: any;
+  canEdit: boolean;
   updateData: (value: IData, reset: boolean) => void;
   resetData: () => void;
   selectedNote: string;
@@ -33,6 +39,7 @@ export const DataContext = createContext<contextOutputI>({
   data: tutorial,
   item: tutorial["RootPage"],
   editMode: false,
+  canEdit: true,
   updateEditMode: () => {},
   updateData: (value: IData, reset: boolean) => {},
   resetData: () => {},
@@ -47,15 +54,53 @@ export const DataContext = createContext<contextOutputI>({
 
 export const DataProvider = ({ children }: { children: ReactElement }) => {
   const [data, setData] = useState<IData>(tutorial);
-  const [tree, setTree] = useState<ILeaf[]>([]);
+  const [tree, setTree] = useState<ILeaf[]>(generateDataTree(tutorial));
+  const [canEdit, setCanEdit] = useState(true);
   const [selectedNote, setSelectedNote] = useState<string>("RootPage");
   const [editMode, setEditMode] = useState<boolean>(false);
   const [fileHandle, setFileHandle] = useState<FileSystemFileHandle | null>(
     null
   );
+  const { showToastError, showToastSuccess } = useContext(toastContext);
+  const { setShow: setShowLoading } = useContext(loadingContext);
 
   const { path, resetPath, getCurrentPage } = useContext(NavigationContext);
-  
+
+  const router = useRouter();
+
+  const getDataFromRemote = async (remoteData: string) => {
+    try {
+      const resp = await fetch(remoteData);
+      if (resp.status !== 200) throw Error("Could not load from remote");
+      else {
+        const data = await resp.json();
+        setData(data);
+        setTree(generateDataTree(data));
+        setCanEdit(false);
+        setShowLoading(false);
+        return;
+      }
+    } catch (err) {
+      console.warn(err);
+    }
+    try {
+      const decompress: IData = JSON.parse(
+        LZString.decompressFromEncodedURIComponent(remoteData)
+      );
+      if (!decompress.RootPage) throw Error("Bad data format");
+      setData(decompress);
+      setTree(generateDataTree(decompress));
+      showToastSuccess("Success loading data");
+      setCanEdit(false);
+      setShowLoading(false);
+    } catch (err) {
+      console.warn(err);
+      setShowLoading(false);
+      showToastError("Could not load data");
+      router.replace("/");
+    }
+  };
+
   const updateData = (
     newData: IData,
     resetEntry: boolean = true,
@@ -66,7 +111,6 @@ export const DataProvider = ({ children }: { children: ReactElement }) => {
       const updatedData = structuredClone(cleanData);
       setTree(generateDataTree(updatedData));
       if (resetEntry) resetPath();
-      // saveToLocalStorage(cleanData);
       if (fileHandle && saveToFile) saveToFileHandle(fileHandle, updatedData);
       return updatedData;
     });
@@ -89,11 +133,6 @@ export const DataProvider = ({ children }: { children: ReactElement }) => {
         const key = v.split("_")[0];
         if (!references.includes(key)) references.push(key);
       });
-      // delete emtpy references
-      // if (value[key].text === "" && key !== "RootPage") {
-      //   delete value[key];
-      //   deletedKeys.push(key);
-      // }
     });
 
     // remove ununused references
@@ -109,16 +148,13 @@ export const DataProvider = ({ children }: { children: ReactElement }) => {
     if (currentPath !== undefined && deletedKeys.includes(currentPath)) {
       resetPath();
     }
-
-    // remove deleted keys from text
-    // Object.keys(value).forEach((key: string) => {
-    //   value[key].text = removeReferences(value[key].text, deletedKeys);
-    // });
     return value;
   };
 
   const resetData = (): void => {
-    updateData({ ...tutorial }, true);
+    router.replace("/");
+    setCanEdit(true);
+    updateData(structuredClone(tutorial), true);
   };
 
   const updateEditMode = (value: boolean): void => {
@@ -138,6 +174,10 @@ export const DataProvider = ({ children }: { children: ReactElement }) => {
   };
 
   useEffect(() => {
+    updateEditMode(false);
+  }, [path]);
+
+  useEffect(() => {
     if (data?.RootPage === undefined) {
       updateData(tutorial);
       setFileHandle(null);
@@ -150,23 +190,12 @@ export const DataProvider = ({ children }: { children: ReactElement }) => {
     }
   }, [path, data]);
 
-  // useEffect(() => {
-  //   const retrieved = retrieveLocalStorage();
-  //   try {
-  //     const parsed = JSON.parse(retrieved);
-  //     Object.keys(parsed).forEach((key: string) => {
-  //       if (parsed[key].showInTree === undefined)
-  //         parsed[key].showInTree === false;
-  //     });
-  //     updateData(parsed as dataI);
-  //   } catch (err) {
-  //     console.log(err);
-  //   }
-  // }, []);
-
+  const searchParams = useSearchParams();
+  const remoteData = searchParams.get("data");
   useEffect(() => {
-    updateEditMode(false);
-  }, [path]);
+    if (!remoteData) return setShowLoading(false);
+    getDataFromRemote(remoteData);
+  }, [remoteData]);
 
   return (
     <DataContext.Provider
@@ -174,6 +203,7 @@ export const DataProvider = ({ children }: { children: ReactElement }) => {
         data,
         item: data?.[getCurrentPage()] || tutorial["RootPage"],
         editMode,
+        canEdit,
         updateEditMode,
         updateData,
         resetData,

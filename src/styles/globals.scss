@@ -45,16 +45,22 @@ h2 {
     display: none;
   }
 }
+
 h1 {
   font-size: variables.$font_size_xxxl;
 }
+
 h2 {
   font-size: variables.$font_size_xxl;
 }
 
-p {
+.text {
   min-height: 1.5ch;
-  margin-bottom: variables.$gap_m;
+
+  &.paragraph {
+    display: block;
+    margin-bottom: variables.$gap_m;
+  }
 }
 
 a {
@@ -93,56 +99,7 @@ img {
   }
 }
 
-.text-title {
-  font-family: var(--font-merriweather);
-  font-size: variables.$font_size_xl;
-  font-weight: bold;
-  text-transform: capitalize;
-}
 
-.text-subtitle {
-  font-family: var(--font-merriweather);
-  font-size: variables.$font_size_l;
-  font-weight: bold;
-  text-transform: capitalize;
-}
-
-.text-list {
-  padding-left: variables.$gap_l;
-
-  &::before {
-    content: "• ";
-    padding-right: variables.$gap_m;
-  }
-}
-
-.text-spoiler {
-  transition: color 0.2s, background-color 0.2s;
-  cursor: pointer;
-  padding: variables.$gap_m 0;
-
-  &:not(:active) {
-    color: transparent;
-    background-color: variables.$palette_grey_2;
-    border-radius: 0;
-
-    > * {
-      opacity: 0;
-    }
-  }
-}
-.text-quote {
-  padding-left: variables.$gap_xl;
-  font-style: italic;
-  &::before {
-    content: '"';
-    font-size: variables.$font_size_xxxl;
-  }
-  &::after {
-    content: '"';
-    font-size: variables.$font_size_xxxl;
-  }
-}
 
 .edit-p {
   background-color: rgba(variables.$palette_alert, 0.4);
@@ -157,7 +114,7 @@ img {
   box-shadow: none !important;
   text-shadow: none !important;
 
-  > * {
+  >* {
     box-shadow: none !important;
     text-shadow: none !important;
   }

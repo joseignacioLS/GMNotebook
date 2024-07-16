@@ -1,7 +1,7 @@
 import { ReactElement } from "react";
 import { IInsertionObject, checkIfVisible, processLine } from "./dom";
-import { EMatchKeys, regex } from "./constans";
-import { IData } from "@/context/constants";
+import { ECommands, EMatchKeys, regex } from "./constants";
+import predictor from "./markov/markov";
 
 export interface ILineProcess {
   result: (string | ReactElement)[];
@@ -208,10 +208,13 @@ export const getSelectedParagraphIndex = (
   return pIndex;
 };
 
-export const filterReferencesBasedOnVisibility = (text: string) => {
+export const filterReferencesBasedOnVisibility = (
+  text: string,
+  canEdit: boolean
+) => {
   const extractedReferences = extractReferences(text);
   return extractedReferences.reduce((references: string[], key: string) => {
-    const visible = checkIfVisible(key);
+    const visible = checkIfVisible(key, canEdit);
     if (!visible) return references;
     const [searchKey] = key.split("_");
     const alreadyVisible = references.some((reference: string) => {
@@ -236,4 +239,3 @@ export const stringToNumber = (input: string): number => {
     return acc * (curr.charCodeAt(0) / (i + 1));
   }, 1);
 };
-

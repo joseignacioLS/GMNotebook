@@ -1,0 +1,29 @@
+@use "../../styles/variables";
+@import "material-symbols";
+
+.wrapper {
+  z-index: 100;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  backdrop-filter: blur(5px);
+
+  span {
+    color: variables.$palette_grey_4;
+    text-shadow: 2px 2px 0 variables.$palette_grey_0;
+    font-size: variables.$font_size_xxxl;
+    animation: rotate infinite 2s linear;
+  }
+}
+
+@keyframes rotate {
+  to {
+    rotate: 360deg;
+  }
+}

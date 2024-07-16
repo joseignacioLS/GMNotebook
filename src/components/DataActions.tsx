@@ -7,10 +7,14 @@ import Tree from "./Tree";
 import Button, { behaviourEnum } from "./Button/Button";
 import ModalTemplateConfirm from "./Modal/ModalDefaults/ModalTemplateConfirm";
 import ModalPalette from "./Modal/ModalDefaults/ModalPalette";
+import LZString from "lz-string";
+import { toastContext } from "@/context/toast";
 
 const DataActions: React.FC = () => {
-  const { data, resetData, updateFileHandle } = useContext(DataContext);
+  const { data, resetData, updateFileHandle, canEdit } =
+    useContext(DataContext);
   const { setContent } = useContext(modalContext);
+  const { showToastSuccess } = useContext(toastContext);
 
   const openModalReset = () => {
     setContent(
@@ -18,7 +22,7 @@ const DataActions: React.FC = () => {
         positiveButtonAction={resetData}
         positiveButtonText={"Reset"}
       >
-        <p>
+        <span className="text paragraph">
           Resetting the notebook will erase all your content. If you want to
           keep it, please{" "}
           <Button
@@ -28,7 +32,7 @@ const DataActions: React.FC = () => {
             Download
           </Button>{" "}
           it before resetting.
-        </p>
+        </span>
       </ModalTemplateConfirm>
     );
   };
@@ -37,15 +41,41 @@ const DataActions: React.FC = () => {
     setContent(<ModalPalette />);
   };
 
+  const handleShare = () => {
+    const compressData = LZString.compressToEncodedURIComponent(
+      JSON.stringify(data)
+    );
+    navigator.clipboard.writeText(
+      `${window.location.origin}?data=${compressData}`
+    );
+    showToastSuccess("Link copied to clipboard");
+  };
+
   const handleLoad = async (e: any) => {
     e.preventDefault();
     const fileHandle = await getFileHandle();
     updateFileHandle(fileHandle);
   };
 
+  if (!canEdit)
+    return (
+      <div className={`${styles.dataActions} ${styles.grow_2}`}>
+        <div className={styles.helper}>
+          <Button naked={true} onClick={resetData}>
+            <span className={styles["material-symbols-outlined"]}>home</span>
+          </Button>
+          <Button naked={true} onClick={handleUpdatePalette}>
+            <span className={styles["material-symbols-outlined"]}>palette</span>
+          </Button>
+        </div>
+      </div>
+    );
   return (
-    <div className={styles.dataActions}>
+    <div className={`${styles.dataActions} ${styles.grow_6}`} data-items="6">
       <div className={styles.helper}>
+        <Button naked={true} onClick={handleShare}>
+          <span className={styles["material-symbols-outlined"]}>share</span>
+        </Button>
         <Button naked={true} onClick={handleUpdatePalette}>
           <span className={styles["material-symbols-outlined"]}>palette</span>
         </Button>

@@ -19,7 +19,7 @@ export const modalContext = createContext<contextOutputI>({
 export const ModalProvider = ({ children }: { children: ReactElement }) => {
   const [isVisible, setIsVisible] = useState<boolean>(false);
   const [content, setContent] = useState<ReactElement | null>(
-    <p>This is the content</p>
+    <span className={"text paragraph"}>This is the content</span>
   );
 
   const updateContent = (children: ReactElement): void => {
