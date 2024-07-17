@@ -110,10 +110,13 @@ export const DataProvider = ({ children }: { children: ReactElement }) => {
   const updateData = (
     newData: IData,
     resetEntry: boolean = true,
-    saveToFile: boolean = true
+    saveToFile: boolean = true,
+    preservePreviousState: boolean = true
   ): void => {
     setData((prevState: IData) => {
-      const cleanData = cleanUpData({ ...prevState, ...newData });
+      const cleanData = preservePreviousState
+        ? cleanUpData({ ...prevState, ...newData })
+        : cleanUpData(newData);
       const updatedData = structuredClone(cleanData);
       setTree(generateDataTree(updatedData));
       if (resetEntry) resetPath();
@@ -126,7 +129,7 @@ export const DataProvider = ({ children }: { children: ReactElement }) => {
     setFileHandle(newFileHandle);
     const file = await newFileHandle.getFile();
     const text = await file.text();
-    updateData(JSON.parse(text) as IData, true, false);
+    updateData(JSON.parse(text) as IData, true, false, false);
   };
 
   const cleanUpData = (value: IData): IData => {
@@ -161,7 +164,7 @@ export const DataProvider = ({ children }: { children: ReactElement }) => {
     router.replace("/");
     setCanEdit(true);
     fetchTutorial().then((tutorial) => {
-      updateData(structuredClone(tutorial), true);
+      updateData(tutorial, true);
     });
   };
 
