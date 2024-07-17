@@ -12,6 +12,7 @@ import {
   extractReferences,
   filterReferencesBasedOnVisibility,
 } from "@/utils/text";
+import { Tabs } from "./Tabs/Tabs";
 
 const MINIMUM_COL_SIZE = 300;
 const DRAG_CORRECTION = 30;
@@ -125,6 +126,7 @@ const NoteBook: React.FC = () => {
           />
         </div>
       )}
+      <Tabs />
     </div>
   );
 };

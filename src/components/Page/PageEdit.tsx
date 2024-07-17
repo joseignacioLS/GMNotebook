@@ -12,11 +12,13 @@ const PageEdit: React.FC = () => {
     text: string;
     display: string;
     showInTree: boolean;
+    showInTabs: boolean;
   }>({
     text: data[selectedNote]?.text || "",
     title: data[selectedNote]?.title || "",
     display: data[selectedNote]?.display || "",
     showInTree: data[selectedNote]?.showInTree || false,
+    showInTabs: data[selectedNote]?.showInTabs || false,
   });
 
   const handleUpdateData = (
@@ -67,7 +69,13 @@ const PageEdit: React.FC = () => {
 
   useEffect(() => {
     saveData();
-  }, [input.text, input.display, input.title, input.showInTree]);
+  }, [
+    input.text,
+    input.display,
+    input.title,
+    input.showInTree,
+    input.showInTabs,
+  ]);
 
   useEffect(() => {
     const newInput = {
@@ -75,6 +83,7 @@ const PageEdit: React.FC = () => {
       title: data[selectedNote]?.title || "",
       display: data[selectedNote]?.display || "",
       showInTree: data[selectedNote]?.showInTree || false,
+      showInTabs: data[selectedNote]?.showInTabs || false,
     };
     if (
       Object.keys(input).some((key: string) => {
@@ -113,6 +122,15 @@ const PageEdit: React.FC = () => {
         }
         label={" Show in tree?"}
         tooltip={"Decide if this note is shown in the tree"}
+        type="checkbox"
+      />
+      <Input
+        value={input.showInTabs}
+        onChange={(e) =>
+          handleUpdateData(e.target, "showInTabs", !input.showInTabs)
+        }
+        label={" Show in tabs?"}
+        tooltip={"Decide if this note is shown in the tabs"}
         type="checkbox"
       />
       <textarea

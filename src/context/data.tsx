@@ -8,7 +8,7 @@ import {
   useEffect,
   useState,
 } from "react";
-import { fallBack, IData, IItem, ILeaf } from "./constants";
+import { fallBack, IData, IItem, ILeaf, initPage } from "./constants";
 import { NavigationContext } from "./navigation";
 import { generateDataTree } from "@/utils/tree";
 import { saveToFileHandle } from "@/utils/file";
@@ -135,6 +135,17 @@ export const DataProvider = ({ children }: { children: ReactElement }) => {
   const cleanUpData = (value: IData): IData => {
     const deletedKeys: string[] = [];
     const references: string[] = ["RootPage"];
+
+    // check params
+    Object.keys(value).forEach((key: string) => {
+      Object.entries(initPage).forEach((entry) => {
+        const defKey = entry[0] as keyof IItem;
+        const defValue = entry[1];
+        if (value[key][defKey] === undefined) {
+          value[key][defKey] = defValue as never;
+        }
+      });
+    });
 
     Object.keys(value).forEach((key: string) => {
       // get used references
