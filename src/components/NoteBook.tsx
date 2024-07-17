@@ -67,7 +67,7 @@ const NoteBook: React.FC = () => {
     return () => {
       window.removeEventListener("resize", updateWindowWidth);
     };
-  }, [rightColumnSize]);
+  }, []);
 
   useEffect(() => {
     const updateReferences = () => {
