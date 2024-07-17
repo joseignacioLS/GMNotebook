@@ -8,7 +8,7 @@ import {
   useEffect,
   useState,
 } from "react";
-import { IData, IItem, ILeaf, tutorial } from "./constants";
+import { fallBack, IData, IItem, ILeaf } from "./constants";
 import { NavigationContext } from "./navigation";
 import { generateDataTree } from "@/utils/tree";
 import { saveToFileHandle } from "@/utils/file";
@@ -36,8 +36,8 @@ interface contextOutputI {
 }
 
 export const DataContext = createContext<contextOutputI>({
-  data: tutorial,
-  item: tutorial["RootPage"],
+  data: fallBack,
+  item: fallBack["RootPage"],
   editMode: false,
   canEdit: true,
   updateEditMode: () => {},
@@ -53,8 +53,8 @@ export const DataContext = createContext<contextOutputI>({
 });
 
 export const DataProvider = ({ children }: { children: ReactElement }) => {
-  const [data, setData] = useState<IData>(tutorial);
-  const [tree, setTree] = useState<ILeaf[]>(generateDataTree(tutorial));
+  const [data, setData] = useState<IData>(fallBack);
+  const [tree, setTree] = useState<ILeaf[]>(generateDataTree(fallBack));
   const [canEdit, setCanEdit] = useState(true);
   const [selectedNote, setSelectedNote] = useState<string>("RootPage");
   const [editMode, setEditMode] = useState<boolean>(false);
@@ -67,6 +67,12 @@ export const DataProvider = ({ children }: { children: ReactElement }) => {
   const { path, resetPath, getCurrentPage } = useContext(NavigationContext);
 
   const router = useRouter();
+
+  const fetchTutorial = async () => {
+    const res = await fetch("/data/tutorial.json");
+    const data = await res.json();
+    return data;
+  };
 
   const getDataFromRemote = async (remoteData: string) => {
     try {
@@ -151,10 +157,12 @@ export const DataProvider = ({ children }: { children: ReactElement }) => {
     return value;
   };
 
-  const resetData = (): void => {
+  const resetData = async (): Promise<void> => {
     router.replace("/");
     setCanEdit(true);
-    updateData(structuredClone(tutorial), true);
+    fetchTutorial().then((tutorial) => {
+      updateData(structuredClone(tutorial), true);
+    });
   };
 
   const updateEditMode = (value: boolean): void => {
@@ -174,13 +182,21 @@ export const DataProvider = ({ children }: { children: ReactElement }) => {
   };
 
   useEffect(() => {
+    fetchTutorial().then((tutorial) => {
+      updateData(tutorial);
+    });
+  }, []);
+
+  useEffect(() => {
     updateEditMode(false);
   }, [path]);
 
   useEffect(() => {
     if (data?.RootPage === undefined) {
-      updateData(tutorial);
-      setFileHandle(null);
+      fetchTutorial().then((tutorial) => {
+        updateData(tutorial);
+        setFileHandle(null);
+      });
       return;
     }
     const currentPage = getCurrentPage();
@@ -201,7 +217,7 @@ export const DataProvider = ({ children }: { children: ReactElement }) => {
     <DataContext.Provider
       value={{
         data,
-        item: data?.[getCurrentPage()] || tutorial["RootPage"],
+        item: data?.[getCurrentPage()] || fallBack["RootPage"],
         editMode,
         canEdit,
         updateEditMode,
