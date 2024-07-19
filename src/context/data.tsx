@@ -8,7 +8,7 @@ import {
   useEffect,
   useState,
 } from "react";
-import { fallBack, IData, IItem, ILeaf } from "./constants";
+import { fallBack, IData, IItem, ILeaf, initPage } from "./constants";
 import { NavigationContext } from "./navigation";
 import { generateDataTree } from "@/utils/tree";
 import { saveToFileHandle } from "@/utils/file";
@@ -115,8 +115,8 @@ export const DataProvider = ({ children }: { children: ReactElement }) => {
   ): void => {
     setData((prevState: IData) => {
       const cleanData = preservePreviousState
-        ? cleanUpData({ ...prevState, ...newData })
-        : cleanUpData(newData);
+        ? { ...prevState, ...newData }
+        : newData;
       const updatedData = structuredClone(cleanData);
       setTree(generateDataTree(updatedData));
       if (resetEntry) resetPath();
@@ -129,25 +129,42 @@ export const DataProvider = ({ children }: { children: ReactElement }) => {
     setFileHandle(newFileHandle);
     const file = await newFileHandle.getFile();
     const text = await file.text();
-    updateData(JSON.parse(text) as IData, true, false, false);
+    const recoveredData = JSON.parse(text) as IData;
+    const cleanedUp = cleanUpData(recoveredData);
+    updateData(cleanedUp, true, false, false);
   };
 
-  const cleanUpData = (value: IData): IData => {
+  const checkItemsParams = (value: IData) => {
+    const checkedObject = structuredClone(value);
+    // check params
+    Object.keys(checkedObject).forEach((key: string) => {
+      Object.entries(initPage).forEach((entry) => {
+        const defKey = entry[0] as keyof IItem;
+        const defValue = entry[1];
+        if (checkedObject[key][defKey] === undefined) {
+          checkedObject[key][defKey] = defValue as never;
+        }
+      });
+    });
+    return checkedObject;
+  };
+
+  const removeUnusedReferences = (value: IData) => {
+    const processedObject = structuredClone(value);
     const deletedKeys: string[] = [];
     const references: string[] = ["RootPage"];
 
-    Object.keys(value).forEach((key: string) => {
+    Object.keys(processedObject).forEach((key: string) => {
       // get used references
-      extractReferences(value[key].text).forEach((v) => {
+      extractReferences(processedObject[key].text).forEach((v) => {
         const key = v.split("_")[0];
         if (!references.includes(key)) references.push(key);
       });
     });
-
     // remove ununused references
-    Object.keys(value).forEach((key: string) => {
+    Object.keys(processedObject).forEach((key: string) => {
       if (!references.includes(key)) {
-        delete value[key];
+        delete processedObject[key];
         deletedKeys.push(key);
       }
     });
@@ -157,7 +174,13 @@ export const DataProvider = ({ children }: { children: ReactElement }) => {
     if (currentPath !== undefined && deletedKeys.includes(currentPath)) {
       resetPath();
     }
-    return value;
+    return processedObject;
+  };
+
+  const cleanUpData = (value: IData): IData => {
+    const checkedItems = checkItemsParams(value);
+    const removedReferences = removeUnusedReferences(checkedItems);
+    return removedReferences;
   };
 
   const resetData = async (): Promise<void> => {

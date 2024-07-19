@@ -96,7 +96,6 @@ const formatSpecialLine = (
   return (
     <span
       key={key}
-      id={key}
       className={`text-${config.type} ${config.extraClasses.join(" ")} text ${
         !wrapped && "paragraph"
       }`}
@@ -132,7 +131,11 @@ export const processLine = (
   const formatedLine = formatSplittedLine(lineByInsertions, plain);
 
   return (
-    <span key={line + index} className={`text ${!wrapped && "paragraph"}`}>
+    <span
+      key={line + index}
+      id={`p-${index}`}
+      className={`text ${!wrapped && "paragraph"}`}
+    >
       {formatedLine}
     </span>
   );

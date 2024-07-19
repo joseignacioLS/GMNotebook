@@ -25,7 +25,8 @@
   box-shadow: variables.$default_dark_shadow;
   color: variables.$palette_grey_0 !important;
   background-color: variables.$palette_grey_4;
-  max-width: 80vw;
+  max-width: calc(90vw + variables.$gap_xxl);
+  max-height: calc(90dvh + variables.$gap_xxl);
 
   .closeButton {
     position: absolute;
