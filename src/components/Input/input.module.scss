@@ -2,9 +2,9 @@
 
 .wrapper {
   height: fit-content;
-  display: grid;
+  display: flex;
   font-size: variables.$font_size_m;
-  grid-template-columns: auto 1fr;
+  justify-content: space-between;
   align-items: center;
   gap: variables.$gap_l;
   padding: variables.$gap_s variables.$gap_l;
@@ -28,6 +28,7 @@
     border-radius: variables.$border_radius_l;
     font-weight: bold;
     color: variables.$palette_grey_0;
+
     &[type="text"] {
       padding: variables.$gap_m;
     }

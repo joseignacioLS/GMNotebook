@@ -40,7 +40,10 @@ export const NavigationProvider = ({
 
   const navigateTo = (value: string): void => {
     setPath((oldValue: string[]) => {
-      return [...oldValue, value];
+      return [
+        ...oldValue.slice(Math.max(oldValue.length - 16, 0), oldValue.length),
+        value,
+      ];
     });
     setTimeout(resetNotesScroll, 0);
   };

@@ -4,6 +4,7 @@ export interface IItem {
   key: string;
   display: string;
   showInTree: boolean;
+  showInTabs: boolean;
 }
 
 export interface ITextPiece {
@@ -33,4 +34,6 @@ export interface ILeaf {
   position: number[];
 }
 
-export const fallBack: IData = { "RootPage": { "title": "Fallback page", "key": "RootPage", "display": "", "text": "", "showInTree": false } }
+export const initPage: IItem = { "title": "title", "key": "", "display": "display", "text": "", "showInTree": false, "showInTabs": false }
+
+export const fallBack: IData = { "RootPage": { "title": "Fallback page", "key": "RootPage", "display": "", "text": "", "showInTree": false, "showInTabs": false } }

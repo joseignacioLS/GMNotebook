@@ -1,0 +1,43 @@
+@use "../../styles/variables";
+
+.tabs {
+  z-index: 5;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  margin: 0 10%;
+  display: flex;
+  align-items: flex-end;
+  height: calc(variables.$gap_xl + variables.$gap_m);
+  max-width: 100%;
+  overflow: auto;
+
+  &::-webkit-scrollbar {
+    width: 0;
+    height: 0;
+  }
+
+  @media (width < variables.$media_phone) {
+    margin: 0;
+  }
+
+  .tab {
+    flex-shrink: 0;
+    height: 100%;
+    overflow: hidden;
+    padding: 0 variables.$gap_l;
+    background-color: variables.$palette_grey_2;
+    border-radius: variables.$border-radius-l variables.$border-radius-l 0 0;
+    cursor: pointer;
+    transition: flex .3s, padding .3s, border-radius .3s, height .3s;
+
+    &.active {
+      cursor: default;
+      width: 0;
+      height: 0;
+      padding: 0;
+      border-radius: 0;
+    }
+  }
+}
