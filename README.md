@@ -1,38 +1,26 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# GM Notebook
+Current version: **0.1.4** ([changelog](./CHANGELOG.md))
+## Overview
+GM Notebook is a digital tool designed to help world-builders manage their creations efficiently. It offers a suite of features tailored for planning, organizing and connecting information
 
-## Getting Started
+## Features
+- **Notes**: Create entries with references to other notes, accessible in a right-side column
+- **Real-time Editing**: Activate edit mode to visualize changes live
+- **Styling Tools**: Add titles, links, quotes, spoilers, images, and mermaid graphs
+- **Commands**: Generate random information (e.g., names) and access time values
+- **Themes**: Switch between dark/light themes and customize the color palette
+- **Tree View**: Generate and visualize a tree-like structure of connected notes
+- **Tab Shortcuts**: Mark relevant notes as shortcuts for easy access
 
-First, run the development server:
+## Usage
+- Navigate to the [website](https://gmnotebook.netlify.app)
+- Read the tutorial for detailed instructions
+- Use the tools to modify your notebook and work on your world
+- Download your notebook before you leave
+- Return anytime to upload your file and continue working
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-```
+## Contact
+For any inquiries or support, please contact me at ls.joseignacio@gmail.com
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
-
-You can start editing the page by modifying `pages/index.tsx`. The page auto-updates as you edit the file.
-
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.ts`.
-
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
-
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+## License
+This project is licensed under the MIT License
