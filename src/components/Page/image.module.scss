@@ -2,11 +2,13 @@
 
 .img {
   width: auto;
-  max-height: 400px;
+  height: 400px;
   max-width: 100%;
   border-radius: variables.$border_radius_l;
+
   &.fullSize {
-    max-height: 100%;
-    max-width: 100%;
+    height: 100%;
+    max-width: 90vw;
+    max-height: 90dvh;
   }
 }
