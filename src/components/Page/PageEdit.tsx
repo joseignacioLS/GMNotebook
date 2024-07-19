@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from "react";
 import styles from "./pageedit.module.scss";
 import { DataContext } from "@/context/data";
-import { extractReferences } from "@/utils/text";
+import { extractReferences, getSelectedParagraphIndex } from "@/utils/text";
 import Input from "../Input/Input";
 import { processCommands } from "@/utils/commands";
 
@@ -65,6 +65,14 @@ const PageEdit: React.FC = () => {
     const newEntries = generateNewEntries();
     if (!data[selectedNote]) return;
     updateData({ [data[selectedNote].key]: newItem, ...newEntries }, false);
+  };
+
+  const handleScrollDisplayToView = (e: any) => {
+    const paragraphCount = getSelectedParagraphIndex(
+      e.currentTarget.selectionStart,
+      e.currentTarget.value
+    );
+    document.querySelector(`#p-${paragraphCount}`)?.scrollIntoView();
   };
 
   useEffect(() => {
@@ -136,9 +144,11 @@ const PageEdit: React.FC = () => {
         />
       </section>
       <textarea
+        onClick={handleScrollDisplayToView}
         onInput={(e) => {
           e.preventDefault();
           handleUpdateData(e.target as any, "text", e.currentTarget.value);
+          handleScrollDisplayToView(e);
         }}
         value={input.text}
       ></textarea>
