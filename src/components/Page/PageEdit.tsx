@@ -26,7 +26,7 @@ const PageEdit: React.FC = () => {
     key: string,
     value: string | boolean
   ) => {
-    if (key === "text") value = processCommands(target, value as string);
+    if (key === "text") value = processCommands(target, value as string, data);
     setInput((oldValue) => {
       return { ...oldValue, [key]: value };
     });

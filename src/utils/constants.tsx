@@ -118,4 +118,5 @@ export enum ECommands {
   name = "!:name",
   place = "!:place",
   today = "!:today",
+  chr = "!:chr",
 }

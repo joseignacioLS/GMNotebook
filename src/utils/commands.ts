@@ -1,3 +1,4 @@
+import { IData } from "@/context/constants";
 import { ECommands, regex } from "./constants";
 import predictor from "./markov/markov";
 
@@ -67,18 +68,47 @@ const processTodayCommand = (
   return processCommand(text, matchPosition, target, match, replacementString);
 };
 
-export const processCommands = (textArea: HTMLElement, text: string) => {
-  const commandMatch = text.match(regex.command);
-  if (!commandMatch) return text;
-  const match = commandMatch[0];
-  if (match.includes(ECommands.name)) {
-    return processNameCommand(text, match, commandMatch.index || 0, textArea);
+const processChrCommand = (text: string, match: string, matchPosition: number, target: any, data: IData) => {
+  const selectedPredictor = predictor.tolkienNames;
+  if (!selectedPredictor.trained) {
+    return processCommand(text, matchPosition, target, match, "Error");
   }
-  if (match.includes(ECommands.place)) {
-    return processPlaceCommand(text, match, commandMatch.index || 0, textArea);
+  let name = selectedPredictor.predict({
+    window: 3,
+    windowPredict: 1,
+    minLength: 4,
+    maxLength: 12,
+  })
+  while (data?.[name] !== undefined) {
+    name = selectedPredictor.predict({
+      window: 3,
+      windowPredict: 1,
+      minLength: 4,
+      maxLength: 12,
+    })
   }
-  if (match.includes(ECommands.today)) {
-    return processTodayCommand(text, match, commandMatch.index || 0, textArea);
-  }
-  return text;
+  const replacementString = `note:${selectedPredictor.predict({
+    window: 3,
+    windowPredict: 1,
+    minLength: 4,
+    maxLength: 12,
+  })}`
+    ;
+  return processCommand(text, matchPosition, target, match, replacementString);
+}
+
+const commandToFn: { [key in ECommands]: (...args: any) => string } = {
+  [ECommands.name]: processNameCommand,
+  [ECommands.place]: processPlaceCommand,
+  [ECommands.today]: processTodayCommand,
+  [ECommands.chr]: processChrCommand
+}
+
+export const processCommands = (textArea: HTMLElement, text: string, data: IData) => {
+  const match = text.match(regex.command);
+  if (!match) return text;
+  const matchStr = match[0];
+  const command = matchStr.trimEnd().split("(")[0] as ECommands;
+  if (!command) return text
+  return commandToFn[command]?.(text, matchStr, match.index || 0, textArea, data) || text
 };
