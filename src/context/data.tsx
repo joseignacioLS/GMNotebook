@@ -33,6 +33,7 @@ interface contextOutputI {
   editMode: boolean;
   setEditMode: any;
   updateFileHandle: any;
+  getDataFromRemote: any;
 }
 
 export const DataContext = createContext<contextOutputI>({
@@ -50,6 +51,7 @@ export const DataContext = createContext<contextOutputI>({
   updateSelectedNote: () => {},
   setEditMode: () => {},
   updateFileHandle: () => {},
+  getDataFromRemote: () => {},
 });
 
 export const DataProvider = ({ children }: { children: ReactElement }) => {
@@ -232,13 +234,6 @@ export const DataProvider = ({ children }: { children: ReactElement }) => {
     }
   }, [path, data]);
 
-  const searchParams = useSearchParams();
-  const remoteData = searchParams.get("data");
-  useEffect(() => {
-    if (!remoteData) return setShowLoading(false);
-    getDataFromRemote(remoteData);
-  }, [remoteData]);
-
   return (
     <DataContext.Provider
       value={{
@@ -256,6 +251,7 @@ export const DataProvider = ({ children }: { children: ReactElement }) => {
         updateSelectedNote,
         setEditMode,
         updateFileHandle,
+        getDataFromRemote,
       }}
     >
       {children}

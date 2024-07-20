@@ -3,12 +3,10 @@
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 
-const Home = () => {
+export default function Home() {
   const router = useRouter();
   useEffect(() => {
-    router.push("/");
-  }, [router]);
-  return <div>404</div>;
-};
-
-export default Home;
+    router.replace("/");
+  }, []);
+  return <main className="dark">Not found</main>;
+}

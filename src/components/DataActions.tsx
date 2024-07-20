@@ -14,7 +14,7 @@ const DataActions: React.FC = () => {
   const { data, resetData, updateFileHandle, canEdit } =
     useContext(DataContext);
   const { setContent } = useContext(modalContext);
-  const { showToastSuccess } = useContext(toastContext);
+  const { showToastSuccess, showToastError } = useContext(toastContext);
 
   const openModalReset = () => {
     setContent(
@@ -53,8 +53,12 @@ const DataActions: React.FC = () => {
 
   const handleLoad = async (e: any) => {
     e.preventDefault();
-    const fileHandle = await getFileHandle();
-    updateFileHandle(fileHandle);
+    try {
+      const fileHandle = await getFileHandle();
+      updateFileHandle(fileHandle);
+    } catch (err) {
+      showToastError("There was an error with file handling");
+    }
   };
 
   if (!canEdit)
