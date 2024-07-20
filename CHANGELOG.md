@@ -9,4 +9,4 @@
 
 ### Fixes
 
-N/A
+- Remove error 419 in production builds
