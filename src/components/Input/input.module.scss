@@ -19,19 +19,16 @@
   }
 
   input {
+    height: variables.$gap_xl;
     width: 100%;
     font-size: variables.$font_size_m;
     min-width: 0;
-    padding: variables.$gap_m 0;
     border: 0;
     background-color: transparent;
     border-radius: variables.$border_radius_l;
     font-weight: bold;
     color: variables.$palette_grey_0;
 
-    &[type="text"] {
-      padding: variables.$gap_m;
-    }
 
     &:active,
     &:focus {
