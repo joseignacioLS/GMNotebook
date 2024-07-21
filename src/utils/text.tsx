@@ -1,7 +1,6 @@
 import { ReactElement } from "react";
 import { IInsertionObject, checkIfVisible, processLine } from "./dom";
-import { ECommands, EMatchKeys, regex } from "./constants";
-import predictor from "./markov/markov";
+import { EMatchKeys, regex } from "./constants";
 
 export interface ILineProcess {
   result: (string | ReactElement)[];
