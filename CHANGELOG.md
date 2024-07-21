@@ -1,6 +1,6 @@
 # Change Log
 
-## Version 0.1.5 (2024-XX-XX)
+## Version 0.1.5 (2024-07-21)
 
 ### Features
 
