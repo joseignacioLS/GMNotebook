@@ -37,3 +37,7 @@ export interface ILeaf {
 export const initPage: IItem = { "title": "title", "key": "", "display": "display", "text": "", "showInTree": false, "showInTabs": false }
 
 export const fallBack: IData = { "RootPage": { "title": "Fallback page", "key": "RootPage", "display": "", "text": "", "showInTree": false, "showInTabs": false } }
+
+export const templates = {
+  "character": "# Short Description\nSummary"
+}

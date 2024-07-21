@@ -3,7 +3,7 @@ import styles from "./pageedit.module.scss";
 import { DataContext } from "@/context/data";
 import { extractReferences, getSelectedParagraphIndex } from "@/utils/text";
 import Input from "../Input/Input";
-import { processCommands } from "@/utils/commands";
+import { useCommand } from "@/utils/commands";
 
 const PageEdit: React.FC = () => {
   const { data, updateData, editMode, selectedNote } = useContext(DataContext);
@@ -21,12 +21,14 @@ const PageEdit: React.FC = () => {
     showInTabs: data[selectedNote]?.showInTabs || false,
   });
 
+  const processCommand = useCommand();
+
   const handleUpdateData = (
     target: HTMLElement,
     key: string,
     value: string | boolean
   ) => {
-    if (key === "text") value = processCommands(target, value as string, data);
+    if (key === "text") value = processCommand(target, value as string);
     setInput((oldValue) => {
       return { ...oldValue, [key]: value };
     });
