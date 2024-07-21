@@ -11,6 +11,7 @@ interface IProps {
   visible: boolean;
 }
 
+const maxNoteContent = 25;
 const NoteCard: React.FC<IProps> = ({ itemKey, visible }) => {
   const { data, selectedNote, updateSelectedNote } = useContext(DataContext);
   const { generateColor } = useContext(colorContext);
@@ -23,8 +24,8 @@ const NoteCard: React.FC<IProps> = ({ itemKey, visible }) => {
 
   const displayShortText = text
     ? processText(
-        text.split("\n").length > 5
-          ? text.split("\n").slice(0, 5).join("\n") + "\n..."
+        text.split(" ").length > maxNoteContent * 2
+          ? text.split(" ").slice(0, maxNoteContent).join(" ") + "..."
           : text,
         true
       )
