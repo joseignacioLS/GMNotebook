@@ -133,8 +133,8 @@ export const processLine = (
   return (
     <span
       key={line + index}
-      id={`p-${index}`}
       className={`text ${!wrapped && "paragraph"}`}
+      {...(!wrapped ? { id: `p-${index}` } : {})}
     >
       {formatedLine}
     </span>

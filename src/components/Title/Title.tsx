@@ -10,7 +10,6 @@ const Title = ({ id, wrapped, content, subtitle = false }: IProps) => {
   return (
     <span
       key={id}
-      id={id}
       className={`${subtitle ? styles.subtitle : styles.title}  text ${
         !wrapped && "paragraph"
       }`}

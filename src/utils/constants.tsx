@@ -16,10 +16,10 @@ interface IRegExpDict {
 }
 
 export const regex: IRegExpDict = {
-  insertions: new RegExp("(note:|img:|link:)", "g"),
-  noteInsertion: new RegExp("note:[A-Záéíóúüïñ0-9\-äëïöüÄËÏÖÜ]+"),
-  linkInsertion: new RegExp("link:[A-Záéíóúüïñ0-9]+=[A-Za-z.,:/\\0-9?=]+"),
-  imageInsertion: new RegExp("img:[^\n ]+"),
+  insertions: new RegExp(/(note:|img:|link:)/, "g"),
+  noteInsertion: new RegExp(/note:[A-Záéíóúüïñ0-9\-äëïöüÄËÏÖÜ]+/),
+  linkInsertion: new RegExp(/link:[A-Záéíóúüïñ0-9]+=[A-Za-z.,:/\\0-9?=\-]+/),
+  imageInsertion: new RegExp(/img:[^\n ]+/),
   title: new RegExp(/^\# /),
   subtitle: new RegExp(/^\#\# /),
   list: new RegExp(/^- /),

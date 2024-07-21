@@ -19,7 +19,6 @@ const Spoiler = ({ text, id, wrapped }: IProps) => {
 
   return (
     <span
-      id={id}
       className={`${styles.spoiler} text ${!wrapped && "paragraph"}`}
       onMouseLeave={() => setShow(false)}
     >
