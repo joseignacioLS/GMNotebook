@@ -109,7 +109,7 @@ const PageEdit: React.FC = () => {
     <div className={`${styles.pageEdit} ${!editMode && styles.height0}`}>
       <Input
         value={input.title}
-        onChange={(e) =>
+        onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
           handleUpdateData(e.target, "title", e.currentTarget.value)
         }
         label={"Title"}
@@ -118,7 +118,7 @@ const PageEdit: React.FC = () => {
       <section className={styles.minorOptions}>
         <Input
           value={input.display}
-          onChange={(e) =>
+          onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
             handleUpdateData(e.target, "display", e.currentTarget.value)
           }
           label={"Display"}
@@ -128,7 +128,7 @@ const PageEdit: React.FC = () => {
         />
         <Input
           value={input.showInTree}
-          onChange={(e) =>
+          onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
             handleUpdateData(e.target, "showInTree", !input.showInTree)
           }
           label={" Show in tree?"}
@@ -137,7 +137,7 @@ const PageEdit: React.FC = () => {
         />
         <Input
           value={input.showInTabs}
-          onChange={(e) =>
+          onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
             handleUpdateData(e.target, "showInTabs", !input.showInTabs)
           }
           label={" Show in tabs?"}
@@ -147,7 +147,7 @@ const PageEdit: React.FC = () => {
       </section>
       <textarea
         onClick={handleScrollDisplayToView}
-        onInput={(e) => {
+        onInput={(e: React.ChangeEvent<HTMLTextAreaElement>) => {
           e.preventDefault();
           handleUpdateData(e.target as any, "text", e.currentTarget.value);
           handleScrollDisplayToView(e);
