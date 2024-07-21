@@ -9,7 +9,6 @@ const Quote = ({ id, content, wrapped }: IProps) => {
   return (
     <span
       key={id}
-      id={id}
       className={`${styles.quote} text ${!wrapped && "paragraph"}`}
     >
       {content}

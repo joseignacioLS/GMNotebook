@@ -25,11 +25,11 @@ const Reference: React.FC<IProps> = ({ reference, naked = false }) => {
       }}
       onClick={() => {
         if (naked) return;
-        if (selectedNote === reference.key) {
-          navigateTo(reference.key);
-        } else {
-          updateSelectedNote(reference.key || "");
-        }
+        navigateTo(reference.key);
+      }}
+      onMouseOver={() => {
+        if (naked) return;
+        updateSelectedNote(reference.key || "");
       }}
     >
       {data[reference.key]?.display}

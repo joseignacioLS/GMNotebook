@@ -7,10 +7,7 @@ interface IProps {
 }
 const ListItem = ({ id, wrapped, content }: IProps) => {
   return (
-    <span
-      id={id}
-      className={`${styles.listItem}  text ${!wrapped && "paragraph"}`}
-    >
+    <span className={`${styles.listItem}  text ${!wrapped && "paragraph"}`}>
       {content}
     </span>
   );
