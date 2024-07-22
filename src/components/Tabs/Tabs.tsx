@@ -24,13 +24,15 @@ export const Tabs = () => {
     <section className={styles.tabs}>
       {tabs.map(({ name, route }) => {
         const isActive = getCurrentPage() === route;
+        const [backgroundColor, color] = generateColor(route);
         return (
           <span
             key={name}
             onClick={() => !isActive && handleNavigate(route)}
             className={`${styles.tab} ${isActive && styles.active}`}
             style={{
-              backgroundColor: generateColor(route),
+              backgroundColor,
+              color,
             }}
           >
             {name}

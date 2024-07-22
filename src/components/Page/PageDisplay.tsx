@@ -13,12 +13,10 @@ const PageDisplay: React.FC = () => {
 
   const displayText = processText(item.text, false);
 
+  const [backgroundColor, color] = generateColor(item.key);
   return (
     <div className={`${styles.pageDisplay}`}>
-      <div
-        className={styles.titleContainer}
-        style={{ backgroundColor: generateColor(item.key) }}
-      >
+      <div className={styles.titleContainer} style={{ backgroundColor }}>
         <Button
           naked={true}
           onClick={() => {
@@ -31,7 +29,9 @@ const PageDisplay: React.FC = () => {
             arrow_back_ios
           </span>
         </Button>
-        <h1 onClick={() => updateSelectedNote(item.key)}>{item.title}</h1>
+        <h1 onClick={() => updateSelectedNote(item.key)} style={{ color }}>
+          {item.title}
+        </h1>
       </div>
       <div className={styles.text} id="text">
         {displayText}

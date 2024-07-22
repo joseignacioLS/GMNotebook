@@ -14,6 +14,7 @@ const Reference: React.FC<IProps> = ({ reference, naked = false }) => {
   const { selectedNote, updateSelectedNote, data } = useContext(DataContext);
   const { generateColor } = useContext(colorContext);
   const { navigateTo } = useContext(NavigationContext);
+  const [backgroundColor, color] = generateColor(reference.key);
 
   return (
     <span
@@ -21,7 +22,8 @@ const Reference: React.FC<IProps> = ({ reference, naked = false }) => {
         selectedNote === reference.key && "flash"
       }`}
       style={{
-        backgroundColor: naked ? "transparent" : generateColor(reference.key),
+        backgroundColor: naked ? "transparent" : backgroundColor,
+        color: naked ? "inherit" : color,
       }}
       onClick={() => {
         if (naked) return;

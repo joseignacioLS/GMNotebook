@@ -52,7 +52,7 @@ const Tree: React.FC = () => {
         }, [])}
       </svg>
       {tree.map((leaf: ILeaf) => {
-        const color = generateColor(leaf.key);
+        const [backgroundColor, color] = generateColor(leaf.key);
         return (
           <span
             key={leaf.key}
@@ -60,7 +60,8 @@ const Tree: React.FC = () => {
             style={{
               left: leaf.position[0] + "%",
               top: leaf.position[1] + "%",
-              backgroundColor: color,
+              backgroundColor,
+              color,
             }}
             onClick={() => {
               closeModal();
