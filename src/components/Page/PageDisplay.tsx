@@ -16,7 +16,7 @@ const PageDisplay: React.FC = () => {
   const [backgroundColor, color] = generateColor(item.key);
   return (
     <div className={`${styles.pageDisplay}`}>
-      <div className={styles.titleContainer} style={{ backgroundColor }}>
+      <div className={styles.titleContainer} style={{ backgroundColor, color }}>
         <Button
           naked={true}
           onClick={() => {

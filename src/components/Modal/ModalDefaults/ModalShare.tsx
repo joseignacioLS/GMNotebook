@@ -6,6 +6,7 @@ import { NavigationContext } from "@/context/navigation";
 import React, { useContext, useState } from "react";
 
 import styles from "./modalshare.module.scss";
+import { confirmShareRequest, createShareRequest } from "@/services/share";
 
 enum EStatus {
   PREREQUEST,
@@ -44,23 +45,8 @@ export const ModalShare = () => {
         return;
       }
       setLoading(true);
-      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}create`, {
-        method: "POST",
-        body: JSON.stringify({ email }),
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
-      setLoading(false);
-      if (!res.ok) {
-        setStatus(EStatus.REQUEST_ERROR);
-        return;
-      }
-      const respData = await res.json();
-      if (respData.status !== 200) {
-        setStatus(EStatus.REQUEST_ERROR);
-        return;
-      }
+      await createShareRequest(email);
+      setLoading(true);
       setStatus(EStatus.REQUESTED);
     } catch (err) {
       setLoading(false);
@@ -75,51 +61,41 @@ export const ModalShare = () => {
         return;
       }
       setLoading(true);
-      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}confirm`, {
-        method: "POST",
-        body: JSON.stringify({ email, code, data }),
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
+
+      const gameCode = await confirmShareRequest(email, code, data);
       setLoading(false);
-      if (!res.ok) {
-        setStatus(EStatus.CONFIRM_ERROR);
-        return;
-      }
-      const respData = await res.json();
-      if (respData.status !== 200) {
-        setStatus(EStatus.CONFIRM_ERROR);
-        return;
-      }
       setStatus(EStatus.CONFIRMED);
-
-      const link = `${window.location.origin}?data=${respData.data}`;
-
-      updateData(
-        {
-          "temporal share": {
-            key: "temporal share",
-            title: "Temporal sharing",
-            display: "",
-            text: `This is your share link:\n\n ${link}\n\n- It will last for 7 days\n- This is just a picture of the current state of your notebook, in order to update it you will need to share again your notebook updated.`,
-            showInTree: false,
-            showInTabs: false,
-          },
-        },
-        false,
-        false,
-        true
-      );
-      setTimeout(() => {
-        closeModal();
-        navigateTo("temporal share");
-      }, 0);
+      openSharePage(gameCode);
     } catch (err) {
       setLoading(false);
       setStatus(EStatus.CONFIRM_ERROR);
     }
   };
+
+  const openSharePage = (gameCode: string) => {
+    const link = `${window.location.origin}?data=${gameCode}`;
+
+    updateData(
+      {
+        "temporal share": {
+          key: "temporal share",
+          title: "Temporal sharing",
+          display: "",
+          text: `This is your share link:\n\n ${link}\n\n- It will last for 7 days\n- This is just a picture of the current state of your notebook, in order to update it you will need to share again your notebook updated.`,
+          showInTree: false,
+          showInTabs: false,
+        },
+      },
+      false,
+      false,
+      true
+    );
+    setTimeout(() => {
+      closeModal();
+      navigateTo("temporal share");
+    }, 0);
+  };
+
   return (
     <div className={styles.modal}>
       <h2>Share your Notebook</h2>

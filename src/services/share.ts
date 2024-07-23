@@ -1,0 +1,36 @@
+import { IData } from "@/context/constants";
+
+export const createShareRequest = async (email: string) => {
+  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}create`, {
+    method: "POST",
+    body: JSON.stringify({ email }),
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+  if (!res.ok) {
+    throw new Error()
+  }
+  const data = await res.json()
+  if (data.status !== 200) {
+    throw new Error()
+  }
+}
+
+export const confirmShareRequest = async (email: string, code: string, data: IData) => {
+  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}confirm`, {
+    method: "POST",
+    body: JSON.stringify({ email, code, data }),
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+  if (!res.ok) {
+    throw new Error()
+  }
+  const respData = await res.json();
+  if (respData.status !== 200) {
+    throw new Error()
+  }
+  return respData.data
+}
