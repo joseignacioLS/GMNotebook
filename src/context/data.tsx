@@ -12,7 +12,7 @@ import { fallBack, IData, IItem, ILeaf, initPage } from "./constants";
 import { NavigationContext } from "./navigation";
 import { generateDataTree } from "@/utils/tree";
 import { saveToFileHandle } from "@/utils/file";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useRouter } from "next/navigation";
 
 import LZString from "lz-string";
 import { toastContext } from "./toast";
@@ -26,8 +26,8 @@ interface contextOutputI {
   updateData: (
     value: IData,
     reset: boolean,
-    saveToFile: boolean,
-    other: boolean
+    saveToFile?: boolean,
+    other?: boolean
   ) => void;
   resetData: () => void;
   selectedNote: string;
