@@ -9,12 +9,13 @@ import ModalTemplateConfirm from "./Modal/ModalDefaults/ModalTemplateConfirm";
 import ModalPalette from "./Modal/ModalDefaults/ModalPalette";
 import LZString from "lz-string";
 import { toastContext } from "@/context/toast";
+import { ModalShare } from "./Modal/ModalDefaults/ModalShare";
 
 const DataActions: React.FC = () => {
   const { data, resetData, updateFileHandle, canEdit } =
     useContext(DataContext);
-  const { setContent } = useContext(modalContext);
-  const { showToastSuccess, showToastError } = useContext(toastContext);
+  const { setContent, closeModal } = useContext(modalContext);
+  const { showToastError } = useContext(toastContext);
 
   const openModalReset = () => {
     setContent(
@@ -42,13 +43,23 @@ const DataActions: React.FC = () => {
   };
 
   const handleShare = () => {
-    const compressData = LZString.compressToEncodedURIComponent(
-      JSON.stringify(data)
+    setContent(<ModalShare />, false);
+  };
+
+  const handleGoHome = () => {
+    setContent(
+      <>
+        <p>Are you sure you want to leave this notebook?</p>
+        <Button
+          onClick={() => {
+            closeModal();
+            resetData();
+          }}
+        >
+          Confirm
+        </Button>
+      </>
     );
-    navigator.clipboard.writeText(
-      `${window.location.origin}?data=${compressData}`
-    );
-    showToastSuccess("Link copied to clipboard");
   };
 
   const handleLoad = async (e: any) => {
@@ -65,7 +76,7 @@ const DataActions: React.FC = () => {
     return (
       <div className={`${styles.dataActions} ${styles.grow_2}`}>
         <div className={styles.helper}>
-          <Button naked={true} onClick={resetData}>
+          <Button naked={true} onClick={handleGoHome}>
             <span className={styles["material-symbols-outlined"]}>home</span>
           </Button>
           <Button naked={true} onClick={handleUpdatePalette}>

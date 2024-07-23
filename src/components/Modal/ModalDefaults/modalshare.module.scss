@@ -1,0 +1,16 @@
+@use "../../../styles/variables";
+
+.modal {
+  width: 30ch;
+
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: variables.$gap_l;
+
+  text-align: center;
+
+  .feedback {
+    line-height: normal;
+  }
+}

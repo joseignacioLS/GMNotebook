@@ -23,7 +23,12 @@ interface contextOutputI {
   item: IItem;
   updateEditMode: any;
   canEdit: boolean;
-  updateData: (value: IData, reset: boolean) => void;
+  updateData: (
+    value: IData,
+    reset: boolean,
+    saveToFile: boolean,
+    other: boolean
+  ) => void;
   resetData: () => void;
   selectedNote: string;
   setSelectedNote: any;
@@ -78,10 +83,12 @@ export const DataProvider = ({ children }: { children: ReactElement }) => {
 
   const getDataFromRemote = async (remoteData: string) => {
     try {
-      const resp = await fetch(remoteData);
+      const resp = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}${remoteData}`
+      );
       if (resp.status !== 200) throw Error("Could not load from remote");
       else {
-        const data = await resp.json();
+        const data = (await resp.json()).data;
         setData(data);
         setTree(generateDataTree(data));
         setCanEdit(false);
