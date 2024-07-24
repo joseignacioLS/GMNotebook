@@ -100,6 +100,17 @@ export const ModalShare = () => {
     }, 0);
   };
 
+  const handleAlreadyHaveCode = () => {
+    const emailCheck = email.match(
+      /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/
+    );
+    if (emailCheck === null) {
+      setStatus(EStatus.EMAIL_ERROR);
+      return;
+    }
+    setStatus(EStatus.REQUESTED);
+  };
+
   useEffect(() => {
     const retrievedEmail = JSON.parse(retrieveLocalStorage("user-email")).email;
     if (!retrievedEmail) return;
@@ -119,9 +130,14 @@ export const ModalShare = () => {
         type="email"
       />
       {[EStatus.PREREQUEST, EStatus.EMAIL_ERROR].includes(status) && (
-        <Button onClick={handleRequestShare} disabled={loading}>
-          Send me a confirmation code
-        </Button>
+        <>
+          <Button onClick={handleRequestShare} disabled={loading}>
+            Send me a confirmation code
+          </Button>
+          <Button onClick={handleAlreadyHaveCode} disabled={loading}>
+            I already have a code
+          </Button>
+        </>
       )}
       {[EStatus.REQUESTED, EStatus.CONFIRM_ERROR].includes(status) && (
         <>
