@@ -32,6 +32,18 @@ const Input: React.FC<IProps> = ({
           />
         </label>
       );
+    case "email":
+      return (
+        <label className={styles.wrapper}>
+          <span data-help={tooltip}>{label}</span>
+          <input
+            value={value}
+            onChange={onChange}
+            type={type}
+            disabled={disabled}
+          />
+        </label>
+      );
     case "checkbox":
       return (
         <label className={styles.wrapper}>

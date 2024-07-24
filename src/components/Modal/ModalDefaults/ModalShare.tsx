@@ -3,16 +3,16 @@ import Input from "@/components/Input/Input";
 import { DataContext } from "@/context/data";
 import { modalContext } from "@/context/modal";
 import { NavigationContext } from "@/context/navigation";
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 
 import styles from "./modalshare.module.scss";
 import { confirmShareRequest, createShareRequest } from "@/services/share";
+import { retrieveLocalStorage, saveToLocalStorage } from "@/utils/localStorage";
 
 enum EStatus {
   PREREQUEST,
-  REQUESTED,
-  CONFIRMED,
   EMAIL_ERROR,
+  REQUESTED,
   REQUEST_ERROR,
   CONFIRM_ERROR,
 }
@@ -23,7 +23,6 @@ const feedback: Record<EStatus, string> = {
   [EStatus.EMAIL_ERROR]: "The provided email is not valid",
   [EStatus.REQUESTED]:
     "Check your inbox for the confirmation code. IMPORTANT: Sharing this one will disable any previous share links",
-  [EStatus.CONFIRMED]: "Here is your confirmation link:",
   [EStatus.REQUEST_ERROR]: "There was an error, please try again",
   [EStatus.CONFIRM_ERROR]: "There was an error, please try again",
 };
@@ -38,15 +37,19 @@ export const ModalShare = () => {
   const { navigateTo } = useContext(NavigationContext);
   const { closeModal } = useContext(modalContext);
 
-  const handleRequestShare = async () => {
+  const handleRequestShare = async (e: React.MouseEvent<HTMLElement>) => {
+    e.preventDefault();
     try {
-      if (!email.match(/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/)) {
+      const emailCheck = email.match(
+        /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/
+      );
+      if (emailCheck === null) {
         setStatus(EStatus.EMAIL_ERROR);
         return;
       }
       setLoading(true);
       await createShareRequest(email);
-      setLoading(true);
+      setLoading(false);
       setStatus(EStatus.REQUESTED);
     } catch (err) {
       setLoading(false);
@@ -54,17 +57,18 @@ export const ModalShare = () => {
     }
   };
 
-  const handleConfirmShare = async () => {
+  const handleConfirmShare = async (e: React.MouseEvent<HTMLElement>) => {
+    e.preventDefault();
     try {
       if (!code.match(/^[a-zA-Z0-9]+$/)) {
         setStatus(EStatus.CONFIRM_ERROR);
         return;
       }
       setLoading(true);
+      saveToLocalStorage({ email }, "user-email");
 
       const gameCode = await confirmShareRequest(email, code, data);
       setLoading(false);
-      setStatus(EStatus.CONFIRMED);
       openSharePage(gameCode);
     } catch (err) {
       setLoading(false);
@@ -96,8 +100,14 @@ export const ModalShare = () => {
     }, 0);
   };
 
+  useEffect(() => {
+    const retrievedEmail = JSON.parse(retrieveLocalStorage("user-email")).email;
+    if (!retrievedEmail) return;
+    setEmail(retrievedEmail);
+  }, []);
+
   return (
-    <div className={styles.modal}>
+    <form className={styles.modal}>
       <h2>Share your Notebook</h2>
       <Input
         value={email}
@@ -106,6 +116,7 @@ export const ModalShare = () => {
         }}
         disabled={![EStatus.PREREQUEST, EStatus.EMAIL_ERROR].includes(status)}
         label="Email"
+        type="email"
       />
       {[EStatus.PREREQUEST, EStatus.EMAIL_ERROR].includes(status) && (
         <Button onClick={handleRequestShare} disabled={loading}>
@@ -125,6 +136,6 @@ export const ModalShare = () => {
         </>
       )}
       <p className={styles.feedback}>{feedback[status]}</p>
-    </div>
+    </form>
   );
 };
