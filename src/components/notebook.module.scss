@@ -1,4 +1,5 @@
 @use "../styles/variables";
+@use "../styles/mixins";
 @import "material-symbols";
 
 .notebook {
@@ -16,8 +17,7 @@
     right: variables.$gap_m;
     z-index: 10;
     color: variables.$palette_grey_0;
-
-    @media (width < variables.$media_phone) {
+    @include mixins.mobile {
       display: none;
     }
   }
@@ -25,21 +25,21 @@
   .draggable {
     height: 100%;
     width: variables.$gap_l;
-    background-color: rgba(variables.$palette_grey_2, .2);
+    background-color: rgba(variables.$palette_grey_2, 0.2);
     user-select: none;
     cursor: grab;
-    transition: background-color .2s;
+    transition: background-color 0.2s;
 
     &:hover,
     &:active {
-      background-color: rgba(variables.$palette_grey_2, .9);
+      background-color: rgba(variables.$palette_grey_2, 0.9);
     }
 
     &:active {
       cursor: grabbing !important;
     }
 
-    @media (width < variables.$media_phone) {
+    @include mixins.mobile {
       display: none;
     }
   }
@@ -47,10 +47,8 @@
   &.referenceLess {
     grid-template-columns: 1fr 0fr 0fr;
   }
-}
 
-@media (width < variables.$media_phone) {
-  .notebook {
+  @include mixins.mobile {
     grid-template-columns: 100%;
     grid-template-rows: 100dvh 0;
   }

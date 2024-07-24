@@ -1,0 +1,7 @@
+@use "./variables";
+
+@mixin mobile {
+  @media (width < variables.$media_phone) {
+    @content;
+  }
+}
