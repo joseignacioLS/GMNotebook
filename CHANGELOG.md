@@ -1,9 +1,10 @@
 # Change Log
 
-## Version 0.1.6 (2024-XX-XX)
+## Version 1.0.0 (2024-XX-XX)
 
 ### Features
 
+- Add temporal sharing through database
 - Color text with high contrast colors
 
 ### Fixes
