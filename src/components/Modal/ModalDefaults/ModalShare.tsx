@@ -8,6 +8,7 @@ import React, { useContext, useEffect, useState } from "react";
 import styles from "./modalshare.module.scss";
 import { confirmShareRequest, createShareRequest } from "@/services/share";
 import { retrieveLocalStorage, saveToLocalStorage } from "@/utils/localStorage";
+import Spinner from "@/components/Spinner/Spinner";
 
 enum EStatus {
   PREREQUEST,
@@ -152,6 +153,7 @@ export const ModalShare = () => {
         </>
       )}
       <p className={styles.feedback}>{feedback[status]}</p>
+      {loading && <Spinner color="grey" />}
     </form>
   );
 };
