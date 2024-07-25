@@ -39,6 +39,7 @@ interface contextOutputI {
   setEditMode: any;
   updateFileHandle: any;
   getDataFromRemote: any;
+  highlightNote: (key: string) => void;
 }
 
 export const DataContext = createContext<contextOutputI>({
@@ -57,6 +58,7 @@ export const DataContext = createContext<contextOutputI>({
   setEditMode: () => {},
   updateFileHandle: () => {},
   getDataFromRemote: () => {},
+  highlightNote: (key) => {},
 });
 
 export const DataProvider = ({ children }: { children: ReactElement }) => {
@@ -204,8 +206,7 @@ export const DataProvider = ({ children }: { children: ReactElement }) => {
     setEditMode(value);
   };
 
-  const updateSelectedNote = (key: string): void => {
-    setSelectedNote(key);
+  const highlightNote = (key: string): void => {
     setTimeout(() => {
       document.querySelector(`#note-${key}`)?.scrollIntoView();
       // add animation to card
@@ -214,6 +215,11 @@ export const DataProvider = ({ children }: { children: ReactElement }) => {
         document.querySelector(`#note-${key}`)?.classList.remove("flash");
       }, 600);
     }, 0);
+  };
+
+  const updateSelectedNote = (key: string): void => {
+    setSelectedNote(key);
+    highlightNote(key);
   };
 
   useEffect(() => {
@@ -259,6 +265,7 @@ export const DataProvider = ({ children }: { children: ReactElement }) => {
         setEditMode,
         updateFileHandle,
         getDataFromRemote,
+        highlightNote,
       }}
     >
       {children}

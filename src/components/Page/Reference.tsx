@@ -11,7 +11,7 @@ interface IProps {
 }
 
 const Reference: React.FC<IProps> = ({ reference, naked = false }) => {
-  const { selectedNote, updateSelectedNote, data, editMode } =
+  const { selectedNote, updateSelectedNote, data, editMode, highlightNote } =
     useContext(DataContext);
   const { generateColor } = useContext(colorContext);
   const { navigateTo } = useContext(NavigationContext);
@@ -28,15 +28,16 @@ const Reference: React.FC<IProps> = ({ reference, naked = false }) => {
       }}
       onClick={() => {
         if (naked) return;
-        if (editMode) {
+        if (editMode && selectedNote !== reference.key) {
           updateSelectedNote(reference.key || "");
+        } else {
+          navigateTo(reference.key);
         }
-        navigateTo(reference.key);
       }}
       onMouseOver={() => {
         if (naked) return;
         if (editMode) return;
-        updateSelectedNote(reference.key || "");
+        highlightNote(reference.key || "");
       }}
     >
       {data[reference.key]?.display}
