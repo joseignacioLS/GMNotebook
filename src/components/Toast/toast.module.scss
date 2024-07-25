@@ -16,6 +16,8 @@
   align-items: flex-start;
   padding: variables.$gap_m variables.$gap_xl;
   box-shadow: variables.$default_dark_shadow;
+  line-height: normal;
+  text-align: center;
 
   &.visible {
     animation: fade-out forwards 3s;
