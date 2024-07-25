@@ -5,6 +5,7 @@
 ### Features
 
 - Add temporal sharing through database
+- Changes are saved localy after download
 - Color text with high contrast colors
 
 ### Fixes
