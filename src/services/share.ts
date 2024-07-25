@@ -8,16 +8,17 @@ export const createShareRequest = async (email: string) => {
       "Content-Type": "application/json",
     },
   });
-  if (!res.ok) {
-    throw new Error()
-  }
-  const data = await res.json()
+  const data = await res.json();
   if (data.status !== 200) {
-    throw new Error()
+    throw new Error(data.message);
   }
-}
+};
 
-export const confirmShareRequest = async (email: string, code: string, data: IData) => {
+export const confirmShareRequest = async (
+  email: string,
+  code: string,
+  data: IData
+) => {
   const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}confirm`, {
     method: "POST",
     body: JSON.stringify({ email, code, data }),
@@ -25,12 +26,9 @@ export const confirmShareRequest = async (email: string, code: string, data: IDa
       "Content-Type": "application/json",
     },
   });
-  if (!res.ok) {
-    throw new Error()
-  }
   const respData = await res.json();
   if (respData.status !== 200) {
-    throw new Error()
+    throw new Error(respData.message);
   }
-  return respData.data
-}
+  return respData.data;
+};

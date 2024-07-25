@@ -18,9 +18,9 @@ enum EStatus {
   CONFIRM_ERROR,
 }
 
-const feedback: Record<EStatus, string> = {
+const feedbackTexts: Record<EStatus, string> = {
   [EStatus.PREREQUEST]:
-    "In order to confirm the sharing request, please provide an email.",
+    "In order to confirm the sharing request, please provide an email. If you already have a code, please provide the email and the code",
   [EStatus.EMAIL_ERROR]: "The provided email is not valid",
   [EStatus.REQUESTED]:
     "Check your inbox for the confirmation code. IMPORTANT: Sharing this one will disable any previous share links",
@@ -33,6 +33,7 @@ export const ModalShare = () => {
   const [code, setCode] = useState("");
   const [status, setStatus] = useState<EStatus>(EStatus.PREREQUEST);
   const [loading, setLoading] = useState(false);
+  const [feedback, setFeedback] = useState(feedbackTexts[EStatus.PREREQUEST]);
 
   const { data, updateData } = useContext(DataContext);
   const { navigateTo } = useContext(NavigationContext);
@@ -52,9 +53,11 @@ export const ModalShare = () => {
       await createShareRequest(email);
       setLoading(false);
       setStatus(EStatus.REQUESTED);
-    } catch (err) {
+      setFeedback(feedbackTexts[EStatus.REQUESTED]);
+    } catch (err: any) {
       setLoading(false);
-      setStatus(EStatus.EMAIL_ERROR);
+      setStatus(EStatus.REQUEST_ERROR);
+      setFeedback(err.message);
     }
   };
 
@@ -71,9 +74,10 @@ export const ModalShare = () => {
       const gameCode = await confirmShareRequest(email, code, data);
       setLoading(false);
       openSharePage(gameCode);
-    } catch (err) {
+    } catch (err: any) {
       setLoading(false);
       setStatus(EStatus.CONFIRM_ERROR);
+      setFeedback(err.message);
     }
   };
 
@@ -152,7 +156,7 @@ export const ModalShare = () => {
           </Button>
         </>
       )}
-      <p className={styles.feedback}>{feedback[status]}</p>
+      <p className={styles.feedback}>{feedback}</p>
       {loading && <Spinner color="grey" />}
     </form>
   );
