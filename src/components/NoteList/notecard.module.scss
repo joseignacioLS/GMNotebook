@@ -1,5 +1,5 @@
 @use "../../styles/variables";
-
+@use "../../styles/mixins";
 .note {
   flex-shrink: 0;
   position: relative;
@@ -36,10 +36,8 @@
 
     grid-template-rows: 1fr;
   }
-}
 
-@media (max-width: variables.$media_phone) {
-  .note {
+  @include mixins.mobile {
     font-size: variables.$font_size_l;
   }
 }

@@ -6,7 +6,7 @@ import { colorContext } from "@/context/colors";
 
 export const Tabs = () => {
   const { data, updateSelectedNote } = useContext(DataContext);
-  const { navigateTo, getCurrentPage } = useContext(NavigationContext);
+  const { navigateTo, currentPage } = useContext(NavigationContext);
   const { generateColor } = useContext(colorContext);
   const tabs: { name: string; route: string }[] = [];
   Object.values(data).forEach((value) => {
@@ -23,14 +23,16 @@ export const Tabs = () => {
   return (
     <section className={styles.tabs}>
       {tabs.map(({ name, route }) => {
-        const isActive = getCurrentPage() === route;
+        const isActive = currentPage === route;
+        const [backgroundColor, color] = generateColor(route);
         return (
           <span
             key={name}
             onClick={() => !isActive && handleNavigate(route)}
             className={`${styles.tab} ${isActive && styles.active}`}
             style={{
-              backgroundColor: generateColor(route),
+              backgroundColor,
+              color,
             }}
           >
             {name}

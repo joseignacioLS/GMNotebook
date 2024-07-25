@@ -8,6 +8,7 @@ interface IProps {
   tooltip?: string;
   type?: string;
   config?: any;
+  disabled?: boolean;
 }
 const Input: React.FC<IProps> = ({
   value,
@@ -16,13 +17,31 @@ const Input: React.FC<IProps> = ({
   tooltip,
   type = "text",
   config = {},
+  disabled = false,
 }) => {
   switch (type) {
     case "text":
       return (
         <label className={styles.wrapper}>
           <span data-help={tooltip}>{label}</span>
-          <input value={value} onChange={onChange} type={type} />
+          <input
+            value={value}
+            onChange={onChange}
+            type={type}
+            disabled={disabled}
+          />
+        </label>
+      );
+    case "email":
+      return (
+        <label className={styles.wrapper}>
+          <span data-help={tooltip}>{label}</span>
+          <input
+            value={value}
+            onChange={onChange}
+            type={type}
+            disabled={disabled}
+          />
         </label>
       );
     case "checkbox":
@@ -40,7 +59,13 @@ const Input: React.FC<IProps> = ({
       return (
         <label className={styles.wrapper}>
           <span data-help={tooltip}>{label}</span>
-          <input type="range" value={value} onChange={onChange} {...config} />
+          <input
+            type="range"
+            value={value}
+            onChange={onChange}
+            {...config}
+            disabled={disabled}
+          />
         </label>
       );
   }

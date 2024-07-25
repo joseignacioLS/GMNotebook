@@ -4,13 +4,15 @@
   position: relative;
   background-color: transparent;
   cursor: pointer;
-  min-height: variables.$gap_l;
+  min-height: variables.$gap_m;
   border-radius: variables.$border_radius_total;
   border: 0;
   flex-shrink: 0;
-
+  line-height: 2ch;
   transition: text-shadow 0.2s;
-  > * {
+  padding: variables.$gap_m variables.$gap_l;
+
+  >* {
     transition: text-shadow 0.2s;
   }
 

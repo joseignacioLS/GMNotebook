@@ -1,17 +1,35 @@
 import { IData } from "@/context/constants";
 
-export const saveToFile = (filename: string, content: any): void => {
-  const data = JSON.stringify(content, null, 4);
-  let element = document.createElement("a");
-  element.setAttribute(
-    "href",
-    "data:text/plain;charset=utf-8," + encodeURIComponent(data)
-  );
-  element.setAttribute("download", filename.replace(/ /g, "-") + ".json");
-  element.style.display = "none";
-  document.body.appendChild(element);
-  element.click();
-  document.body.removeChild(element);
+export const saveToFile = async (content: any): Promise<FileSystemFileHandle | undefined> => {
+  const options = {
+    types: [
+      {
+        description: 'JSON Files',
+        accept: {
+          'application/json': ['.json'],
+        },
+      },
+    ],
+  };
+
+  try {
+    const fileHandle = await (window as any).showSaveFilePicker(options);
+    await saveToFileHandle(fileHandle, content);
+    return fileHandle;  // Return the file handle for future use
+  } catch (error) {
+    console.error('Error saving file:', error);
+  }
+  // const data = JSON.stringify(content, null, 4);
+  // let element = document.createElement("a");
+  // element.setAttribute(
+  //   "href",
+  //   "data:text/plain;charset=utf-8," + encodeURIComponent(data)
+  // );
+  // element.setAttribute("download", filename.replace(/ /g, "-") + ".json");
+  // element.style.display = "none";
+  // document.body.appendChild(element);
+  // element.click();
+  // document.body.removeChild(element);
 };
 
 export const loadFile = (inputSelector: string, callback: any): void => {

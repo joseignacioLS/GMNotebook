@@ -8,7 +8,7 @@ interface contextOutputI {
   navBack: () => void;
   navigateTo: (value: string) => void;
   resetPath: () => void;
-  getCurrentPage: () => string;
+  currentPage: string;
 }
 
 export const NavigationContext = createContext<contextOutputI>({
@@ -17,7 +17,7 @@ export const NavigationContext = createContext<contextOutputI>({
   navBack: () => {},
   navigateTo: (value: string) => {},
   resetPath: () => {},
-  getCurrentPage: () => "",
+  currentPage: "",
 });
 
 const resetNotesScroll = () => {
@@ -55,13 +55,16 @@ export const NavigationProvider = ({
     }, 0);
   };
 
-  const getCurrentPage = (): string => {
-    return path.at(-1) || "RootPage";
-  };
-
   return (
     <NavigationContext.Provider
-      value={{ path, setPath, navBack, navigateTo, resetPath, getCurrentPage }}
+      value={{
+        path,
+        setPath,
+        navBack,
+        navigateTo,
+        resetPath,
+        currentPage: path.at(-1) || "RootPage",
+      }}
     >
       {children}
     </NavigationContext.Provider>

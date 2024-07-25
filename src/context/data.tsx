@@ -8,11 +8,18 @@ import {
   useEffect,
   useState,
 } from "react";
-import { fallBack, IData, IItem, ILeaf, initPage } from "./constants";
+import {
+  exceptionKeys,
+  fallBack,
+  IData,
+  IItem,
+  ILeaf,
+  initPage,
+} from "./constants";
 import { NavigationContext } from "./navigation";
 import { generateDataTree } from "@/utils/tree";
 import { saveToFileHandle } from "@/utils/file";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useRouter } from "next/navigation";
 
 import LZString from "lz-string";
 import { toastContext } from "./toast";
@@ -23,7 +30,12 @@ interface contextOutputI {
   item: IItem;
   updateEditMode: any;
   canEdit: boolean;
-  updateData: (value: IData, reset: boolean) => void;
+  updateData: (
+    value: IData,
+    reset: boolean,
+    saveToFile?: boolean,
+    other?: boolean
+  ) => void;
   resetData: () => void;
   selectedNote: string;
   setSelectedNote: any;
@@ -34,6 +46,7 @@ interface contextOutputI {
   setEditMode: any;
   updateFileHandle: any;
   getDataFromRemote: any;
+  highlightNote: (key: string) => void;
 }
 
 export const DataContext = createContext<contextOutputI>({
@@ -52,6 +65,7 @@ export const DataContext = createContext<contextOutputI>({
   setEditMode: () => {},
   updateFileHandle: () => {},
   getDataFromRemote: () => {},
+  highlightNote: (key) => {},
 });
 
 export const DataProvider = ({ children }: { children: ReactElement }) => {
@@ -66,7 +80,7 @@ export const DataProvider = ({ children }: { children: ReactElement }) => {
   const { showToastError, showToastSuccess } = useContext(toastContext);
   const { setShow: setShowLoading } = useContext(loadingContext);
 
-  const { path, resetPath, getCurrentPage } = useContext(NavigationContext);
+  const { path, resetPath, currentPage } = useContext(NavigationContext);
 
   const router = useRouter();
 
@@ -78,10 +92,12 @@ export const DataProvider = ({ children }: { children: ReactElement }) => {
 
   const getDataFromRemote = async (remoteData: string) => {
     try {
-      const resp = await fetch(remoteData);
+      const resp = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}${remoteData}`
+      );
       if (resp.status !== 200) throw Error("Could not load from remote");
       else {
-        const data = await resp.json();
+        const data = (await resp.json()).data;
         setData(data);
         setTree(generateDataTree(data));
         setCanEdit(false);
@@ -154,7 +170,7 @@ export const DataProvider = ({ children }: { children: ReactElement }) => {
   const removeUnusedReferences = (value: IData) => {
     const processedObject = structuredClone(value);
     const deletedKeys: string[] = [];
-    const references: string[] = ["RootPage"];
+    const references: string[] = [];
 
     Object.keys(processedObject).forEach((key: string) => {
       // get used references
@@ -165,7 +181,7 @@ export const DataProvider = ({ children }: { children: ReactElement }) => {
     });
     // remove ununused references
     Object.keys(processedObject).forEach((key: string) => {
-      if (!references.includes(key)) {
+      if (!references.includes(key) && !exceptionKeys.includes(key)) {
         delete processedObject[key];
         deletedKeys.push(key);
       }
@@ -181,8 +197,7 @@ export const DataProvider = ({ children }: { children: ReactElement }) => {
 
   const cleanUpData = (value: IData): IData => {
     const checkedItems = checkItemsParams(value);
-    const removedReferences = removeUnusedReferences(checkedItems);
-    return removedReferences;
+    return checkedItems;
   };
 
   const resetData = async (): Promise<void> => {
@@ -197,8 +212,7 @@ export const DataProvider = ({ children }: { children: ReactElement }) => {
     setEditMode(value);
   };
 
-  const updateSelectedNote = (key: string): void => {
-    setSelectedNote(key);
+  const highlightNote = (key: string): void => {
     setTimeout(() => {
       document.querySelector(`#note-${key}`)?.scrollIntoView();
       // add animation to card
@@ -209,6 +223,11 @@ export const DataProvider = ({ children }: { children: ReactElement }) => {
     }, 0);
   };
 
+  const updateSelectedNote = (key: string): void => {
+    setSelectedNote(key);
+    highlightNote(key);
+  };
+
   useEffect(() => {
     fetchTutorial().then((tutorial) => {
       updateData(tutorial);
@@ -217,6 +236,9 @@ export const DataProvider = ({ children }: { children: ReactElement }) => {
 
   useEffect(() => {
     updateEditMode(false);
+    setData((oldData) => {
+      return removeUnusedReferences(oldData);
+    });
   }, [path]);
 
   useEffect(() => {
@@ -227,7 +249,6 @@ export const DataProvider = ({ children }: { children: ReactElement }) => {
       });
       return;
     }
-    const currentPage = getCurrentPage();
     if (!data?.[currentPage]) {
       resetPath();
       return;
@@ -238,7 +259,7 @@ export const DataProvider = ({ children }: { children: ReactElement }) => {
     <DataContext.Provider
       value={{
         data,
-        item: data?.[getCurrentPage()] || fallBack["RootPage"],
+        item: data?.[currentPage] || fallBack["RootPage"],
         editMode,
         canEdit,
         updateEditMode,
@@ -252,6 +273,7 @@ export const DataProvider = ({ children }: { children: ReactElement }) => {
         setEditMode,
         updateFileHandle,
         getDataFromRemote,
+        highlightNote,
       }}
     >
       {children}

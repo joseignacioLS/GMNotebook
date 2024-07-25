@@ -8,7 +8,12 @@ import { ReactElement, createContext, useEffect, useState } from "react";
 interface colorOutputI {
   darkMode: boolean;
   toggleDarkMode: any;
-  generateColor: (seed: string) => string;
+  generateColor: (seed: string) => string[];
+  generateSecondaryColor: (
+    hue: number,
+    saturation: number,
+    luminosity: number
+  ) => string;
   updatePaletteConfig: any;
   paletteConfig: {
     hue: number | undefined;
@@ -28,7 +33,8 @@ const initialPaletteConfig = {
 export const colorContext = createContext<colorOutputI>({
   darkMode: false,
   toggleDarkMode: () => {},
-  generateColor: (seed: string) => seed,
+  generateColor: (seed: string) => [seed],
+  generateSecondaryColor: () => "",
   updatePaletteConfig: () => {},
   paletteConfig: initialPaletteConfig,
 });
@@ -43,12 +49,26 @@ export const ColorProvider = ({ children }: { children: ReactElement }) => {
       return !v;
     });
 
-  const generateColor = (seed: string): string => {
+  const generateSecondaryColor = (
+    hue: number,
+    saturation: number,
+    luminosity: number
+  ): string => {
+    return `hsl(${hue}, ${saturation}%, ${luminosity > 40 ? 5 : 95}%)`;
+  };
+
+  const generateColor = (seed: string): string[] => {
     const hue =
       paletteConfig.hue +
       Math.floor(rng(stringToNumber(seed)) * paletteConfig.range) * 2 -
       paletteConfig.range;
-    return `hsl(${hue}, ${paletteConfig.saturation}%, ${paletteConfig.luminosity}%)`;
+    const color = `hsl(${hue}, ${paletteConfig.saturation}%, ${paletteConfig.luminosity}%)`;
+    const complementary = generateSecondaryColor(
+      hue,
+      paletteConfig.saturation,
+      paletteConfig.luminosity
+    );
+    return [color, complementary];
   };
 
   const updatePaletteConfig = (key: string, value: number) => {
@@ -92,6 +112,7 @@ export const ColorProvider = ({ children }: { children: ReactElement }) => {
         darkMode,
         toggleDarkMode,
         generateColor,
+        generateSecondaryColor,
         updatePaletteConfig,
         paletteConfig,
       }}

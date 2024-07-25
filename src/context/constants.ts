@@ -41,3 +41,5 @@ export const fallBack: IData = { "RootPage": { "title": "Loading", "key": "RootP
 export const templates = {
   "character": "# Short Description\nSummary"
 }
+
+export const exceptionKeys: string[] = ["temporal share", "RootPage"]

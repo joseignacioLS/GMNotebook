@@ -4,16 +4,23 @@ import { modalContext } from "@/context/modal";
 import Button from "../Button/Button";
 
 const Modal: React.FC = () => {
-  const { isVisible, content, closeModal } = useContext(modalContext);
+  const { isVisible, content, closeModal, closeOnBg } =
+    useContext(modalContext);
 
   const handleClose = (e: React.MouseEvent<HTMLElement>) => {
     e.preventDefault();
     e.stopPropagation();
     closeModal();
   };
+
+  const handleCloseOnBg = (e: React.MouseEvent<HTMLElement>) => {
+    e.preventDefault();
+    e.stopPropagation();
+    closeOnBg && closeModal();
+  };
   if (!isVisible) return <></>;
   return (
-    <div className={styles.modalContainer} onClick={handleClose}>
+    <div className={styles.modalContainer} onClick={handleCloseOnBg}>
       <div
         className={styles.modal}
         onClick={(e) => {

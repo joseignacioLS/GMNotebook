@@ -126,7 +126,7 @@ const NoteBook: React.FC = () => {
           />
         </div>
       )}
-      <Tabs />
+      {canEdit && <Tabs />}
     </div>
   );
 };

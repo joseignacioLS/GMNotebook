@@ -11,9 +11,11 @@ interface IProps {
 }
 
 const Reference: React.FC<IProps> = ({ reference, naked = false }) => {
-  const { selectedNote, updateSelectedNote, data } = useContext(DataContext);
+  const { selectedNote, updateSelectedNote, data, editMode, highlightNote } =
+    useContext(DataContext);
   const { generateColor } = useContext(colorContext);
   const { navigateTo } = useContext(NavigationContext);
+  const [backgroundColor, color] = generateColor(reference.key);
 
   return (
     <span
@@ -21,15 +23,22 @@ const Reference: React.FC<IProps> = ({ reference, naked = false }) => {
         selectedNote === reference.key && "flash"
       }`}
       style={{
-        backgroundColor: naked ? "transparent" : generateColor(reference.key),
+        backgroundColor: naked ? "transparent" : backgroundColor,
+        color: naked ? "inherit" : color,
       }}
       onClick={() => {
         if (naked) return;
-        navigateTo(reference.key);
+        if (editMode && selectedNote !== reference.key) {
+          updateSelectedNote(reference.key || "");
+        } else {
+          updateSelectedNote(reference.key || "");
+          navigateTo(reference.key);
+        }
       }}
       onMouseOver={() => {
         if (naked) return;
-        updateSelectedNote(reference.key || "");
+        if (editMode) return;
+        highlightNote(reference.key || "");
       }}
     >
       {data[reference.key]?.display}

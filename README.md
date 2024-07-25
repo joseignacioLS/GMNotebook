@@ -1,5 +1,5 @@
 # GM Notebook
-Current version: **0.1.4** ([changelog](./CHANGELOG.md))
+Current version: **1.0.0** ([changelog](./CHANGELOG.md))
 ## Overview
 GM Notebook is a digital tool designed to help world-builders manage their creations efficiently. It offers a suite of features tailored for planning, organizing and connecting information
 
@@ -11,6 +11,7 @@ GM Notebook is a digital tool designed to help world-builders manage their creat
 - **Themes**: Switch between dark/light themes and customize the color palette
 - **Tree View**: Generate and visualize a tree-like structure of connected notes
 - **Tab Shortcuts**: Mark relevant notes as shortcuts for easy access
+- **Sharing**: Share your notebook with your friends with a link
 
 ## Usage
 - Navigate to the [website](https://gmnotebook.netlify.app)

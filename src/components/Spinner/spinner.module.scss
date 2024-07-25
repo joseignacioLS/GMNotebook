@@ -1,0 +1,16 @@
+@use "../../styles/variables";
+@import "material-symbols";
+
+.spinner {
+  color: variables.$palette_grey_4;
+  text-shadow: 2px 2px 0 variables.$palette_grey_0;
+  font-size: variables.$font_size_xxxl;
+  animation: rotate infinite 2s linear;
+}
+
+
+@keyframes rotate {
+  to {
+    rotate: 360deg;
+  }
+}

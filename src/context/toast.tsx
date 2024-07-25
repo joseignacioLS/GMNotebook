@@ -36,7 +36,7 @@ export const ToastProvider = ({ children }: { children: ReactElement }) => {
     setText(showText);
     timeOut.current = setTimeout(() => {
       setText("");
-    }, 3000);
+    }, 5000);
   };
 
   const showToastSuccess = (showText: string) => {

@@ -11,6 +11,7 @@ const ModalPalette: React.FC = () => {
     toggleDarkMode,
     paletteConfig: pconfig,
     updatePaletteConfig,
+    generateSecondaryColor,
   } = useContext(colorContext);
 
   const [previewRange, setPreviewRange] = useState<number[]>([0, 360, 0]);
@@ -104,7 +105,17 @@ const ModalPalette: React.FC = () => {
           }%))`,
         }}
       >
-        <span>Preview</span>
+        <span
+          style={{
+            color: generateSecondaryColor(
+              pconfig.hue || 0,
+              pconfig.saturation,
+              pconfig.luminosity
+            ),
+          }}
+        >
+          Preview
+        </span>
       </div>
     </div>
   );
