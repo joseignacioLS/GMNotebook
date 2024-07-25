@@ -31,6 +31,7 @@ const Reference: React.FC<IProps> = ({ reference, naked = false }) => {
         if (editMode && selectedNote !== reference.key) {
           updateSelectedNote(reference.key || "");
         } else {
+          updateSelectedNote(reference.key || "");
           navigateTo(reference.key);
         }
       }}

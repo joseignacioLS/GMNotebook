@@ -8,7 +8,14 @@ import {
   useEffect,
   useState,
 } from "react";
-import { fallBack, IData, IItem, ILeaf, initPage } from "./constants";
+import {
+  exceptionKeys,
+  fallBack,
+  IData,
+  IItem,
+  ILeaf,
+  initPage,
+} from "./constants";
 import { NavigationContext } from "./navigation";
 import { generateDataTree } from "@/utils/tree";
 import { saveToFileHandle } from "@/utils/file";
@@ -73,7 +80,7 @@ export const DataProvider = ({ children }: { children: ReactElement }) => {
   const { showToastError, showToastSuccess } = useContext(toastContext);
   const { setShow: setShowLoading } = useContext(loadingContext);
 
-  const { path, resetPath, getCurrentPage } = useContext(NavigationContext);
+  const { path, resetPath, currentPage } = useContext(NavigationContext);
 
   const router = useRouter();
 
@@ -163,7 +170,7 @@ export const DataProvider = ({ children }: { children: ReactElement }) => {
   const removeUnusedReferences = (value: IData) => {
     const processedObject = structuredClone(value);
     const deletedKeys: string[] = [];
-    const references: string[] = ["RootPage"];
+    const references: string[] = [];
 
     Object.keys(processedObject).forEach((key: string) => {
       // get used references
@@ -174,7 +181,7 @@ export const DataProvider = ({ children }: { children: ReactElement }) => {
     });
     // remove ununused references
     Object.keys(processedObject).forEach((key: string) => {
-      if (!references.includes(key)) {
+      if (!references.includes(key) && !exceptionKeys.includes(key)) {
         delete processedObject[key];
         deletedKeys.push(key);
       }
@@ -190,8 +197,7 @@ export const DataProvider = ({ children }: { children: ReactElement }) => {
 
   const cleanUpData = (value: IData): IData => {
     const checkedItems = checkItemsParams(value);
-    const removedReferences = removeUnusedReferences(checkedItems);
-    return removedReferences;
+    return checkedItems;
   };
 
   const resetData = async (): Promise<void> => {
@@ -230,6 +236,9 @@ export const DataProvider = ({ children }: { children: ReactElement }) => {
 
   useEffect(() => {
     updateEditMode(false);
+    setData((oldData) => {
+      return removeUnusedReferences(oldData);
+    });
   }, [path]);
 
   useEffect(() => {
@@ -240,7 +249,6 @@ export const DataProvider = ({ children }: { children: ReactElement }) => {
       });
       return;
     }
-    const currentPage = getCurrentPage();
     if (!data?.[currentPage]) {
       resetPath();
       return;
@@ -251,7 +259,7 @@ export const DataProvider = ({ children }: { children: ReactElement }) => {
     <DataContext.Provider
       value={{
         data,
-        item: data?.[getCurrentPage()] || fallBack["RootPage"],
+        item: data?.[currentPage] || fallBack["RootPage"],
         editMode,
         canEdit,
         updateEditMode,
