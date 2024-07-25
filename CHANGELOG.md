@@ -1,6 +1,14 @@
 # Change Log
 
-## Version 1.0.0 (2024-XX-XX)
+## Version 1.0.1 (2024-07-25)
+
+### Features
+
+### Fixes
+
+- Update sharing in tutorial
+
+## Version 1.0.0 (2024-07-25)
 
 ### Features
 
