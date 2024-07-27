@@ -64,7 +64,7 @@ export const ModalShare = () => {
   const handleConfirmShare = async (e: React.MouseEvent<HTMLElement>) => {
     e.preventDefault();
     try {
-      if (!code.match(/^[a-zA-Z0-9]+$/)) {
+      if (!code.match(/^[0-9]{4}$/)) {
         setStatus(EStatus.CONFIRM_ERROR);
         return;
       }

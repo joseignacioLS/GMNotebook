@@ -29,6 +29,7 @@ const Input: React.FC<IProps> = ({
             onChange={onChange}
             type={type}
             disabled={disabled}
+            {...config}
           />
         </label>
       );
@@ -41,6 +42,7 @@ const Input: React.FC<IProps> = ({
             onChange={onChange}
             type={type}
             disabled={disabled}
+            {...config}
           />
         </label>
       );
@@ -65,6 +67,18 @@ const Input: React.FC<IProps> = ({
             onChange={onChange}
             {...config}
             disabled={disabled}
+          />
+        </label>
+      );
+    default:
+      return (
+        <label className={styles.wrapper}>
+          <span data-help={tooltip}>{label}</span>
+          <input
+            value={value}
+            onChange={onChange}
+            disabled={disabled}
+            {...config}
           />
         </label>
       );
