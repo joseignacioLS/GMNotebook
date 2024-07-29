@@ -7,6 +7,7 @@
 ### Fixes
 
 - Update sharing in tutorial
+- Fix a situation that would present user to share if first fetch failed
 
 ## Version 1.0.0 (2024-07-25)
 
