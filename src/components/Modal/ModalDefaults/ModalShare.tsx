@@ -130,11 +130,21 @@ export const ModalShare = () => {
         onChange={(e) => {
           setEmail(e.target.value);
         }}
-        disabled={![EStatus.PREREQUEST, EStatus.EMAIL_ERROR].includes(status)}
+        disabled={
+          ![
+            EStatus.PREREQUEST,
+            EStatus.EMAIL_ERROR,
+            EStatus.REQUEST_ERROR,
+          ].includes(status)
+        }
         label="Email"
         type="email"
       />
-      {[EStatus.PREREQUEST, EStatus.EMAIL_ERROR].includes(status) && (
+      {[
+        EStatus.PREREQUEST,
+        EStatus.EMAIL_ERROR,
+        EStatus.REQUEST_ERROR,
+      ].includes(status) && (
         <>
           <Button onClick={handleRequestShare} disabled={loading}>
             Send me a confirmation code
