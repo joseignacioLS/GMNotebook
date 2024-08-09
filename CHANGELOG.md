@@ -1,5 +1,14 @@
 # Change Log
 
+## Version 1.0.2 (2024-07-25)
+
+### Features
+
+- Notes are sorted by its appearance order in the page
+- Added delay on scroll event when overing a note
+
+### Fixes
+
 ## Version 1.0.1 (2024-07-25)
 
 ### Features

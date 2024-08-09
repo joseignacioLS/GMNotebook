@@ -1,5 +1,5 @@
 # GM Notebook
-Current version: **1.0.1** ([changelog](./CHANGELOG.md))
+Current version: **1.0.2** ([changelog](./CHANGELOG.md))
 ## Overview
 GM Notebook is a digital tool designed to help world-builders manage their creations efficiently. It offers a suite of features tailored for planning, organizing and connecting information
 
