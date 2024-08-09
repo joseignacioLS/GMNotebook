@@ -15,8 +15,14 @@ const generateVisibleNotes = (references: IProps["references"]) => {
       if (isVisible) {
         acc.shown.push(noteKey);
       }
+      const noteId = isVisible ? noteKey : undefined;
       acc.notes.push(
-        <NoteCard key={reference} itemKey={reference} visible={isVisible} />
+        <NoteCard
+          key={reference}
+          itemKey={reference}
+          noteId={noteId}
+          visible={isVisible}
+        />
       );
       return acc;
     },
