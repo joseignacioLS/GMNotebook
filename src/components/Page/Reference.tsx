@@ -55,7 +55,7 @@ const Reference: React.FC<IProps> = ({ reference, naked = false }) => {
       onMouseOver={() => {
         if (naked) return;
         if (editMode) return;
-        handleMouseOver(reference.id || "");
+        handleMouseOver(reference.key || "");
       }}
       onMouseLeave={handleMouseLeave}
     >

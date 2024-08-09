@@ -9,10 +9,11 @@ import { colorContext } from "@/context/colors";
 interface IProps {
   itemKey: string;
   visible: boolean;
+  noteId?: string;
 }
 
 const maxNoteContent = 25;
-const NoteCard: React.FC<IProps> = ({ itemKey, visible }) => {
+const NoteCard: React.FC<IProps> = ({ itemKey, visible, noteId }) => {
   const { data, selectedNote, updateSelectedNote } = useContext(DataContext);
   const { generateColor } = useContext(colorContext);
   const { navigateTo } = useContext(NavigationContext);
@@ -34,7 +35,7 @@ const NoteCard: React.FC<IProps> = ({ itemKey, visible }) => {
   const [backgroundColor, color] = generateColor(key);
   return (
     <div
-      id={`note-${itemKey}`}
+      {...(noteId ? { id: `note-${noteId}` } : {})}
       className={`${styles.note} ${
         itemKey === selectedNote && styles.selected
       } ${visible && styles.visibleNote}`}
