@@ -7,12 +7,11 @@ interface IProps {
 }
 
 const generateVisibleNotes = (references: IProps["references"]) => {
-  const visibleNoteKeys = references.visible.map((r) => r.split("_")[0]);
   return references.total.reduce(
     (acc: { shown: string[]; notes: ReactNode[] }, reference: string) => {
       const noteKey = reference.split("_")[0];
       const isVisible =
-        !acc.shown.includes(noteKey) && visibleNoteKeys.includes(noteKey);
+        !acc.shown.includes(noteKey) && references.visible.includes(reference);
       if (isVisible) {
         acc.shown.push(noteKey);
       }
