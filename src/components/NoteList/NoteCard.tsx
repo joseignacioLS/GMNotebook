@@ -34,7 +34,7 @@ const NoteCard: React.FC<IProps> = ({ itemKey, visible }) => {
   const [backgroundColor, color] = generateColor(key);
   return (
     <div
-      id={`note-${key.split("_")[0]}`}
+      id={`note-${itemKey}`}
       className={`${styles.note} ${
         itemKey === selectedNote && styles.selected
       } ${visible && styles.visibleNote}`}

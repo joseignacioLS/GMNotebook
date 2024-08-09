@@ -1,5 +1,13 @@
 # Change Log
 
+## Version 1.0.3 (2024-07-25)
+
+### Features
+
+### Fixes
+
+- Fix scroll on over references
+
 ## Version 1.0.2 (2024-07-25)
 
 ### Features
