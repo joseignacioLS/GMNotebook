@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import styles from "./reference.module.scss";
 import { IReference } from "@/context/constants";
 import { DataContext } from "@/context/data";
@@ -16,6 +16,23 @@ const Reference: React.FC<IProps> = ({ reference, naked = false }) => {
   const { generateColor } = useContext(colorContext);
   const { navigateTo } = useContext(NavigationContext);
   const [backgroundColor, color] = generateColor(reference.key);
+
+  const [mouseOverTimeout, setMouseOverTimeout] = useState<any>(undefined);
+
+  const handleMouseOver = (key: string) => {
+    setMouseOverTimeout(
+      setTimeout(() => {
+        highlightNote(key);
+      }, 500)
+    );
+  };
+
+  const handleMouseLeave = () => {
+    if (mouseOverTimeout !== undefined) {
+      clearTimeout(mouseOverTimeout);
+      setMouseOverTimeout(undefined);
+    }
+  };
 
   return (
     <span
@@ -38,8 +55,9 @@ const Reference: React.FC<IProps> = ({ reference, naked = false }) => {
       onMouseOver={() => {
         if (naked) return;
         if (editMode) return;
-        highlightNote(reference.key || "");
+        handleMouseOver(reference.key || "");
       }}
+      onMouseLeave={handleMouseLeave}
     >
       {data[reference.key]?.display}
     </span>
